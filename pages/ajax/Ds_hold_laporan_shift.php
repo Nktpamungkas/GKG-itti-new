@@ -1,0 +1,185 @@
+<?PHP
+ini_set("error_reporting", 1);
+session_start();
+include "../../koneksi.php";
+$time = date('Y-m-d H:i:s');
+
+$sql_get = mysqli_query($con,"SELECT * from tbl_laporanharian where date_laporan = '$_POST[tgl_laporan]'");
+$get = mysqli_fetch_array($sql_get);
+
+$masuk_kain_s1 = str_replace(',', '', $_POST['masuk_kain_s1']);
+$masuk_kain_s2 = str_replace(',', '', $_POST['masuk_kain_s2']);
+$masuk_kain_s3 = str_replace(',', '', $_POST['masuk_kain_s3']);
+$pembagian_kain_s1 = str_replace(',', '', $_POST['pembagian_kain_s1']);
+$pembagian_kain_s2 = str_replace(',', '', $_POST['pembagian_kain_s2']);
+$pembagian_kain_s3 = str_replace(',', '', $_POST['pembagian_kain_s3']);
+$buka_kain_s1 = str_replace(',', '', $_POST['buka_kain_s1']);
+$buka_kain_s2 = str_replace(',', '', $_POST['buka_kain_s2']);
+$buka_kain_s3 = str_replace(',', '', $_POST['buka_kain_s3']);
+
+if (empty($get)) {
+    $sql = ("INSERT INTO tbl_laporanharian SET
+            `date_laporan` = '$_POST[tgl_laporan]',
+            `absensi_s1` = '$_POST[absensi_s1]',
+            `absensi_s2` = '$_POST[absensi_s2]',
+            `absensi_s3` = '$_POST[absensi_s3]',
+            `group_s1` = '$_POST[group_s1]',
+            `group_s2` = '$_POST[group_s2]',
+            `group_s3` = '$_POST[group_s3]',
+            `hadir_s1` = '$_POST[hadir_s1]',
+            `hadir_s2` = '$_POST[hadir_s2]',
+            `hadir_s3` = '$_POST[hadir_s3]',
+            `sakit_s1` ='$_POST[sakit_s1]',
+            `sakit_s2` ='$_POST[sakit_s2]',
+            `sakit_s3` = '$_POST[sakit_s3]',
+            `mangkir_s1` = $_POST[mangkir_s1],
+            `mangkir_s2` = $_POST[mangkir_s2],
+            `mangkir_s3` = $_POST[mangkir_s3],
+            `cuti_s1` = '$_POST[cuti_s1]',
+            `cuti_s2` = '$_POST[cuti_s2]',
+            `cuti_s3` = '$_POST[cuti_s3]',
+            `libur_s1` ='$_POST[libur_s1]',
+            `libur_s2` ='$_POST[libur_s2]',
+            `libur_s3` ='$_POST[libur_s3]',
+            `izin_s1` = '$_POST[izin_s1]',
+            `izin_s2` = '$_POST[izin_s2]',
+            `izin_s3` = '$_POST[izin_s3]',
+            `masuk_kain_s1` = '$masuk_kain_s1',
+            `masuk_kain_s2` = '$masuk_kain_s2',
+            `masuk_kain_s3` = '$masuk_kain_s3',
+            `pembagian_kain_s1` = '$pembagian_kain_s1',
+            `pembagian_kain_s2` = '$pembagian_kain_s2',
+            `pembagian_kain_s3` = '$pembagian_kain_s3',
+            `buka_kain_s1` = '$buka_kain_s1',
+            `buka_kain_s2` = '$buka_kain_s2',
+            `buka_kain_s3` = '$buka_kain_s3',
+            `penyusunan_s1` = '$_POST[penyusunan_s1]',
+            `penyusunan_s2` = '$_POST[penyusunan_s2]',
+            `penyusunan_s3` = '$_POST[penyusunan_s3]',
+            `masalah_s1` = '$_POST[masalah_s1]',
+            `masalah_s2` = '$_POST[masalah_s2]',
+            `masalah_s3` = '$_POST[masalah_s3]',
+            `terimakains1` = '$_POST[terima_kain_s1]',
+            `terimakains2` = '$_POST[terima_kain_s2]',
+            `terimakains3` = '$_POST[terima_kain_s3]',
+            `inspeksis1` = '$_POST[inspeksi_s1]',
+            `inspeksis2` = '$_POST[inspeksi_s2]',
+            `inspeksis3` = '$_POST[inspeksi_s3]',
+            `bagikains1` = '$_POST[bagi_kain_s1]',
+            `bagikains2` = '$_POST[bagi_kain_s2]',
+            `bagikains3` = '$_POST[bagi_kain_s3]',
+            `bukakains1` = '$_POST[bukakains1]',
+            `bukakains2` = '$_POST[bukakains2]',
+            `bukakains3` = '$_POST[bukakains3]',
+            `leader_s1` = '$_POST[leader_s1]',
+            `leader_s2` = '$_POST[leader_s2]',
+            `leader_s3` = '$_POST[leader_s3]',
+            `mc_buka_s1` = '$_POST[mc_bk_s1]',
+            `mc_buka_s2` = '$_POST[mc_bk_s2]',
+            `mc_buka_s3` = '$_POST[mc_bk_s3]',
+            `mc_balik_s1` = '$_POST[mc_blk_s1]',
+            `mc_balik_s2` = '$_POST[mc_blk_s2]',
+            `mc_balik_s3` = '$_POST[mc_blk_s3]',
+            `mc_belah_s1` = '$_POST[mc_blh_s1]',
+            `mc_belah_s2` = '$_POST[mc_blh_s2]',
+            `mc_belah_s3` = '$_POST[mc_blh_s3]',
+            `jahit_pinggir_s1` = '$_POST[mc_jhtpgr_s1]',
+            `jahit_pinggir_s2` = '$_POST[mc_jhtpgr_s2]',
+            `jahit_pinggir_s3` = '$_POST[mc_jhtpgr_s3]',
+            `masalah_hadir_s1` = '$_POST[masalah_hadir_s1]',
+            `masalah_hadir_s2` = '$_POST[masalah_hadir_s2]',
+            `masalah_hadir_s3` = '$_POST[masalah_hadir_s3]',
+            `created_at` = '$time',
+            `created_by` = '$_SESSION[usridGkg]',
+            `last_updated_at` ='',
+            `last_updated_by` = '',
+            `status` = 'NOT COMPLETED'");
+    mysqli_query($con,$sql);
+    $response = array(
+        'session' => 'LIB_SUCCSS',
+        'data' => 'data baru berhasil di tambahkan'
+    );
+} else {
+    $sql = ("UPDATE tbl_laporanharian SET
+    `absensi_s1` = '$_POST[absensi_s1]',
+    `absensi_s2` = '$_POST[absensi_s2]',
+    `absensi_s3` = '$_POST[absensi_s3]',
+    `group_s1` = '$_POST[group_s1]',
+    `group_s2` = '$_POST[group_s2]',
+    `group_s3` = '$_POST[group_s3]',
+    `hadir_s1` = '$_POST[hadir_s1]',
+    `hadir_s2` = '$_POST[hadir_s2]',
+    `hadir_s3` = '$_POST[hadir_s3]',
+    `sakit_s1` ='$_POST[sakit_s1]',
+    `sakit_s2` ='$_POST[sakit_s2]',
+    `sakit_s3` = '$_POST[sakit_s3]',
+    `mangkir_s1` = $_POST[mangkir_s1],
+    `mangkir_s2` = $_POST[mangkir_s2],
+    `mangkir_s3` = $_POST[mangkir_s3],
+    `cuti_s1` = '$_POST[cuti_s1]',
+    `cuti_s2` = '$_POST[cuti_s2]',
+    `cuti_s3` = '$_POST[cuti_s3]',
+    `libur_s1` ='$_POST[libur_s1]',
+    `libur_s2` ='$_POST[libur_s2]',
+    `libur_s3` ='$_POST[libur_s3]',
+    `izin_s1` = '$_POST[izin_s1]',
+    `izin_s2` = '$_POST[izin_s2]',
+    `izin_s3` = '$_POST[izin_s3]',
+    `masuk_kain_s1` = '$masuk_kain_s1',
+    `masuk_kain_s2` = '$masuk_kain_s2',
+    `masuk_kain_s3` = '$masuk_kain_s3',
+    `pembagian_kain_s1` = '$pembagian_kain_s1',
+    `pembagian_kain_s2` = '$pembagian_kain_s2',
+    `pembagian_kain_s3` = '$pembagian_kain_s3',
+    `buka_kain_s1` = '$buka_kain_s1',
+    `buka_kain_s2` = '$buka_kain_s2',
+    `buka_kain_s3` = '$buka_kain_s3',
+    `penyusunan_s1` = '$_POST[penyusunan_s1]',
+    `penyusunan_s2` = '$_POST[penyusunan_s2]',
+    `penyusunan_s3` = '$_POST[penyusunan_s3]',
+    `masalah_s1` = '$_POST[masalah_s1]',
+    `masalah_s2` = '$_POST[masalah_s2]',
+    `masalah_s3` = '$_POST[masalah_s3]',
+    `terimakains1` = '$_POST[terima_kain_s1]',
+    `terimakains2` = '$_POST[terima_kain_s2]',
+    `terimakains3` = '$_POST[terima_kain_s3]',
+    `inspeksis1` = '$_POST[inspeksi_s1]',
+    `inspeksis2` = '$_POST[inspeksi_s2]',
+    `inspeksis3` = '$_POST[inspeksi_s3]',
+    `bagikains1` = '$_POST[bagi_kain_s1]',
+    `bagikains2` = '$_POST[bagi_kain_s2]',
+    `bagikains3` = '$_POST[bagi_kain_s3]',
+    `bukakains1` = '$_POST[bukakains1]',
+    `bukakains2` = '$_POST[bukakains2]',
+    `bukakains3` = '$_POST[bukakains3]',
+    `leader_s1` = '$_POST[leader_s1]',
+    `leader_s2` = '$_POST[leader_s2]',
+    `leader_s3` = '$_POST[leader_s3]',
+    `mc_buka_s1` = '$_POST[mc_bk_s1]',
+    `mc_buka_s2` = '$_POST[mc_bk_s2]',
+    `mc_buka_s3` = '$_POST[mc_bk_s3]',
+    `mc_balik_s1` = '$_POST[mc_blk_s1]',
+    `mc_balik_s2` = '$_POST[mc_blk_s2]',
+    `mc_balik_s3` = '$_POST[mc_blk_s3]',
+    `mc_belah_s1` = '$_POST[mc_blh_s1]',
+    `mc_belah_s2` = '$_POST[mc_blh_s2]',
+    `mc_belah_s3` = '$_POST[mc_blh_s3]',
+    `jahit_pinggir_s1` = '$_POST[mc_jhtpgr_s1]',
+    `jahit_pinggir_s2` = '$_POST[mc_jhtpgr_s2]',
+    `jahit_pinggir_s3` = '$_POST[mc_jhtpgr_s3]',
+    `masalah_hadir_s1` = '$_POST[masalah_hadir_s1]',
+    `masalah_hadir_s2` = '$_POST[masalah_hadir_s2]',
+    `masalah_hadir_s3` = '$_POST[masalah_hadir_s3]',
+    `created_at` = '$time',
+    `created_by` = '$_SESSION[usridGkg]',
+    `last_updated_at` ='$time',
+    `last_updated_by` = '$_SESSION[usridGkg]',
+    `status` = 'COMPLETED' where `date_laporan` = '$_POST[tgl_laporan]'");
+    mysqli_query($con,$sql);
+    $response = array(
+        'session' => 'LIB_SUCCSS',
+        'data' => 'data berhasil di update'
+    );
+}
+
+echo json_encode($response);

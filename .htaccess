@@ -1,0 +1,48 @@
+RewriteEngine On
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+
+RewriteRule ^login$ ./login.php [L]
+RewriteRule ^login$ ./index.php [L]
+RewriteRule ^lockscreen$ ./lockscreen.php [L]
+RewriteRule ^logout$ ./login.php?act=logout [L]
+RewriteRule ^Home$ ./index1.php?p=Home [L]
+RewriteRule ^Blank$ ./index1.php?p=Blank [L]
+RewriteRule ^StatusMesin$ ./index1.php?p=Status-Mesin [L]
+RewriteRule ^LineNews$ ./index1.php?p=Line-News [L]
+RewriteRule ^Schedule$ ./index1.php?p=Schedule [L]
+RewriteRule ^LapSchedule$ ./index1.php?p=Lap-Schedule [L]
+RewriteRule ^Scheduleongoing$ ./index1.php?p=Schedule-Ongoing [L]
+RewriteRule ^NeedLeaderCheck$ ./index1.php?p=Need-Leader-Check [L]
+RewriteRule ^MonitoringScheduleReport$ ./index1.php?p=Monitoring-Schedule-Report [L]
+RewriteRule ^FormSchedule$ ./index1.php?p=Form-Schedule [L]
+RewriteRule ^FormSchedule-$ ./index1.php?p=Form-Schedule [L]
+RewriteRule ^FormSchedule-([a-zA-Z0-9_-]+)$ ./index1.php?p=Form-Schedule&nodemand=$1 [L]
+RewriteRule ^SimpanNews$ ./index1.php?p=Simpan_News [L]
+RewriteRule ^TambahGerobak$ ./index1.php?p=Tambah_Gerobak [L]
+RewriteRule ^EditStatusMesin$ ./index1.php?p=Status_Mesin_Edit [L]
+RewriteRule ^EditSchedule$ ./index1.php?p=Edit_Schedule [L]
+RewriteRule ^EditNews$ ./index1.php?p=Edit_News [L]
+RewriteRule ^EditMesinMulai$ ./index1.php?p=Edit_Mesin_Mulai [L]
+RewriteRule ^InputLeaderCheck$ ./index1.php?p=Input_Leader_Check [L]
+RewriteRule ^manage_user$ ./index1.php?p=manage_user [L]
+RewriteRule ^Schedule-jalan$ ./index1.php?p=Schedule-jalan [L]
+RewriteRule ^Laporan_shift$ ./index1.php?p=Laporan_shift [L]
+RewriteRule ^manage_mesin$ ./index1.php?p=manage_mesin [L]
+RewriteRule ^Ganti_Password$ ./index1.php?p=Ganti_Password [L]
+RewriteRule ^history_status_mesin$ ./index1.php?p=history_status_mesin [L]
+RewriteRule ^Monitoring_report_operator$ ./index1.php?p=Monitoring_report_operator [L]
+RewriteRule ^Delete_khusus_report$ ./index1.php?p=Delete_khusus_report [L]
+RewriteRule ^StoppageMC$ ./index1.php?p=Stoppage_Mc [L]
+RewriteRule ^LapStoppageMC$ ./index1.php?p=Lap-Stoppage-MC [L]
+RewriteRule ^manage_mesin_gkg$ ./index1.php?p=manage_mesin_gkg [L]
+RewriteRule ^EditStoppageMC-([a-zA-Z0-9_-]+)$ ./index1.php?p=Edit-StoppageMC&id=$1 [L]
+RewriteRule ^HapusDataStoppageMC-([a-zA-Z0-9_-]+)$ ./index1.php?p=HapusDataStoppageMC&id=$1 [L]
+
+RewriteRule ^EditMesinBerhenti$ ./index1.php?p=Edit_Mesin_Berhenti [L]
+RewriteRule ^HapusNews-([a-zA-Z0-9_-]+)$ ./index1.php?p=news_hapus&id=$1 [L]
+RewriteRule ^HapusSch-([a-zA-Z0-9_-]+)$ ./index1.php?p=sch_hapus&id=$1 [L]
+
+
+Options All -Indexes
