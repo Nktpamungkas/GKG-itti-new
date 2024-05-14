@@ -69,7 +69,7 @@ $operator = $_SESSION['operator'];
     }
 
     tr {
-        page-break-before: always;
+        /* page-break-before: always; */
         page-break-inside: avoid;
         font-size: 8pt !important;
     }

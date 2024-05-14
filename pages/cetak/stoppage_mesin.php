@@ -72,7 +72,7 @@ include "../../koneksi.php";
     }
 
     tr {
-        page-break-before: always;
+        /* page-break-before: always; */
         page-break-inside: avoid;
         font-size: 10pt !important;
         color: black;
