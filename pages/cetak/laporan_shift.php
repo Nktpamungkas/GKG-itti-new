@@ -3,7 +3,7 @@ ini_set("error_reporting", 1);
 session_start();
 include "../../koneksi.php";
 
-$sql_data = mysqli_query($con,"SELECT date_laporan, group_s1, group_s2, group_s3, hadir_s1, hadir_s2, hadir_s3, sakit_s1, sakit_s2, sakit_s3, mangkir_s1, mangkir_s2, mangkir_s3, cuti_s1, cuti_s2, cuti_s3, libur_s1, libur_s2, libur_s3, izin_s1, izin_s2, izin_s3, masuk_kain_s1, masuk_kain_s2, masuk_kain_s3, pembagian_kain_s1, pembagian_kain_s2, pembagian_kain_s3, buka_kain_s1, buka_kain_s2, buka_kain_s3, masalah_s1, masalah_s2, masalah_s3, terimakains1, terimakains2, terimakains3, inspeksis1, inspeksis2, inspeksis3, bagikains1, bagikains2, bagikains3, bukakains1, bukakains2, bukakains3, leader_s1, leader_s2, leader_s3, mc_buka_s1, mc_buka_s2, mc_buka_s3, mc_balik_s1, mc_balik_s2, mc_balik_s3, mc_belah_s1, mc_belah_s2, mc_belah_s3, jahit_pinggir_s1, jahit_pinggir_s2, jahit_pinggir_s3, created_at, created_by, last_updated_at, last_updated_by, `status`, absensi_s1, absensi_s2, absensi_s3, masalah_hadir_s1, masalah_hadir_s2, masalah_hadir_s3, penyusunan_s1, penyusunan_s2, penyusunan_s3, masuk_kain_manual, bagi_kain_manual 
+$sql_data = mysqli_query($con,"SELECT date_laporan, group_s1, group_s2, group_s3, hadir_s1, hadir_s2, hadir_s3, sakit_s1, sakit_s2, sakit_s3, mangkir_s1, mangkir_s2, mangkir_s3, cuti_s1, cuti_s2, cuti_s3, libur_s1, libur_s2, libur_s3, izin_s1, izin_s2, izin_s3, masuk_kain_s1, masuk_kain_s2, masuk_kain_s3, pembagian_kain_s1, pembagian_kain_s2, pembagian_kain_s3, buka_kain_s1, buka_kain_s2, buka_kain_s3,  belah_kain_s1, belah_kain_s2, belah_kain_s3, masalah_s1, masalah_s2, masalah_s3, terimakains1, terimakains2, terimakains3, inspeksis1, inspeksis2, inspeksis3, bagikains1, bagikains2, bagikains3, bukakains1, bukakains2, bukakains3, leader_s1, leader_s2, leader_s3, mc_buka_s1, mc_buka_s2, mc_buka_s3, mc_balik_s1, mc_balik_s2, mc_balik_s3, mc_belah_s1, mc_belah_s2, mc_belah_s3, jahit_pinggir_s1, jahit_pinggir_s2, jahit_pinggir_s3, created_at, created_by, last_updated_at, last_updated_by, `status`, absensi_s1, absensi_s2, absensi_s3, masalah_hadir_s1, masalah_hadir_s2, masalah_hadir_s3, penyusunan_s1, penyusunan_s2, penyusunan_s3, masuk_kain_manual, bagi_kain_manual 
 FROM tbl_laporanharian where date_laporan = '$_GET[date_laporan]'");
 $data = mysqli_fetch_array($sql_data);
 ?>
@@ -14,7 +14,7 @@ $data = mysqli_fetch_array($sql_data);
 <link href="styles_cetak.css" rel="stylesheet" type="text/css">
 <style>
     @page {
-        size: F4;
+        size: A4;
         margin: 15px 15px 15px 15px;
         font-size: 10pt !important;
         size: landscape;
@@ -22,7 +22,7 @@ $data = mysqli_fetch_array($sql_data);
 
     @media print {
         @page {
-            size: F4;
+            size: A4;
             margin: 15px 15px 15px 15px;
             size: landscape;
             font-size: 10pt !important;
@@ -31,7 +31,7 @@ $data = mysqli_fetch_array($sql_data);
         html,
         body {
             width: 210mm;
-            height: 330mm;
+            height: 297mm;
             background: #FFF;
             overflow: visible;
         }
@@ -148,24 +148,24 @@ $data = mysqli_fetch_array($sql_data);
     <br />
     <table class="table-ttd" style="width:330mm;">
         <tr>
-            <td width="50px">Departement :</td>
-            <td>GKG</td>
-            <td>Tanggal :</td>
-            <td align="center"><?php echo $data['date_laporan'] ?></td>
-            <td>Shift :</td>
-            <td><?php echo $data['group_s1'] ?>-1</td>
-            <td width="50px">Departement :</td>
-            <td>GKG</td>
-            <td>Tanggal :</td>
-            <td align="center"><?php echo $data['date_laporan'] ?></td>
-            <td>Shift :</td>
-            <td><?php echo $data['group_s2'] ?>-2</td>
-            <td width="50px">Departement :</td>
-            <td>GKG</td>
-            <td>Tanggal :</td>
-            <td align="center"><?php echo $data['date_laporan'] ?></td>
-            <td>Shift :</td>
-            <td><?php echo $data['group_s3'] ?>-3</td>
+            <td width="147">Departement :</td>
+            <td width="39">GKG</td>
+            <td width="59">Tanggal :</td>
+            <td width="39" align="center"><?php echo $data['date_laporan'] ?></td>
+            <td width="57">Shift :</td>
+            <td width="47"><?php echo $data['group_s1'] ?>-1</td>
+            <td width="147">Departement :</td>
+            <td width="39">GKG</td>
+            <td width="59">Tanggal :</td>
+            <td width="39" align="center"><?php echo $data['date_laporan'] ?></td>
+            <td width="57">Shift :</td>
+            <td width="47"><?php echo $data['group_s2'] ?>-2</td>
+            <td width="147">Departement :</td>
+            <td width="39">GKG</td>
+            <td width="59">Tanggal :</td>
+            <td width="39" align="center"><?php echo $data['date_laporan'] ?></td>
+            <td width="57">Shift :</td>
+            <td width="54"><?php echo $data['group_s3'] ?>-3</td>
         </tr>
         <tr>
             <td height="120px" style="border-right: none;">
@@ -178,7 +178,7 @@ $data = mysqli_fetch_array($sql_data);
                 <li>Izin</li>
             </td>
             <td colspan="5" height="120px" style="border-left: none;">
-                <li> &nbsp;&nbsp;<?php echo $data['absensi_s1'] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+              <li> &nbsp;&nbsp;<?php echo $data['absensi_s1'] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                 <li>: <?php echo $data['hadir_s1'] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Orang</li>
                 <li>: <?php echo $data['sakit_s1'] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Orang</li>
                 <li>: <?php echo $data['mangkir_s1'] ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Orang</li>
@@ -224,32 +224,36 @@ $data = mysqli_fetch_array($sql_data);
             </td>
         </tr>
         <tr>
-            <td height="110px" width="150px" style="border-right:none;">
+            <td width="147" height="110px" valign="top" style="border-right:none;">
                 <li>Produksi</li>
                 <li>&nbsp;-Masuk Kain</li>
                 <li>&nbsp;-Pembagian Kain</li>
+				<li>&nbsp;-Belah Kain</li>
                 <li>&nbsp;-Buka Kain</li>
                 <li>&nbsp;-Penyusunan Kain</li>
             </td>
-            <td colspan="5" style="border-left:none;">
-                <li>&nbsp;</li>
+            <td colspan="5" valign="top" style="border-left:none;">
+              <li>&nbsp;</li>
                 <li>:&nbsp;&nbsp;<?php echo number_format($data['masuk_kain_s1'], 2) ?></li>
                 <li>:&nbsp;&nbsp;<?php echo number_format($data['pembagian_kain_s1'], 2) ?></li>
+				<li>:&nbsp;&nbsp;<?php echo number_format($data['belah_kain_s1'], 2) ?></li>
                 <li>:&nbsp;&nbsp;<?php echo number_format($data['buka_kain_s1'], 2) ?></li>
                 <li>:&nbsp;&nbsp;<?php echo $data['penyusunan_s1'] ?></li>
             </td>
-            <td height="110px" width="150px" style="border-right:none;">
-                <li>Produksi</li>
+            <td width="147" height="110px" valign="top" style="border-right:none;">
+              <li>Produksi</li>
                 <li>&nbsp;-Masuk Kain</li>
                 <li>&nbsp;-Pembagian Kain</li>
+				<li>&nbsp;-Belah Kain</li>
                 <li>&nbsp;-Buka Kain</li>
                 <li>&nbsp;-Penyusunan Kain</li>
             </td>
-            <td colspan="5" style="border-left:none;">
-                <li>&nbsp;</li>
+            <td colspan="5" valign="top" style="border-left:none;">
+              <li>&nbsp;</li>
                 <li>:&nbsp;&nbsp;<?php echo number_format($data['masuk_kain_s2'], 2) ?></li>
                 <li>:&nbsp;&nbsp;<?php echo number_format($data['pembagian_kain_s2'], 2) ?></li>
-                <li>:&nbsp;&nbsp;<?php echo number_format($data['buka_kain_s2'], 2) ?></li>
+                <li>:&nbsp;&nbsp;<?php echo number_format($data['belah_kain_s2'], 2) ?></li>
+				<li>:&nbsp;&nbsp;<?php echo number_format($data['buka_kain_s2'], 2) ?></li>
                 <li>:&nbsp;&nbsp;<?php echo $data['penyusunan_s2'] ?></li>
             </td>
             <!-- <td height="110px" width="150px" style="border-right:none;border-left:none;">
@@ -262,11 +266,13 @@ $data = mysqli_fetch_array($sql_data);
                                                         echo number_format($totbagi, 2) ?></b></font></li>
                                     <li>&nbsp;</li>
                                 </td> -->
-            <td height="110px" width="150px" style="border-right:none;">
+            <td height="110px" colspan="2" valign="top" style="border-right:none;">
                 <li>Produksi</li>
-                <li>&nbsp;-Masuk Kain </li>
-                <li>&nbsp;-Pembagian Kain </li>
-                <li>&nbsp;-Buka Kain </li>
+                <li>&nbsp;<b>Total Masuk Kain </b></li>
+                <li>&nbsp;<b>Total Pembagian Kain </b></li>
+                <li>&nbsp;-Belah Kain </li>
+				<li>&nbsp;<b>Total Belah Kain </b></li>
+			  <li>&nbsp;-Buka Kain </li>
                 <li>&nbsp;<b>Total Buka Kain </b></li>
                 <li>&nbsp;-Penyusunan Kain </li>
             </td>
@@ -280,20 +286,23 @@ $data = mysqli_fetch_array($sql_data);
                                     echo number_format($totbagi, 2) ?></b></li>
                 <li>&nbsp;</li>
             </td> -->
-            <td colspan="5" style="border-left:none;">
-                <li>&nbsp;</li>
-                <li>:<?php echo number_format($data['masuk_kain_s3'], 2) ?></li>
-                <li>:<?php echo number_format($data['pembagian_kain_s3'], 2) ?></li>
-                <li>:<?php echo number_format($data['buka_kain_s3'], 2) ?></li>
-                <li>:<b><?php $tot = $data['buka_kain_s1'] + $data['buka_kain_s2'] + $data['buka_kain_s3'];
+            <td colspan="4" valign="top" style="border-left:none;"><li>&nbsp;</li>
+                <li>:<b> <?php $totmk = $data['masuk_kain_s1'] + $data['masuk_kain_s2'];
+                                    echo number_format($totmk, 2) ?></b></li>
+                <li>:<b> <?php $totpk = $data['pembagian_kain_s1'] + $data['pembagian_kain_s2'];
+                                    echo number_format($totpk, 2) ?></b></li>
+				<li>: <?php echo number_format($data['belah_kain_s3'], 2) ?></li>
+				<li>: <b><?php $totbk = $data['belah_kain_s1'] + $data['belah_kain_s2'] + $data['belah_kain_s3'];
+                                    echo number_format($totbk, 2) ?></b></li>
+                <li>: <?php echo number_format($data['buka_kain_s3'], 2) ?></li>
+				<li>: <b><?php $tot = $data['buka_kain_s1'] + $data['buka_kain_s2'] + $data['buka_kain_s3'];
                                     echo number_format($tot, 2) ?></b></li>
-                <li>:<?php echo $data['penyusunan_s3'] ?></li>
-            </td> 
+                <li>: <?php echo $data['penyusunan_s3'] ?></li></td>
         </tr>
         <tr>
-            <td height="82px" width="100px" colspan="6" style="vertical-align:top;"><b>Masalah Yang Terjadi :</b> <?php echo $data['masalah_s1'] ?></td>
-            <td height="82px" width="100px" colspan="6" style="vertical-align:top;"><b>Masalah Yang Terjadi :</b> <?php echo $data['masalah_s2'] ?></td>
-            <td height="82px" width="100px" colspan="6" style="vertical-align:top;"><b>Masalah Yang Terjadi :</b> <?php echo $data['masalah_s3'] ?></td>
+            <td height="82px" colspan="6" style="vertical-align:top;"><b>Masalah Yang Terjadi :</b> <?php echo $data['masalah_s1'] ?></td>
+            <td height="82px" colspan="6" style="vertical-align:top;"><b>Masalah Yang Terjadi :</b> <?php echo $data['masalah_s2'] ?></td>
+            <td height="82px" colspan="6" style="vertical-align:top;"><b>Masalah Yang Terjadi :</b> <?php echo $data['masalah_s3'] ?></td>
         </tr>
         <tr>
             <td height="118px" colspan="3" valign="top" style="border-right:none;">

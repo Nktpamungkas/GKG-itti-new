@@ -47,7 +47,7 @@ include "koneksi.php";
             join tbl_gerobak b on a.id = b.id_schedule
             where a.status = 'selesai' AND a.leader_check = 'TRUE' and DATE_FORMAT(a.tgl_update,'%Y-%m-%d') >= '$date_s' 
             AND DATE_FORMAT(a.tgl_update,'%Y-%m-%d') <= '$date_e'
-            GROUP by a.no_mesin, a.no_urut, a.proses
+            GROUP by a.no_mesin, a.no_urut
             ORDER by a.tgl_stop DESC");
         } else {
             if ($_POST["w_shift"] != 'ALL') {
@@ -70,7 +70,7 @@ include "koneksi.php";
                 where a.status = 'selesai' AND a.leader_check = 'TRUE' and a.g_shift = '$group' and
                 DATE_FORMAT(a.tgl_update,'%Y-%m-%d %H:%i') >= '$start_shift3' 
                 AND DATE_FORMAT(a.tgl_update,'%Y-%m-%d %H:%i') <= '$end_shift3'
-                GROUP by a.no_mesin, a.no_urut, a.proses
+                GROUP by a.no_mesin, a.no_urut
                 ORDER by a.tgl_stop DESC");
             } else if ($_POST["w_shift"] == 'ALL') {
                 $data = mysqli_query($con,"SELECT a.id, a.nodemand, a.no_mesin, a.no_urut, a.buyer, a.langganan, a.no_order, a.nokk, a.jenis_kain,
@@ -81,7 +81,7 @@ include "koneksi.php";
                 join tbl_gerobak b on a.id = b.id_schedule
                 where a.status = 'selesai' AND a.leader_check = 'TRUE' and a.g_shift = '$group' and DATE_FORMAT(a.tgl_update,'%Y-%m-%d') >= '$date_s' 
                 AND DATE_FORMAT(a.tgl_update,'%Y-%m-%d') <= '$date_e'
-                GROUP by a.no_mesin, a.no_urut, a.proses
+                GROUP by a.no_mesin, a.no_urut
                 ORDER by a.tgl_stop DESC");
             }
         }
@@ -94,7 +94,7 @@ include "koneksi.php";
         FROM tbl_schedule a
         join tbl_gerobak b on a.id = b.id_schedule
         WHERE a.`status` = 'selesai' AND a.leader_check = 'TRUE' and DATE_FORMAT(a.tgl_update,'%Y-%m-%d') = CURDATE()
-        GROUP BY a.no_mesin, a.no_urut, a.proses
+        GROUP BY a.no_mesin, a.no_urut
         ORDER by a.tgl_stop DESC");
     }
     $no = 1;

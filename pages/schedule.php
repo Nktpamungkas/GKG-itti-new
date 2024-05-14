@@ -30,6 +30,8 @@ $now = date("Y-m-d");
 	no_order,
 	nokk,
   nodemand,
+  no_item,
+  no_hanger,
 	jenis_kain,
   pic_schedule,
 	warna,
@@ -44,6 +46,8 @@ $now = date("Y-m-d");
   nokk_legacy,
 	tgl_delivery,
   jenis_kk,
+  create_time,
+  DATEDIFF(now(),create_time) as sisa,
 	tgl_update
 FROM
 	tbl_schedule 
@@ -74,7 +78,7 @@ ORDER BY
                     <div align="center">Shift</div>
                   </th>
                   <th width="45">
-                    <div align="center">Mesin</div>
+                    <div align="center">Tgl Buat</div>
                   </th>
                   <th width="24">
                     <div align="center">PIC\No.</div>
@@ -85,6 +89,7 @@ ORDER BY
                   <th width="118">
                     <div align="center">No. Order</div>
                   </th>
+                  <th width="122"><div align="center">Item</div></th>
                   <th width="122">
                     <div align="center">Jenis Kain</div>
                   </th>
@@ -165,11 +170,13 @@ ORDER BY
                     </td>
 
                     <td align="center">
-                      <font size="-1"><a href="#" id='
+                      <!--<font size="-1"><a href="#" id='
                         <?php echo $rowd['no_mesin'] . "-" . $rowd['g_shift'];
                         ?>' class="edit_status_mesin <?php if ($_SESSION['lvl_idGkg'] == "USER") echo " disabled"; ?>">
                           <?php echo $rowd['no_mesin']; ?>
-                        </a></font>
+                        </a></font>-->
+						<strong><?php echo $rowd['create_time']; ?></strong><br>
+						<?php if(abs($rowd['sisa'])=="0"){echo "<span class='badge bg-blue'>New</span>";}else{ echo "<span class='badge bg-red'>".abs($rowd['sisa'])." Hari</span>"; }  ?>
                     </td>
                     <td align="center">
                       <font size="-1"><?php echo $rowd['pic_schedule']; ?>/<?php echo $rowd['no_urut']; ?>/
@@ -182,6 +189,7 @@ ORDER BY
                     <td align="center">
                       <font size="-1"><?php echo $rowd['no_order']; ?></font>
                     </td>
+                    <td><font size="-1"><?php echo $rowd['no_hanger']; ?></font></td>
                     <td>
                       <font size="-1"><?php echo $rowd['jenis_kain']; ?></font>
                     </td>

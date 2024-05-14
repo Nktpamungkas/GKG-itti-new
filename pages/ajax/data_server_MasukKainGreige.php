@@ -44,9 +44,14 @@ GROUP BY
 STOCKTRANSACTION.TRANSACTIONDATE ";
 $stmt2   = db2_exec($conn1,$sqlKKG, array('cursor'=>DB2_SCROLLABLE));
 $rowKKG = db2_fetch_assoc($stmt2);
-
+if($_POST['fulls']=="ya"){
 $start_shift1 = $_POST['tgl_laporan'] . ' 07:00';
-$end_shift1 = $_POST['tgl_laporan'] . ' 15:00';
+$end_shift1 = $_POST['tgl_laporan'] . ' 15:00';	
+}else{
+$start_shift1 = $_POST['tgl_laporan'] . ' 07:00';
+$end_shift1 = $_POST['tgl_laporan'] . ' 12:00';		
+}
+
 $sql_s1 = mysqli_query($con,"SELECT b.langganan, b.buyer, b.no_order, b.jenis_kain, b.warna, b.lot, b.rol, b.proses, b.pic_schedule,
                     b.bruto, b.buka, b.tgl_mulai, b.tgl_stop, b.no_mesin, b.petugas_buka, b.petugas_obras,
                     b.no_gerobak, b.leader_check
@@ -58,11 +63,20 @@ $sql_s1 = mysqli_query($con,"SELECT b.langganan, b.buyer, b.no_order, b.jenis_ka
                     GROUP by b.nodemand, b.proses, b.no_mesin, b.no_urut
                     ORDER by b.tgl_stop DESC");
 while ($shft1 = mysqli_fetch_array($sql_s1)) {
-    $tots1 = $tots1 + $shft1['bruto'];
+	if($shft1['proses']=="Belah"){
+		$totB1 = $totB1 + $shft1['bruto'];
+	}else{
+		$tots1 = $tots1 + $shft1['bruto'];
+	}
+    
 }
-
+if($_POST['fulls']=="ya"){
 $start_shift2 = $_POST['tgl_laporan'] . ' 15:00';
 $end_shift2 = $_POST['tgl_laporan'] . ' 23:00';
+}else{
+$start_shift2 = $_POST['tgl_laporan'] . ' 12:00';
+$end_shift2 = $_POST['tgl_laporan'] . ' 17:00';	
+}
 $sql_s2 = mysqli_query($con,"SELECT b.langganan, b.buyer, b.no_order, b.jenis_kain, b.warna, b.lot, b.rol, b.proses, b.pic_schedule,
                     b.bruto, b.buka, b.tgl_mulai, b.tgl_stop, b.no_mesin, b.petugas_buka, b.petugas_obras,
                     b.no_gerobak, b.leader_check
@@ -74,16 +88,24 @@ $sql_s2 = mysqli_query($con,"SELECT b.langganan, b.buyer, b.no_order, b.jenis_ka
                     GROUP by b.nodemand, b.proses, b.no_mesin, b.no_urut
                     ORDER by b.tgl_stop DESC");
 while ($shft2 = mysqli_fetch_array($sql_s2)) {
-    $tots2 = $tots2 + $shft2['bruto'];
+    if($shft2['proses']=="Belah"){
+		$totB2 = $totB2 + $shft2['bruto'];
+	}else{
+		$tots2 = $tots2 + $shft2['bruto'];
+	}
 }
 
 
 // shift 3
+if($_POST['fulls']=="ya"){
 $endShift3 = $_POST['tgl_laporan'] . ' 07:00';
 $dates3end = date('Y-m-d H:i', strtotime($endShift3 . ' +1 day'));
 $start_shift3 = $_POST['tgl_laporan'] . ' 23:00';
 $end_shift3 = $dates3end;
-
+}else{
+$start_shift3 = $_POST['tgl_laporan'] . ' 17:00';
+$end_shift3 = $_POST['tgl_laporan'] . ' 22:00';	
+}
 $sql_s3 = mysqli_query($con,"SELECT b.langganan, b.buyer, b.no_order, b.jenis_kain, b.warna, b.lot, b.rol, b.proses, b.pic_schedule,
                     b.bruto, b.buka, b.tgl_mulai, b.tgl_stop, b.no_mesin, b.petugas_buka, b.petugas_obras,
                     b.no_gerobak, b.leader_check
@@ -95,7 +117,11 @@ $sql_s3 = mysqli_query($con,"SELECT b.langganan, b.buyer, b.no_order, b.jenis_ka
                     GROUP by b.nodemand, b.proses, b.no_mesin, b.no_urut
                     ORDER by b.tgl_stop DESC");
 while ($shft3 = mysqli_fetch_array($sql_s3)) {
-    $tots3 = $tots3 + $shft3['bruto'];
+    if($shft3['proses']=="Belah"){
+		$totB3 = $totB3 + $shft3['bruto'];
+	}else{
+		$tots3 = $tots3 + $shft3['bruto'];
+	}
 }
 
 // $bukakains1 = if ($get['buka_kain_s1'] == 0){number_format($tots1, '2', '.', '');} else {number_format($get['buka_kain_s1'], '2', '.', '');}
@@ -104,13 +130,16 @@ while ($shft3 = mysqli_fetch_array($sql_s3)) {
 
 $response = array(
     'session' => 'LIB_SUCCSS',
-    // sqlsrv
+    // db2
     'value_masuk' => number_format($rowdb2['QTY_MASUK'], '2', '.', ''),
     'value_bagi' =>  number_format($rowKKG['QTY_KELUAR'], '2', '.', ''),
     // mysqli
     'buka_kain_s1' =>  number_format($tots1, '2', '.', ''),
     'buka_kain_s2' =>  number_format($tots2, '2', '.', ''),
     'buka_kain_s3' =>  number_format($tots3, '2', '.', ''),
+	'belahkains1' =>  number_format($totB1, '2', '.', ''),
+    'belahkains2' =>  number_format($totB2, '2', '.', ''),
+    'belahkains3' =>  number_format($totB3, '2', '.', ''),
 
 );
 echo json_encode($response);

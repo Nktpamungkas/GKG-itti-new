@@ -146,135 +146,142 @@
 	}
 </script>
 <?php
-	ini_set("error_reporting", 1);
-	session_start();
-	include_once ('koneksi.php');
-	function nourut()
-	{
-		include ('koneksi.php');
-		$format = date("ymd");
-		$sql = mysqli_query($con,"SELECT nodemand FROM tbl_schedule WHERE substr(nodemand,1,6) like '%" . $format . "%' ORDER BY nodemand DESC LIMIT 1 ") or die(mysqli_error());
-		$d = mysqli_num_rows($sql);
-		if ($d > 0) {
-			$r = mysqli_fetch_array($sql);
-			$d = $r['nodemand'];
-			$str = substr($d, 6, 2);
-			$Urut = (int)$str;
-		} else {
-			$Urut = 0;
-		}
-		$Urut = $Urut + 1;
-		$Nol = "";
-		$nilai = 2 - strlen($Urut);
-		for ($i = 1; $i <= $nilai; $i++) {
-			$Nol = $Nol . "0";
-		}
-		$nipbr = $format . $Nol . $Urut;
-		return $nipbr;
+ini_set("error_reporting", 1);
+session_start();
+include_once ('koneksi.php');
+function nourut()
+{
+	include ('koneksi.php');
+	$format = date("ymd");
+	$sql = mysqli_query($con,"SELECT nodemand FROM tbl_schedule WHERE substr(nodemand,1,6) like '%" . $format . "%' ORDER BY nodemand DESC LIMIT 1 ") or die(mysqli_error());
+	$d = mysqli_num_rows($sql);
+	if ($d > 0) {
+		$r = mysqli_fetch_array($sql);
+		$d = $r['nodemand'];
+		$str = substr($d, 6, 2);
+		$Urut = (int)$str;
+	} else {
+		$Urut = 0;
 	}
-	$nou = nourut();
-	$nodemand=$_GET['nodemand'];
-	$sql_ITXVIEWKK  = db2_exec($conn1, "SELECT
-                                            TRIM(PRODUCTIONORDERCODE) AS PRODUCTIONORDERCODE,
-                                            TRIM(DEAMAND) AS DEMAND,
-                                            ORIGDLVSALORDERLINEORDERLINE,
-                                            PROJECTCODE,
-                                            ORDPRNCUSTOMERSUPPLIERCODE,
-                                            TRIM(SUBCODE01) AS SUBCODE01, TRIM(SUBCODE02) AS SUBCODE02, TRIM(SUBCODE03) AS SUBCODE03, TRIM(SUBCODE04) AS SUBCODE04,
-                                            TRIM(SUBCODE05) AS SUBCODE05, TRIM(SUBCODE06) AS SUBCODE06, TRIM(SUBCODE07) AS SUBCODE07, TRIM(SUBCODE08) AS SUBCODE08,
-                                            TRIM(SUBCODE09) AS SUBCODE09, TRIM(SUBCODE10) AS SUBCODE10, 
-                                            TRIM(ITEMTYPEAFICODE) AS ITEMTYPEAFICODE,
-                                            TRIM(DSUBCODE05) AS NO_WARNA,
-                                            TRIM(DSUBCODE02) || '-' || TRIM(DSUBCODE03)  AS NO_HANGER,
-                                            TRIM(ITEMDESCRIPTION) AS ITEMDESCRIPTION,
-                                            DELIVERYDATE
-                                        FROM 
-                                            ITXVIEWKK 
-                                        WHERE 
-											DEAMAND = '$nodemand'");
-    $dt_ITXVIEWKK	= db2_fetch_assoc($sql_ITXVIEWKK);
+	$Urut = $Urut + 1;
+	$Nol = "";
+	$nilai = 2 - strlen($Urut);
+	for ($i = 1; $i <= $nilai; $i++) {
+		$Nol = $Nol . "0";
+	}
+	$nipbr = $format . $Nol . $Urut;
+	return $nipbr;
+}
+$nou = nourut();
+$nodemand=$_GET['nodemand'];
+$sqlDB2="SELECT A.CODE AS DEMANDNO, TRIM(B.PRODUCTIONORDERCODE) AS PRODUCTIONORDERCODE, TRIM(E.LEGALNAME1) AS LEGALNAME1, TRIM(C.ORDERPARTNERBRANDCODE) AS ORDERPARTNERBRANDCODE, TRIM(C.BUYER) AS BUYER,
+TRIM(C.SALESORDERCODE) AS SALESORDERCODE, TRIM(C.ITEMDESCRIPTION) AS ITEMDESCRIPTION, TRIM(A.SUBCODE05) AS NO_WARNA, TRIM(F.WARNA) AS WARNA,
+TRIM(A.SUBCODE02) AS SUBCODE02, TRIM(A.SUBCODE03) AS SUBCODE03, TRIM(C.LONGDESCRIPTION) AS NO_ITEM,TRIM(C.PO_NUMBER) AS PO_NUMBER, TRIM(C.INTERNALREFERENCE) AS INTERNALREFERENCE, A.BASEPRIMARYQUANTITY AS QTY_NETTO, TRIM(A.BASEPRIMARYUOMCODE) AS BASEPRIMARYUOMCODE,
+A.BASESECONDARYQUANTITY AS QTY_NETTO_YARD, TRIM(A.BASESECONDARYUOMCODE) AS BASESECONDARYUOMCODE, C.QTY_ORDER, TRIM(C.QTY_ORDER_UOM) AS QTY_ORDER_UOM, C.QTY_PANJANG_ORDER,
+TRIM(C.QTY_PANJANG_ORDER_UOM) AS QTY_PANJANG_ORDER_UOM, G.USEDUSERPRIMARYQUANTITY AS QTY_BAGI_KAIN, C.DELIVERYDATE,D.NAMENAME,D.VALUEDECIMAL FROM PRODUCTIONDEMAND A 
+LEFT JOIN 
+	(SELECT PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE, PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE FROM 
+	PRODUCTIONDEMANDSTEP PRODUCTIONDEMANDSTEP
+	GROUP BY PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE) B
+ON A.CODE=B.PRODUCTIONDEMANDCODE
+LEFT JOIN 
+	(SELECT SALESORDER.ORDERPARTNERBRANDCODE, SALESORDERLINE.SALESORDERCODE, SALESORDERLINE.ORDERLINE, SALESORDERLINE.ITEMDESCRIPTION, SALESORDERLINE.SUBCODE03, SALESORDERLINE.SUBCODE05, SALESORDERLINE.BASEPRIMARYUOMCODE AS QTY_ORDER_UOM,
+	CASE
+        WHEN SALESORDER.EXTERNALREFERENCE IS NULL THEN SALESORDERLINE.EXTERNALREFERENCE
+        ELSE SALESORDER.EXTERNALREFERENCE
+    END AS PO_NUMBER,
+    SALESORDERLINE.INTERNALREFERENCE, SUM(SALESORDERLINE.BASEPRIMARYQUANTITY) AS QTY_ORDER,SUM(SALESORDERLINE.BASESECONDARYQUANTITY) AS QTY_PANJANG_ORDER, 
+	SALESORDERLINE.BASESECONDARYUOMCODE AS QTY_PANJANG_ORDER_UOM, SALESORDERDELIVERY.DELIVERYDATE,ORDERITEMORDERPARTNERLINK.LONGDESCRIPTION, ORDERPARTNERBRAND.LONGDESCRIPTION AS BUYER
+	FROM SALESORDER SALESORDER
+	LEFT JOIN SALESORDERLINE SALESORDERLINE ON SALESORDER.CODE=SALESORDERLINE.SALESORDERCODE 
+	LEFT JOIN SALESORDERDELIVERY SALESORDERDELIVERY ON SALESORDERLINE.SALESORDERCODE=SALESORDERDELIVERY.SALESORDERLINESALESORDERCODE AND SALESORDERLINE.ORDERLINE=SALESORDERDELIVERY.SALESORDERLINEORDERLINE
+	LEFT JOIN ORDERITEMORDERPARTNERLINK ORDERITEMORDERPARTNERLINK ON SALESORDER.ORDPRNCUSTOMERSUPPLIERCODE = ORDERITEMORDERPARTNERLINK.ORDPRNCUSTOMERSUPPLIERCODE AND SALESORDERLINE.ITEMTYPEAFICODE= ORDERITEMORDERPARTNERLINK.ITEMTYPEAFICODE AND 
+	SALESORDERLINE.SUBCODE01 = ORDERITEMORDERPARTNERLINK.SUBCODE01 AND SALESORDERLINE.SUBCODE02 = ORDERITEMORDERPARTNERLINK.SUBCODE02 AND SALESORDERLINE.SUBCODE03 = ORDERITEMORDERPARTNERLINK.SUBCODE03 AND
+	SALESORDERLINE.SUBCODE04 = ORDERITEMORDERPARTNERLINK.SUBCODE04 AND SALESORDERLINE.SUBCODE05 = ORDERITEMORDERPARTNERLINK.SUBCODE05 AND SALESORDERLINE.SUBCODE06 = ORDERITEMORDERPARTNERLINK.SUBCODE06 AND 
+	SALESORDERLINE.SUBCODE07 = ORDERITEMORDERPARTNERLINK.SUBCODE07 AND SALESORDERLINE.SUBCODE08 = ORDERITEMORDERPARTNERLINK.SUBCODE08 AND SALESORDERLINE.SUBCODE09 = ORDERITEMORDERPARTNERLINK.SUBCODE09 AND 
+	SALESORDERLINE.SUBCODE10 = ORDERITEMORDERPARTNERLINK.SUBCODE10
+	LEFT JOIN ORDERPARTNERBRAND ORDERPARTNERBRAND ON SALESORDER.ORDPRNCUSTOMERSUPPLIERCODE = ORDERPARTNERBRAND.ORDPRNCUSTOMERSUPPLIERCODE AND SALESORDER.ORDERPARTNERBRANDCODE=ORDERPARTNERBRAND.CODE 
+	GROUP BY SALESORDER.ORDERPARTNERBRANDCODE, SALESORDERLINE.SALESORDERCODE, SALESORDERLINE.ORDERLINE, SALESORDERLINE.ITEMDESCRIPTION, SALESORDERLINE.SUBCODE03, SALESORDERLINE.SUBCODE05, SALESORDERLINE.BASEPRIMARYUOMCODE,SALESORDERLINE.BASESECONDARYUOMCODE, 
+	SALESORDER.EXTERNALREFERENCE,SALESORDERLINE.EXTERNALREFERENCE,SALESORDERLINE.INTERNALREFERENCE, SALESORDERDELIVERY.DELIVERYDATE, ORDERITEMORDERPARTNERLINK.LONGDESCRIPTION, ORDERPARTNERBRAND.LONGDESCRIPTION) C
+ON A.ORIGDLVSALORDLINESALORDERCODE = C.SALESORDERCODE AND A.ORIGDLVSALORDERLINEORDERLINE = C.ORDERLINE
+LEFT JOIN
+	(SELECT PRODUCT.SUBCODE01, PRODUCT.SUBCODE02, PRODUCT.SUBCODE03, PRODUCT.SUBCODE04, PRODUCT.SUBCODE05,
+	PRODUCT.SUBCODE06, PRODUCT.SUBCODE07, PRODUCT.SUBCODE08, PRODUCT.SUBCODE09, PRODUCT.SUBCODE10,  
+	LISTAGG(TRIM(ADSTORAGE.NAMENAME),',') WITHIN GROUP(ORDER BY ADSTORAGE.NAMENAME ASC) AS NAMENAME, 
+	LISTAGG(ADSTORAGE.VALUEDECIMAL,',') WITHIN GROUP(ORDER BY ADSTORAGE.NAMENAME ASC) AS VALUEDECIMAL
+	FROM PRODUCT PRODUCT LEFT JOIN ADSTORAGE ADSTORAGE ON PRODUCT.ABSUNIQUEID=ADSTORAGE.UNIQUEID
+	GROUP BY PRODUCT.SUBCODE01, PRODUCT.SUBCODE02, PRODUCT.SUBCODE03, PRODUCT.SUBCODE04, PRODUCT.SUBCODE05,
+	PRODUCT.SUBCODE06, PRODUCT.SUBCODE07, PRODUCT.SUBCODE08, PRODUCT.SUBCODE09, PRODUCT.SUBCODE10) D
+ON A.SUBCODE01=D.SUBCODE01 AND
+A.SUBCODE02=D.SUBCODE02 AND
+A.SUBCODE03=D.SUBCODE03 AND 
+A.SUBCODE04=D.SUBCODE04 AND
+A.SUBCODE05=D.SUBCODE05 AND 
+A.SUBCODE06=D.SUBCODE06 AND 
+A.SUBCODE07=D.SUBCODE07 AND 
+A.SUBCODE08=D.SUBCODE08 AND 
+A.SUBCODE09=D.SUBCODE09 AND 
+A.SUBCODE10=D.SUBCODE10
+LEFT JOIN
+	(SELECT BUSINESSPARTNER.LEGALNAME1,ORDERPARTNER.CUSTOMERSUPPLIERCODE FROM BUSINESSPARTNER BUSINESSPARTNER 
+	LEFT JOIN ORDERPARTNER ORDERPARTNER ON BUSINESSPARTNER.NUMBERID=ORDERPARTNER.ORDERBUSINESSPARTNERNUMBERID) E
+ON A.CUSTOMERCODE=E.CUSTOMERSUPPLIERCODE
+LEFT JOIN (
+    SELECT ITXVIEWCOLOR.ITEMTYPECODE, ITXVIEWCOLOR.SUBCODE01, ITXVIEWCOLOR.SUBCODE02,
+    ITXVIEWCOLOR.SUBCODE03, ITXVIEWCOLOR.SUBCODE04, ITXVIEWCOLOR.SUBCODE05, ITXVIEWCOLOR.SUBCODE06, 
+    ITXVIEWCOLOR.SUBCODE07, ITXVIEWCOLOR.SUBCODE08, ITXVIEWCOLOR.SUBCODE09, ITXVIEWCOLOR.SUBCODE10, 
+    ITXVIEWCOLOR.WARNA FROM ITXVIEWCOLOR ITXVIEWCOLOR) F ON
+    A.ITEMTYPEAFICODE = F.ITEMTYPECODE AND 
+    A.SUBCODE01 = F.SUBCODE01 AND 
+    A.SUBCODE02 = F.SUBCODE02 AND 
+    A.SUBCODE03 = F.SUBCODE03 AND 
+    A.SUBCODE04 = F.SUBCODE04 AND 
+    A.SUBCODE05 = F.SUBCODE05 AND 
+    A.SUBCODE06 = F.SUBCODE06 AND 
+    A.SUBCODE07 = F.SUBCODE07 AND 
+    A.SUBCODE08 = F.SUBCODE08 AND 
+    A.SUBCODE09 = F.SUBCODE09 AND 
+    A.SUBCODE10 = F.SUBCODE10
+LEFT JOIN
+	(SELECT PRODUCTIONRESERVATION.PRODUCTIONORDERCODE, PRODUCTIONRESERVATION.ITEMTYPEAFICODE, SUM(PRODUCTIONRESERVATION.USEDUSERPRIMARYQUANTITY) AS USEDUSERPRIMARYQUANTITY FROM PRODUCTIONRESERVATION 
+	PRODUCTIONRESERVATION WHERE PRODUCTIONRESERVATION.ITEMTYPEAFICODE='KGF' GROUP BY PRODUCTIONRESERVATION.PRODUCTIONORDERCODE, PRODUCTIONRESERVATION.ITEMTYPEAFICODE) G
+ON B.PRODUCTIONORDERCODE = G.PRODUCTIONORDERCODE
+WHERE A.CODE='$nodemand'";
+$stmt=db2_exec($conn1,$sqlDB2, array('cursor'=>DB2_SCROLLABLE));
+$rowdb2 = db2_fetch_assoc($stmt);
+$ww=explode(",",$rowdb2['NAMENAME']);
+$valueww=explode(",",$rowdb2['VALUEDECIMAL']);
+//GRAMASI
+if($ww[0]=="GSM"){ $gramasi=$valueww[0];}
+else if($ww[1]=="GSM"){ $gramasi=$valueww[1];}
+else if($ww[2]=="GSM"){ $gramasi=$valueww[2];}
+else if($ww[3]=="GSM"){ $gramasi=$valueww[3];}
+$posg=strpos($gramasi,".");
+$valgramasi=substr($gramasi,0,$posg);
+//WIDTH
+if($ww[0]=="Width"){ $lebar=$valueww[0];}
+else if($ww[1]=="Width"){ $lebar=$valueww[1];}
+else if($ww[2]=="Width"){ $lebar=$valueww[2];}
+else if($ww[3]=="Width"){ $lebar=$valueww[3];}
+$posl=strpos($lebar,".");
+$vallebar=substr($lebar,0,$posl);
 
-	$sql_pelanggan_buyer 	= db2_exec($conn1, "SELECT TRIM(LANGGANAN) AS PELANGGAN, TRIM(BUYER) AS BUYER FROM ITXVIEW_PELANGGAN 
-    												WHERE ORDPRNCUSTOMERSUPPLIERCODE = '$dt_ITXVIEWKK[ORDPRNCUSTOMERSUPPLIERCODE]' AND CODE = '$dt_ITXVIEWKK[PROJECTCODE]'");
-    $dt_pelanggan_buyer		= db2_fetch_assoc($sql_pelanggan_buyer);
-
-	if (!empty($dt_ITXVIEWKK['ORIGDLVSALORDERLINEORDERLINE'])) {
-        $orderline	= $dt_ITXVIEWKK['ORIGDLVSALORDERLINEORDERLINE'];
-    } else {
-        $orderline	= '0';
-    }
-
-	$sql_po			= db2_exec($conn1, "SELECT TRIM(EXTERNALREFERENCE) AS NO_PO FROM ITXVIEW_KGBRUTO 
-                    					WHERE PROJECTCODE = '$dt_ITXVIEWKK[PROJECTCODE]' AND ORIGDLVSALORDERLINEORDERLINE IN ($orderline)");
-    $dt_po    		= db2_fetch_assoc($sql_po);
-
-	$sql_noitem     = db2_exec($conn1, "SELECT * FROM ORDERITEMORDERPARTNERLINK WHERE INACTIVE = 0 
-													AND ORDPRNCUSTOMERSUPPLIERCODE = '$dt_ITXVIEWKK[ORDPRNCUSTOMERSUPPLIERCODE]' 
-													AND SUBCODE01 = '$dt_ITXVIEWKK[SUBCODE01]' AND SUBCODE02 = '$dt_ITXVIEWKK[SUBCODE02]' 
-													AND SUBCODE03 = '$dt_ITXVIEWKK[SUBCODE03]' AND SUBCODE04 = '$dt_ITXVIEWKK[SUBCODE04]' 
-													AND SUBCODE05 = '$dt_ITXVIEWKK[SUBCODE05]' AND SUBCODE06 = '$dt_ITXVIEWKK[SUBCODE06]'
-													AND SUBCODE07 = '$dt_ITXVIEWKK[SUBCODE07]' AND SUBCODE08 ='$dt_ITXVIEWKK[SUBCODE08]'
-													AND SUBCODE09 = '$dt_ITXVIEWKK[SUBCODE09]' AND SUBCODE10 ='$dt_ITXVIEWKK[SUBCODE10]'");
-    $dt_item        = db2_fetch_assoc($sql_noitem);
-
-	$sql_lebargramasi	= db2_exec($conn1, "SELECT i.LEBAR,
-                                            CASE
-                                                WHEN i2.GRAMASI_KFF IS NULL THEN i2.GRAMASI_FKF
-                                                ELSE i2.GRAMASI_KFF
-                                            END AS GRAMASI 
-                                            FROM 
-                                                ITXVIEWLEBAR i 
-                                            LEFT JOIN ITXVIEWGRAMASI i2 ON i2.SALESORDERCODE = '$dt_ITXVIEWKK[PROJECTCODE]' AND i2.ORDERLINE = '$dt_ITXVIEWKK[ORIGDLVSALORDERLINEORDERLINE]'
-                                            WHERE 
-                                                i.SALESORDERCODE = '$dt_ITXVIEWKK[PROJECTCODE]' AND i.ORDERLINE = '$dt_ITXVIEWKK[ORIGDLVSALORDERLINEORDERLINE]'");
-    $dt_lg				= db2_fetch_assoc($sql_lebargramasi);
-	
-	$sql_warna		= db2_exec($conn1, "SELECT DISTINCT TRIM(WARNA) AS WARNA FROM ITXVIEWCOLOR 
-                                            WHERE ITEMTYPECODE = '$dt_ITXVIEWKK[ITEMTYPEAFICODE]' 
-                                            AND SUBCODE01 = '$dt_ITXVIEWKK[SUBCODE01]' 
-                                            AND SUBCODE02 = '$dt_ITXVIEWKK[SUBCODE02]'
-                                            AND SUBCODE03 = '$dt_ITXVIEWKK[SUBCODE03]' 
-                                            AND SUBCODE04 = '$dt_ITXVIEWKK[SUBCODE04]'
-                                            AND SUBCODE05 = '$dt_ITXVIEWKK[SUBCODE05]' 
-                                            AND SUBCODE06 = '$dt_ITXVIEWKK[SUBCODE06]'
-                                            AND SUBCODE07 = '$dt_ITXVIEWKK[SUBCODE07]' 
-                                            AND SUBCODE08 = '$dt_ITXVIEWKK[SUBCODE08]'
-                                            AND SUBCODE09 = '$dt_ITXVIEWKK[SUBCODE09]' 
-                                            AND SUBCODE10 = '$dt_ITXVIEWKK[SUBCODE10]'");
-    $dt_warna		= db2_fetch_assoc($sql_warna);
-
-	$sql_qtyorder   = db2_exec($conn1, "SELECT DISTINCT
-                                                USEDUSERPRIMARYQUANTITY AS QTY_ORDER,
-                                                USEDUSERSECONDARYQUANTITY AS QTY_ORDER_YARD,
-                                                CASE
-                                                    WHEN TRIM(USERSECONDARYUOMCODE) = 'kg' THEN 'Kg'
-                                                    WHEN TRIM(USERSECONDARYUOMCODE) = 'yd' THEN 'Yard'
-                                                    WHEN TRIM(USERSECONDARYUOMCODE) = 'm' THEN 'Meter'
-                                                    ELSE 'PCS'
-                                                END AS SATUAN_QTY
-                                            FROM 
-                                                ITXVIEW_RESERVATION_KK 
-                                            WHERE 
-                                                ORDERCODE = '$dt_ITXVIEWKK[DEMAND]'");
-    $dt_qtyorder    = db2_fetch_assoc($sql_qtyorder);
-	
 $sqlroll="SELECT 
 STOCKTRANSACTION.ORDERCODE,
-COUNT(STOCKTRANSACTION.ITEMELEMENTCODE) AS JML_ROLL,
-SUM(STOCKTRANSACTION.BASEPRIMARYQUANTITY) AS KG_ROLL
+COUNT(STOCKTRANSACTION.ITEMELEMENTCODE) AS JML_ROLL
 FROM STOCKTRANSACTION STOCKTRANSACTION
-WHERE STOCKTRANSACTION.ORDERCODE ='$dt_ITXVIEWKK[PRODUCTIONORDERCODE]' AND STOCKTRANSACTION.TEMPLATECODE ='120'
+WHERE STOCKTRANSACTION.ORDERCODE ='$rowdb2[PRODUCTIONORDERCODE]' AND STOCKTRANSACTION.TEMPLATECODE ='120'
 AND STOCKTRANSACTION.ITEMTYPECODE ='KGF'
 GROUP BY 
 STOCKTRANSACTION.ORDERCODE";
 $stmt1=db2_exec($conn1,$sqlroll, array('cursor'=>DB2_SCROLLABLE));
 $rowr = db2_fetch_assoc($stmt1);
 
-	$sqlCek = mysqli_query($con,"SELECT * FROM tbl_schedule WHERE nodemand='$nodemand' ORDER BY id DESC LIMIT 1");
-	$cek = mysqli_num_rows($sqlCek);
-	$rcek = mysqli_fetch_array($sqlCek);
-	$sqlCek1 = mysqli_query($con,"SELECT * FROM tbl_schedule WHERE nodemand='$nodemand' AND not status='selesai' ORDER BY id DESC LIMIT 1");
-	$cek1 = mysqli_num_rows($sqlCek1);
+$sqlCek = mysqli_query($con,"SELECT * FROM tbl_schedule WHERE nodemand='$nodemand' ORDER BY id DESC LIMIT 1");
+$cek = mysqli_num_rows($sqlCek);
+$rcek = mysqli_fetch_array($sqlCek);
+$sqlCek1 = mysqli_query($con,"SELECT * FROM tbl_schedule WHERE nodemand='$nodemand' AND not status='selesai' ORDER BY id DESC LIMIT 1");
+$cek1 = mysqli_num_rows($sqlCek1);
 
 ?>
 <?php
@@ -307,7 +314,7 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<input name="langganan" type="text" class="form-control" id="langganan" value="<?php if ($cek > 0) {
 																											echo $rcek['langganan'];
 																										} else {
-																											echo $dt_pelanggan_buyer['PELANGGAN'];
+																											echo $rowdb2['LEGALNAME1'];
 																										} ?>" placeholder="Langganan">
 					</div>
 				</div>
@@ -317,7 +324,7 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<input name="buyer" type="text" class="form-control" id="buyer" value="<?php if ($cek > 0) {
 																									echo $rcek['buyer'];
 																								} else {
-																									echo $dt_pelanggan_buyer['BUYER'];
+																									echo $rowdb2['BUYER'];
 																								} ?>" placeholder="Buyer">
 					</div>
 				</div>
@@ -327,7 +334,7 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<input name="no_order" type="text" class="form-control" id="no_order" value="<?php if ($cek > 0) {
 																											echo $rcek['no_order'];
 																										} else {
-																											echo $dt_ITXVIEWKK['PROJECTCODE'];
+																											echo $rowdb2['SALESORDERCODE'];
 																										} ?>" placeholder="No Order">
 					</div>
 				</div>
@@ -337,7 +344,7 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<input name="no_po" type="text" class="form-control" id="no_po" value="<?php if ($cek > 0) {
 																									echo $rcek['po'];
 																								} else {
-																									echo $dt_po['NO_PO'];
+																									echo $rowdb2['PO_NUMBER'];
 																								} ?>" placeholder="PO">
 					</div>
 				</div>
@@ -347,16 +354,16 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<input name="no_hanger" type="text" class="form-control" id="no_hanger" value="<?php if ($cek > 0) {
 																											echo $rcek['no_hanger'];
 																										} else {
-																											if ($dt_ITXVIEWKK['SUBCODE02']!="") {
-																												echo trim($dt_ITXVIEWKK['SUBCODE02']).'-'.trim($dt_ITXVIEWKK['SUBCODE03']);
+																											if ($rowdb2['SUBCODE02']!="") {
+																												echo trim($rowdb2['SUBCODE02']).'-'.trim($rowdb2['SUBCODE03']);
 																											}
 																										} ?>" placeholder="No Hanger">
 					</div>
 					<div class="col-sm-3">
 						<input name="no_item" type="text" class="form-control" id="no_item" value="<?php if ($rcek['no_item'] != "") {
 																										echo $rcek['no_item'];
-																									} else if ($dt_item['EXTERNALITEMCODE'] != "") {
-																										echo $dt_item['EXTERNALITEMCODE'];
+																									} else if ($rowdb2['NO_ITEM'] != "") {
+																										echo $rowdb2['NO_ITEM'];
 																									}?>" placeholder="No Item">
 					</div>
 				</div>
@@ -366,8 +373,8 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<textarea name="jns_kain" class="form-control" id="jns_kain" placeholder="Jenis Kain"><?php if ($cek > 0) {
 																													echo $rcek['jenis_kain'];
 																												} else {
-																													if ($dt_ITXVIEWKK['ITEMDESCRIPTION']!="") {
-																														echo $dt_ITXVIEWKK['ITEMDESCRIPTION'];
+																													if ($rowdb2['ITEMDESCRIPTION']!="") {
+																														echo $rowdb2['ITEMDESCRIPTION'];
 																													} 
 																												} ?></textarea>
 					</div>
@@ -380,8 +387,8 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 							<input name="tgl_delivery" type="text" class="form-control pull-right" id="datepicker2" placeholder="0000-00-00" value="<?php if ($cek > 0) {
 																																						echo $rcek['tgl_delivery'];
 																																					} else {
-																																						if ($dt_ITXVIEWKK['DELIVERYDATE']!="") {
-																																							echo date('Y-m-d', strtotime($dt_ITXVIEWKK['DELIVERYDATE']));
+																																						if ($rowdb2['DELIVERYDATE']!="") {
+																																							echo date('Y-m-d', strtotime($rowdb2['DELIVERYDATE']));
 																																						}
 																																					} ?>" required />
 						</div>
@@ -393,14 +400,14 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<input name="lebar" type="text" class="form-control" id="lebar" value="<?php if ($cek > 0) {
 																									echo $rcek['lebar'];
 																								} else {
-																									echo $dt_lg['LEBAR'];
+																									echo $vallebar;
 																								} ?>" placeholder="0" required>
 					</div>
 					<div class="col-sm-2">
 						<input name="grms" type="text" class="form-control" id="grms" value="<?php if ($cek > 0) {
 																									echo $rcek['gramasi'];
 																								} else {
-																									echo $dt_lg['GRAMASI'];
+																									echo $valgramasi;
 																								} ?>" placeholder="0" required>
 					</div>
 				</div>
@@ -410,12 +417,13 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<input name="warna" type="text" class="form-control" id="warna" value="<?php if ($cek > 0) {
 																									echo $rcek['warna'];
 																								} else {
-																									if ($dt_warna['WARNA']!="") {
-																										echo $dt_warna['WARNA'];
+																									if ($rowdb2['WARNA']!="") {
+																										echo $rowdb2['WARNA'];
 																									}
 																								} ?>" placeholder="Warna">
 					</div>
 				</div>
+
 
 			</div>
 			<!-- col -->
@@ -426,8 +434,8 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<input name="no_warna" type="text" class="form-control" id="no_warna" value="<?php if ($cek > 0) {
 																											echo $rcek['no_warna'];
 																										} else {
-																											if ($dt_ITXVIEWKK['NO_WARNA']!="") {
-																												echo $dt_ITXVIEWKK['NO_WARNA'];
+																											if ($rowdb2['NO_WARNA']!="") {
+																												echo $rowdb2['NO_WARNA'];
 																											}
 																										} ?>" placeholder="No Warna">
 					</div>
@@ -439,7 +447,7 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 							<input name="qty1" type="text" class="form-control" id="qty1" value="<?php if ($cek > 0) {
 																										echo $rcek['qty_order'];
 																									} else {
-																										echo round($dt_qtyorder['QTY_ORDER'], 2);
+																										echo round($rowdb2['QTY_ORDER'], 2);
 																									} ?>" placeholder="0.00" required>
 							<span class="input-group-addon">KGs</span>
 						</div>
@@ -449,18 +457,18 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 							<input name="qty2" type="text" class="form-control" id="qty2" value="<?php if ($cek > 0) {
 																										echo $rcek['pjng_order'];
 																									} else {
-																										echo round($dt_qtyorder['QTY_ORDER_YARD'], 2);
+																										echo round($rowdb2['QTY_PANJANG_ORDER'], 2);
 																									} ?>" placeholder="0.00" style="text-align: right;" required>
 							<span class="input-group-addon">
 								<select name="satuan1" style="font-size: 12px;" id="satuan1" required>
 									<option value="" selected disabled>-Pilih-</option>
-									<option value="Yard" <?php if ($dt_qtyorder['SATUAN_QTY']=="Yard") {
+									<option value="Yard" <?php if ($rowdb2['QTY_PANJANG_ORDER_UOM']=="yd") {
 																echo "SELECTED";
 															} ?>>Yard</option>
-									<option value="Meter" <?php if ($dt_qtyorder['SATUAN_QTY']=="Meter") {
+									<option value="Meter" <?php if ($rowdb2['QTY_PANJANG_ORDER_UOM']=="m") {
 																echo "SELECTED";
 															} ?>>Meter</option>
-									<option value="PCS" <?php if ($dt_qtyorder['SATUAN_QTY']=="PCS") {
+									<option value="PCS" <?php if ($rowdb2['QTY_PANJANG_ORDER_UOM']=="un") {
 															echo "SELECTED";
 														} ?>>PCS</option>
 								</select>
@@ -474,12 +482,12 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 						<input name="nokk" type="hidden" class="form-control" id="nokk" value="<?php if ($cek > 0) {
 																								echo $rcek['nokk'];
 																							} else {
-																								echo $dt_ITXVIEWKK['PRODUCTIONORDERCODE'];
+																								echo $rowdb2['PRODUCTIONORDERCODE'];
 																							} ?>" placeholder="Lot">
 						<input name="lot" type="text" class="form-control" id="lot" value="<?php if ($cek > 0) {
 																								echo $rcek['lot'];
 																							} else {
-																								echo $dt_ITXVIEWKK['PRODUCTIONORDERCODE'];
+																								echo $rowdb2['PRODUCTIONORDERCODE'];
 																							} ?>" placeholder="Lot">
 					</div>
 				</div>
@@ -490,7 +498,7 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 																									echo $rcek['rol'];
 																								} else {
 																									if ($rowr['JML_ROLL'] != 0) {
-																									echo $rowr['JML_ROLL'];
+																										echo $rowr['JML_ROLL'];
 																									}
 																								} ?>" placeholder="0.00" required>
 					</div>
@@ -499,7 +507,7 @@ $Langganan	= isset($_POST['langganan']) ? $_POST['langganan'] : '';
 							<input name="qty4" type="text" class="form-control" id="qty4" value="<?php if ($cek > 0) {
 																										echo $rcek['bruto'];
 																									} else {
-																										echo round($rowr['KG_ROLL'],2);
+																										echo round($rowdb2['QTY_BAGI_KAIN'],2);
 																									} ?>" placeholder="0.00" style="text-align: right;" required>
 							<span class="input-group-addon">KGs</span>
 						</div>

@@ -13,6 +13,12 @@
             <div class="box-header">
                 <div class="form-group row">
                     <label for="Hadir" class="col-sm-1 col-form-label text-center">Tgl Laporan :</label>
+					<div class="col-sm-2">
+						<select name="fulls" class="form-control input-sm" id="fulls">	
+						<option value="ya">Full</option>	
+						<option value="tidak">Tidak Full</option>
+						</select>
+					</div>
                     <div class="col-sm-2">
                         <div class="input-group">
                             <input type="text" class="form-control input-sm datepicker" name="tgl_laporan" id="tgl_laporan" placeholder="Tgl Laporan..." autocomplete="off">
@@ -21,7 +27,7 @@
                                 </button>
                             </span>
                         </div><!-- /input-group -->
-                    </div>
+                    </div>						
                     <a href="" class="btn btn-sm btn-success"><i class="fa fa-refresh"></i></a>
                     <button id="print" class="btn btn-danger btn-sm pull-right" style="margin-right: 20px; font-weight: bold; display: none;">PRINT <i class="fa fa-print"></i></button>
                     <button type="button" id="hold" class="btn btn-sm btn-info pull-right text-black" style="margin-right: 20px; font-weight: bold; display: none;">SIMPAN <i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -94,6 +100,12 @@
                             <div class="col-sm-7">
                                 <input required type="text" class="form-control input-sm" name="pembagian_kain_s1" id="pembagian_kain_s1" placeholder="-Jumlah-">
                             </div>
+                        </div>
+						<div class="form-group row">
+							 <label for="Belah" class="col-sm-3 col-form-label text-right">Belah Kain :</label>
+                                <div class="col-sm-7">                                    
+                                    <input required type="text" class="form-control input-sm" name="belahkains1" id="belahkains1" placeholder="-Jumlah-">
+                                </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Buka" class="col-sm-3 col-form-label text-right">Buka Kain :</label>
@@ -247,6 +259,12 @@
                                 <input required type="text" class="form-control input-sm" name="pembagian_kain_s2" id="pembagian_kain_s2" placeholder="-Jumlah-">
                             </div>
                         </div>
+						<div class="form-group row">
+							 <label for="Belah" class="col-sm-3 col-form-label text-right">Belah Kain :</label>
+                                <div class="col-sm-7">                                    
+                                    <input required type="text" class="form-control input-sm" name="belahkains2" id="belahkains2" placeholder="-Jumlah-">
+                                </div>
+                        </div>
                         <div class=" form-group row">
                             <label for="Buka" class="col-sm-3 col-form-label text-right">Buka Kain :</label>
                             <div class="col-sm-7">
@@ -398,6 +416,12 @@
                             <div class="col-sm-7">
                                 <input type="text" value="0" class="form-control input-sm" name="pembagian_kain_s3" id="pembagian_kain_s3" placeholder="-Jumlah-">
                             </div>
+                        </div>
+						<div class="form-group row">
+							 <label for="Belah" class="col-sm-3 col-form-label text-right">Belah Kain :</label>
+                                <div class="col-sm-7">                                    
+                                    <input required type="text" class="form-control input-sm" name="belahkains3" id="belahkains3" placeholder="-Jumlah-">
+                                </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Buka" class="col-sm-3 col-form-label text-right">Buka Kain :</label>
@@ -563,6 +587,7 @@
 
         $('#generate').click(function() {
             let tgl_laporan = $('#tgl_laporan').val();
+			let fulls = $('#fulls').val();
             if (tgl_laporan == "") {
                 Swal.fire(
                     'Pilih tanggal !',
@@ -576,6 +601,7 @@
                     url: "pages/ajax/data_server_MasukKainGreige.php",
                     data: {
                         tgl_laporan: tgl_laporan,
+						fulls: fulls,
                         s1: $('#group_s1').val(),
                         s2: $('#group_s2').val(),
                         s3: $('#group_s3').val()
@@ -594,6 +620,9 @@
                             $('#buka_kain_s1').val(response.buka_kain_s1);
                             $('#buka_kain_s2').val(response.buka_kain_s2);
                             $('#buka_kain_s3').val(response.buka_kain_s3);
+							$('#belahkains1').val(response.belahkains1);
+                            $('#belahkains2').val(response.belahkains2);
+                            $('#belahkains3').val(response.belahkains3);
                             $("#generate").prop("disabled", true);
 
                             Cek_if_data_was_exist(tgl_laporan)
@@ -621,6 +650,7 @@
                         url: "pages/ajax/Ds_hold_laporan_shift.php",
                         data: {
                             tgl_laporan: $('#tgl_laporan').val(),
+							fulls: $('#fulls').val(),
                             masuk_kain_s1: $('#masuk_kain_s1').val(),
                             masuk_kain_s2: $('#masuk_kain_s2').val(),
                             masuk_kain_s3: $('#masuk_kain_s3').val(),
@@ -630,6 +660,9 @@
                             buka_kain_s1: $('#buka_kain_s1').val(),
                             buka_kain_s2: $('#buka_kain_s2').val(),
                             buka_kain_s3: $('#buka_kain_s3').val(),
+							belahkains1: $('#belahkains1').val(),
+                            belahkains2: $('#belahkains2').val(),
+                            belahkains3: $('#belahkains3').val(),
                             // MANUAL
                             masuk_kain_manual: $('#masuk_kain_manual').val(),
                             bagi_kain_manual: $('#bagi_kain_manual').val(),

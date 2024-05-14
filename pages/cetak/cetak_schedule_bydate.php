@@ -207,7 +207,7 @@ $shift = $_SESSION['shift'];
                          where b.`status` = 'selesai' AND b.leader_check = 'TRUE'
                          and DATE_FORMAT(b.tgl_update,'%Y-%m-%d') >= '$date_s'
                          AND DATE_FORMAT(b.tgl_update,'%Y-%m-%d') <= '$date_e'
-                         GROUP by b.nokk, b.proses, b.no_mesin, b.no_urut
+                         GROUP by b.nokk, b.proses, b.no_mesin, b.no_urut,
                          ORDER by b.tgl_stop DESC");
             } else {
                 if ($shift != 'ALL') {

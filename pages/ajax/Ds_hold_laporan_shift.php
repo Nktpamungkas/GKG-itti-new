@@ -16,6 +16,9 @@ $pembagian_kain_s3 = str_replace(',', '', $_POST['pembagian_kain_s3']);
 $buka_kain_s1 = str_replace(',', '', $_POST['buka_kain_s1']);
 $buka_kain_s2 = str_replace(',', '', $_POST['buka_kain_s2']);
 $buka_kain_s3 = str_replace(',', '', $_POST['buka_kain_s3']);
+$belahkains1 = str_replace(',', '', $_POST['belahkains1']);
+$belahkains2 = str_replace(',', '', $_POST['belahkains2']);
+$belahkains3 = str_replace(',', '', $_POST['belahkains3']);
 
 if (empty($get)) {
     $sql = ("INSERT INTO tbl_laporanharian SET
@@ -53,6 +56,9 @@ if (empty($get)) {
             `buka_kain_s1` = '$buka_kain_s1',
             `buka_kain_s2` = '$buka_kain_s2',
             `buka_kain_s3` = '$buka_kain_s3',
+			`belah_kain_s1` = '$belahkains1',
+            `belah_kain_s2` = '$belahkains2',
+            `belah_kain_s3` = '$belahkains3',
             `penyusunan_s1` = '$_POST[penyusunan_s1]',
             `penyusunan_s2` = '$_POST[penyusunan_s2]',
             `penyusunan_s3` = '$_POST[penyusunan_s3]',
@@ -134,6 +140,9 @@ if (empty($get)) {
     `buka_kain_s1` = '$buka_kain_s1',
     `buka_kain_s2` = '$buka_kain_s2',
     `buka_kain_s3` = '$buka_kain_s3',
+	`belah_kain_s1` = '$belahkains1',
+    `belah_kain_s2` = '$belahkains2',
+    `belah_kain_s3` = '$belahkains3',
     `penyusunan_s1` = '$_POST[penyusunan_s1]',
     `penyusunan_s2` = '$_POST[penyusunan_s2]',
     `penyusunan_s3` = '$_POST[penyusunan_s3]',
