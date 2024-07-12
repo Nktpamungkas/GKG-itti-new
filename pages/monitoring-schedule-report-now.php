@@ -67,15 +67,9 @@ include "koneksi.php";
                                 i.SUBCODE09,
                                 i.SUBCODE10,
                                 i.ITEMNO,
-                                LISTAGG(
-                                    TRIM(i.PRO_ORDER),
-                                    ','
-                                ) PRO_ORDER,
-                                LISTAGG(
-                                    TRIM(i.PRODUCTIONDEMANDCODE),
-                                    ','
-                                ) PRODUCTIONDEMANDCODE,
-                                i.LANGGANAN,
+                                LISTAGG(TRIM(i.PRO_ORDER), ', ') PRO_ORDER,
+                                LISTAGG(TRIM(i.PRODUCTIONDEMANDCODE), ', ') PRODUCTIONDEMANDCODE,
+                                LISTAGG(i.LANGGANAN, ', ') AS LANGGANAN,
                                 i.WARNA,
                                 i.NO_WARNA
                             FROM
@@ -194,166 +188,11 @@ include "koneksi.php";
                                 i.SUBCODE09,
                                 i.SUBCODE10,
                                 i.ITEMNO,
-                                i.LANGGANAN,
                                 i.WARNA,
                                 i.NO_WARNA";
             $stmt1   = db2_exec($conn1, $sqlDB21, array('cursor' => DB2_SCROLLABLE));
         } else if ($_POST["w_shift"] == 'ALL') {
             $sqlDB21 = "SELECT
-                                x.PRODUCTIONORDERCODE,
-                                x.OPERATIONCODE, 
-                                x.OPERATORCODE,
-                                x.PROGRESSSTARTPROCESSDATE, 
-                                x.PROGRESSSTARTPROCESSTIME ,
-                                x.MACHINECODE ,
-                                x.CREATIONDATETIME,
-                                r.LONGDESCRIPTION,  
-                                i.SUBCODE01,
-                                i.SUBCODE02,
-                                i.SUBCODE03,
-                                i.SUBCODE04,
-                                i.SUBCODE05,
-                                i.SUBCODE06,
-                                i.SUBCODE07,
-                                i.SUBCODE08,
-                                i.SUBCODE09,
-                                i.SUBCODE10,
-                                i.ITEMNO,
-                                LISTAGG(
-                                    TRIM(i.PRO_ORDER),
-                                    ','
-                                ) PRO_ORDER,
-                                LISTAGG(
-                                    TRIM(i.PRODUCTIONDEMANDCODE),
-                                    ','
-                                ) PRODUCTIONDEMANDCODE,
-                                i.LANGGANAN,
-                                i.WARNA,
-                                i.NO_WARNA
-                            FROM
-                                PRODUCTIONPROGRESS x
-                            LEFT OUTER JOIN (
-                                    SELECT
-                                        p.SUBCODE01,
-                                        p.SUBCODE02,
-                                        p.SUBCODE03,
-                                        p.SUBCODE04,
-                                        p.SUBCODE05,
-                                        p.SUBCODE06,
-                                        p.SUBCODE07,
-                                        p.SUBCODE08,
-                                        p.SUBCODE09,
-                                        p.SUBCODE10,
-                                        CONCAT(TRIM(p.SUBCODE02), TRIM(p.SUBCODE03)) AS ITEMNO,
-                                        p.ORIGDLVSALORDLINESALORDERCODE AS PRO_ORDER,
-                                        ps.PRODUCTIONORDERCODE,
-                                        ps.PRODUCTIONDEMANDCODE,
-                                        E.LEGALNAME1 AS LANGGANAN,
-                                        TRIM(f.LONGDESCRIPTION) AS WARNA,
-                                        TRIM(f.CODE) AS NO_WARNA
-                                    FROM
-                                        PRODUCTIONDEMAND p
-                                    LEFT OUTER JOIN 
-                                            (
-                                            SELECT
-                                                PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
-                                                PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
-                                            FROM
-                                                PRODUCTIONDEMANDSTEP PRODUCTIONDEMANDSTEP
-                                            GROUP BY
-                                                PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
-                                                PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
-                                        ) ps
-                                        ON
-                                        p.CODE = ps.PRODUCTIONDEMANDCODE
-                                    LEFT OUTER JOIN
-                                            (
-                                            SELECT
-                                                BUSINESSPARTNER.LEGALNAME1,
-                                                ORDERPARTNER.CUSTOMERSUPPLIERCODE
-                                            FROM
-                                                BUSINESSPARTNER BUSINESSPARTNER
-                                            LEFT JOIN ORDERPARTNER ORDERPARTNER ON
-                                                BUSINESSPARTNER.NUMBERID = ORDERPARTNER.ORDERBUSINESSPARTNERNUMBERID
-                                        ) E
-                                        ON
-                                        p.CUSTOMERCODE = E.CUSTOMERSUPPLIERCODE
-                                    LEFT OUTER JOIN USERGENERICGROUP f
-                                            ON
-                                        p.SUBCODE05 = f.CODE
-                                        AND f.USERGENERICGROUPTYPECODE = 'CL1'
-                                    LEFT OUTER JOIN PRODUCTIONDEMAND h
-                                        ON
-                                        p.ORIGDLVSALORDLINESALORDERCODE = h.ORIGDLVSALORDLINESALORDERCODE
-                                        AND 
-                                        p.SUBCODE01 = h.SUBCODE01
-                                        AND 
-                                        p.SUBCODE02 = h.SUBCODE02
-                                        AND
-                                        p.SUBCODE03 = h.SUBCODE03
-                                        AND
-                                        p.SUBCODE04 = h.SUBCODE04
-                                        AND 
-                                        h.ITEMTYPEAFICODE = 'KFF'
-                                    GROUP BY
-                                        p.SUBCODE01,
-                                        p.SUBCODE02,
-                                        p.SUBCODE03,
-                                        p.SUBCODE04,
-                                        p.SUBCODE05,
-                                        p.SUBCODE06,
-                                        p.SUBCODE07,
-                                        p.SUBCODE08,
-                                        p.SUBCODE09,
-                                        p.SUBCODE10,
-                                        p.ORIGDLVSALORDLINESALORDERCODE,
-                                        ps.PRODUCTIONORDERCODE,
-                                        ps.PRODUCTIONDEMANDCODE,
-                                        E.LEGALNAME1,
-                                        f.LONGDESCRIPTION,
-                                        f.CODE
-                                ) i ON
-                                i.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE
-                            LEFT OUTER JOIN RESOURCES r ON
-                                r.CODE = x.OPERATORCODE
-                            WHERE
-                                (
-                                    x.OPERATIONCODE = 'BAT2'
-                                        OR x.OPERATIONCODE = 'BKN1'
-                                )
-                                AND x.PROGRESSTEMPLATECODE = 'S01'
-                                AND TIMESTAMP(
-                                    TRIM(x.PROGRESSSTARTPROCESSDATE),
-                                    TRIM(x.PROGRESSSTARTPROCESSTIME)
-                                ) BETWEEN '$date_s 23:00:00' AND '$date_e 23:00:00'
-                            GROUP BY 
-                                x.PRODUCTIONORDERCODE,
-                                x.OPERATIONCODE, 
-                                x.OPERATORCODE,
-                                x.PROGRESSSTARTPROCESSDATE, 
-                                x.PROGRESSSTARTPROCESSTIME ,
-                                x.MACHINECODE ,
-                                x.CREATIONDATETIME,
-                                r.LONGDESCRIPTION,
-                                i.SUBCODE01,
-                                i.SUBCODE02,
-                                i.SUBCODE03,
-                                i.SUBCODE04,
-                                i.SUBCODE05,
-                                i.SUBCODE06,
-                                i.SUBCODE07,
-                                i.SUBCODE08,
-                                i.SUBCODE09,
-                                i.SUBCODE10,
-                                i.ITEMNO,
-                                i.LANGGANAN,
-                                i.WARNA,
-                                i.NO_WARNA";
-            $stmt1   = db2_exec($conn1, $sqlDB21, array('cursor' => DB2_SCROLLABLE));
-        }
-    } else {
-        unset($_SESSION['date_s'], $_SESSION['group'], $_SESSION['date_e'], $_SESSION['shift']);
-        $sqlDB21 = "SELECT
                             x.PRODUCTIONORDERCODE,
                             x.OPERATIONCODE, 
                             x.OPERATORCODE,
@@ -476,7 +315,10 @@ include "koneksi.php";
                                     OR x.OPERATIONCODE = 'BKN1'
                             )
                             AND x.PROGRESSTEMPLATECODE = 'S01'
-                            AND x.PROGRESSSTARTPROCESSDATE = CURRENT DATE
+                            AND TIMESTAMP(
+                                TRIM(x.PROGRESSSTARTPROCESSDATE),
+                                TRIM(x.PROGRESSSTARTPROCESSTIME)
+                            ) BETWEEN '$date_s 23:00:00' AND '$date_e 23:00:00'
                         GROUP BY 
                             x.PRODUCTIONORDERCODE,
                             x.OPERATIONCODE, 
@@ -500,13 +342,159 @@ include "koneksi.php";
                             i.LANGGANAN,
                             i.WARNA,
                             i.NO_WARNA";
+            $stmt1   = db2_exec($conn1, $sqlDB21, array('cursor' => DB2_SCROLLABLE));
+        }
+    } else {
+        unset($_SESSION['date_s'], $_SESSION['group'], $_SESSION['date_e'], $_SESSION['shift']);
+        // $sqlDB21 = "SELECT
+        //                     x.PRODUCTIONORDERCODE,
+        //                     x.OPERATIONCODE, 
+        //                     x.OPERATORCODE,
+        //                     x.PROGRESSSTARTPROCESSDATE, 
+        //                     x.PROGRESSSTARTPROCESSTIME ,
+        //                     x.MACHINECODE ,
+        //                     x.CREATIONDATETIME,
+        //                     r.LONGDESCRIPTION,  
+        //                     i.SUBCODE01,
+        //                     i.SUBCODE02,
+        //                     i.SUBCODE03,
+        //                     i.SUBCODE04,
+        //                     i.SUBCODE05,
+        //                     i.SUBCODE06,
+        //                     i.SUBCODE07,
+        //                     i.SUBCODE08,
+        //                     i.SUBCODE09,
+        //                     i.SUBCODE10,
+        //                     i.ITEMNO,
+        //                     LISTAGG(TRIM(i.PRO_ORDER), ', ') PRO_ORDER,
+        //                     LISTAGG(TRIM(i.PRODUCTIONDEMANDCODE), ', ') PRODUCTIONDEMANDCODE,
+        //                     LISTAGG(i.LANGGANAN, ', ') AS LANGGANAN,
+        //                     i.WARNA,
+        //                     i.NO_WARNA
+        //                 FROM
+        //                     PRODUCTIONPROGRESS x
+        //                 LEFT OUTER JOIN (
+        //                         SELECT
+        //                             p.SUBCODE01,
+        //                             p.SUBCODE02,
+        //                             p.SUBCODE03,
+        //                             p.SUBCODE04,
+        //                             p.SUBCODE05,
+        //                             p.SUBCODE06,
+        //                             p.SUBCODE07,
+        //                             p.SUBCODE08,
+        //                             p.SUBCODE09,
+        //                             p.SUBCODE10,
+        //                             CONCAT(TRIM(p.SUBCODE02), TRIM(p.SUBCODE03)) AS ITEMNO,
+        //                             p.ORIGDLVSALORDLINESALORDERCODE AS PRO_ORDER,
+        //                             ps.PRODUCTIONORDERCODE,
+        //                             ps.PRODUCTIONDEMANDCODE,
+        //                             E.LEGALNAME1 AS LANGGANAN,
+        //                             TRIM(f.LONGDESCRIPTION) AS WARNA,
+        //                             TRIM(f.CODE) AS NO_WARNA
+        //                         FROM
+        //                             PRODUCTIONDEMAND p
+        //                         LEFT OUTER JOIN 
+        //                                 (
+        //                                 SELECT
+        //                                     PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
+        //                                     PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
+        //                                 FROM
+        //                                     PRODUCTIONDEMANDSTEP PRODUCTIONDEMANDSTEP
+        //                                 GROUP BY
+        //                                     PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
+        //                                     PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
+        //                             ) ps
+        //                             ON
+        //                             p.CODE = ps.PRODUCTIONDEMANDCODE
+        //                         LEFT OUTER JOIN
+        //                                 (
+        //                                 SELECT
+        //                                     BUSINESSPARTNER.LEGALNAME1,
+        //                                     ORDERPARTNER.CUSTOMERSUPPLIERCODE
+        //                                 FROM
+        //                                     BUSINESSPARTNER BUSINESSPARTNER
+        //                                 LEFT JOIN ORDERPARTNER ORDERPARTNER ON
+        //                                     BUSINESSPARTNER.NUMBERID = ORDERPARTNER.ORDERBUSINESSPARTNERNUMBERID
+        //                             ) E
+        //                             ON
+        //                             p.CUSTOMERCODE = E.CUSTOMERSUPPLIERCODE
+        //                         LEFT OUTER JOIN USERGENERICGROUP f
+        //                                 ON
+        //                             p.SUBCODE05 = f.CODE
+        //                             AND f.USERGENERICGROUPTYPECODE = 'CL1'
+        //                         LEFT OUTER JOIN PRODUCTIONDEMAND h
+        //                             ON
+        //                             p.ORIGDLVSALORDLINESALORDERCODE = h.ORIGDLVSALORDLINESALORDERCODE
+        //                             AND 
+        //                             p.SUBCODE01 = h.SUBCODE01
+        //                             AND 
+        //                             p.SUBCODE02 = h.SUBCODE02
+        //                             AND
+        //                             p.SUBCODE03 = h.SUBCODE03
+        //                             AND
+        //                             p.SUBCODE04 = h.SUBCODE04
+        //                             AND 
+        //                             h.ITEMTYPEAFICODE = 'KFF'
+        //                         GROUP BY
+        //                             p.SUBCODE01,
+        //                             p.SUBCODE02,
+        //                             p.SUBCODE03,
+        //                             p.SUBCODE04,
+        //                             p.SUBCODE05,
+        //                             p.SUBCODE06,
+        //                             p.SUBCODE07,
+        //                             p.SUBCODE08,
+        //                             p.SUBCODE09,
+        //                             p.SUBCODE10,
+        //                             p.ORIGDLVSALORDLINESALORDERCODE,
+        //                             ps.PRODUCTIONORDERCODE,
+        //                             ps.PRODUCTIONDEMANDCODE,
+        //                             E.LEGALNAME1,
+        //                             f.LONGDESCRIPTION,
+        //                             f.CODE
+        //                     ) i ON
+        //                     i.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE
+        //                 LEFT OUTER JOIN RESOURCES r ON
+        //                     r.CODE = x.OPERATORCODE
+        //                 WHERE
+        //                     (
+        //                         x.OPERATIONCODE = 'BAT2'
+        //                             OR x.OPERATIONCODE = 'BKN1'
+        //                     )
+        //                     AND x.PROGRESSTEMPLATECODE = 'S01'
+        //                     AND x.PROGRESSSTARTPROCESSDATE = CURRENT DATE
+        //                     AND x.PRODUCTIONORDERCODE = '00155518'
+        //                 GROUP BY 
+        //                     x.PRODUCTIONORDERCODE,
+        //                     x.OPERATIONCODE, 
+        //                     x.OPERATORCODE,
+        //                     x.PROGRESSSTARTPROCESSDATE, 
+        //                     x.PROGRESSSTARTPROCESSTIME ,
+        //                     x.MACHINECODE ,
+        //                     x.CREATIONDATETIME,
+        //                     r.LONGDESCRIPTION,
+        //                     i.SUBCODE01,
+        //                     i.SUBCODE02,
+        //                     i.SUBCODE03,
+        //                     i.SUBCODE04,
+        //                     i.SUBCODE05,
+        //                     i.SUBCODE06,
+        //                     i.SUBCODE07,
+        //                     i.SUBCODE08,
+        //                     i.SUBCODE09,
+        //                     i.SUBCODE10,
+        //                     i.ITEMNO,
+        //                     i.WARNA,
+        //                     i.NO_WARNA";
 
-        $stmt1   = db2_exec($conn1, $sqlDB21, array('cursor' => DB2_SCROLLABLE));
+        // $stmt1   = db2_exec($conn1, $sqlDB21, array('cursor' => DB2_SCROLLABLE));
     }
     $no = 1;
     $n = 1;
     $c = 0;
     ?>
+    <?php ini_set("error_reporting", 0); ?>
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -555,6 +543,9 @@ include "koneksi.php";
                                     <div class="col-sm-2">
                                         <button type="submit" name="submit" value="submit" class="btn btn-success btn-block">Generate</button>
                                     </div>
+                                </div>
+                                <div>
+                                    <a href="pages/cetak/cetak_pemakaian_bahanbaku.php?tgl1=<?= $_POST['date-start'] ?>&tgl2=<?= $_POST['date-end'] ?>&shift=<?= $_POST['w_shift'] ?>" target="_blank" class="btn btn-danger pull-right" target="_blank"><i class="fa fa-print"></i> Cetak</a>
                                 </div>
                             </form>
                         </div>
@@ -667,21 +658,16 @@ include "koneksi.php";
                                 $stmt111 = db2_exec($conn1, $sqlroll1, array('cursor' => DB2_SCROLLABLE));
                                 $rowr1 = db2_fetch_assoc($stmt111);
 
-                                $sqlkg = "SELECT
-                                            PRODUCTIONRESERVATION.PRODUCTIONORDERCODE,
-                                            SUM(PRODUCTIONRESERVATION.USEDUSERPRIMARYQUANTITY) AS QTY_BAGI_KAIN
-                                        FROM
-                                            PRODUCTIONRESERVATION
-                                        LEFT OUTER JOIN PRODUCTIONDEMAND ON
-                                            PRODUCTIONRESERVATION.ORDERCODE = PRODUCTIONDEMAND.CODE
-                                        LEFT JOIN SALESORDERDELIVERY SALESORDERDELIVERY ON
-                                            SALESORDERDELIVERY.SALESORDERLINESALESORDERCODE = PRODUCTIONDEMAND.DLVSALORDERLINESALESORDERCODE
-                                            AND SALESORDERDELIVERY.SALESORDERLINEORDERLINE = PRODUCTIONDEMAND.DLVSALESORDERLINEORDERLINE
-                                        WHERE
-                                            PRODUCTIONRESERVATION.ITEMTYPEAFICODE = 'KGF'
-                                            AND PRODUCTIONRESERVATION.PRODUCTIONORDERCODE = '" . $rowdb21[' PRODUCTIONORDERCODE'] . "'
-                                        GROUP BY
-                                            PRODUCTIONRESERVATION.PRODUCTIONORDERCODE";
+                                $sqlkg = "SELECT DISTINCT
+                                                GROUPSTEPNUMBER,
+                                                INITIALUSERPRIMARYQUANTITY AS QTY_BAGI_KAIN,
+                                                INITIALUSERSECONDARYQUANTITY AS QTY_ORDER_YARD
+                                            FROM 
+                                                VIEWPRODUCTIONDEMANDSTEP 
+                                            WHERE 
+                                                PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
+                                            ORDER BY
+                                                GROUPSTEPNUMBER ASC LIMIT 1";
                                 $stmtkg11 = db2_exec($conn1, $sqlkg, array('cursor' => DB2_SCROLLABLE));
                                 $rowkg = db2_fetch_assoc($stmtkg11);
 
@@ -814,39 +800,67 @@ include "koneksi.php";
                                     <td align="center"><?php echo $rowdb21['PRO_ORDER']; ?></td>
                                     <td><?php echo $rowdb21['ITEMNO']; ?></td>
                                     <td align="center"><?php echo $rowdb21['WARNA']; ?></td>
-                                    <td align="center"><?php if ($rowr['JML_ROLL'] == "") {
-                                                            echo $rowr1['ROLL'];
-                                                        } else {
-                                                            echo $rowr['JML_ROLL'];
-                                                        } ?></td>
-                                    <td align="right"><?php if (round($rowkg['QTY_BAGI_KAIN'], 2) > 0) {
-                                                            echo round($rowkg['QTY_BAGI_KAIN'], 2);
-                                                        } else {
-                                                            echo round($rowr1['KG'], 2);
-                                                        } ?></td>
-                                    <td align="center"><?php //echo $rowds['ORDERCODE']; 
-                                                        ?> <?php echo $rowdb21['PRODUCTIONDEMANDCODE']; ?></td>
+                                    <td align="center">
+                                        <?php 
+                                            if ($rowr['JML_ROLL'] == "") {
+                                                echo $rowr1['ROLL'];
+                                            } else {
+                                                echo $rowr['JML_ROLL'];
+                                            } 
+                                        ?>
+                                    </td>
+                                    <td align="right">
+                                        <?php 
+                                            // if (round($rowkg['QTY_BAGI_KAIN'], 2) > 0) {
+                                                echo round($rowkg['QTY_BAGI_KAIN'], 2); // BAGIKAIN RESERVATION
+                                            // } else {
+                                            //     echo round($rowr1['KG'], 2); // STOCKTRANSACTION
+                                            // } 
+                                        ?>
+                                    </td>
+                                    <td align="center">
+                                        <?php echo $rowdb21['PRODUCTIONDEMANDCODE']; ?>
+                                    </td>
                                     <td align="center" width="20"><?php echo $rowds['DELIVERYDATE']; ?></td>
                                     <td><?php echo $rowdb21['PRODUCTIONORDERCODE']; ?></td>
-                                    <td class="12"><?php if (intval($arr['0']) > 0) {
-                                                        echo intval($arr['0']);
-                                                    } ?></td>
-                                    <td class="13"><span class="12">
-                                            <?php if ($arr1['0'] != "") {
-                                                echo $arr1['0'];
-                                            } ?>
-                                        </span></td>
-                                    <td class="14"><?php if (intval($arr['1']) > 0) {
-                                                        echo intval($arr['1']);
-                                                    } ?></td>
-                                    <td class="15"><span class="12">
-                                            <?php if ($arr1['1'] != "") {
-                                                echo $arr1['1'];
-                                            } ?>
-                                        </span></td>
-                                    <td class="16"><?php if (intval($arr['2']) > 0) {
-                                                        echo intval($arr['2']);
-                                                    } ?></td>
+                                    <td class="12">
+                                        <?php 
+                                            if (intval($arr['0']) > 0) {
+                                                echo intval($arr['0']);
+                                            } 
+                                        ?>
+                                    </td>
+                                    <td class="13">
+                                        <span class="12">
+                                            <?php 
+                                                if ($arr1['0'] != "") {
+                                                    echo $arr1['0'];
+                                                } 
+                                            ?>
+                                        </span>
+                                    </td>
+                                    <td class="14">
+                                        <?php 
+                                            if (intval($arr['1']) > 0) {
+                                                echo intval($arr['1']);
+                                            } 
+                                        ?>
+                                    </td>
+                                    <td class="15">
+                                        <span class="12">
+                                            <?php 
+                                                if ($arr1['1'] != "") {
+                                                    echo $arr1['1'];
+                                                } 
+                                            ?>
+                                        </span>
+                                    </td>
+                                    <td class="16">
+                                        <?php if (intval($arr['2']) > 0) {
+                                                echo intval($arr['2']);
+                                            } 
+                                        ?>
+                                    </td>
                                     <td class="17"><span class="12">
                                             <?php if ($arr1['2'] != "") {
                                                 echo $arr1['2'];
@@ -886,7 +900,8 @@ include "koneksi.php";
                                     <th class="31"><?php echo $rowOut['LONGDESCRIPTION']; ?></th>
                                     <th class="32"><?php echo $rowdb21['LONGDESCRIPTION']; ?></th>
                                     <th class="33"><?php echo $rowOut['LONGDESCRIPTION']; ?></th>
-                                    <td class="34"> <span class="badge badge-dark"><?php echo $rowOutTo['OPERATIONCODE']; ?></span> /
+                                    <td class="34"> 
+                                        <span class="badge badge-dark"><?php echo $rowOutTo['OPERATIONCODE']; ?></span> /
                                         <span class="label label-info"><?php echo $rowOutTo['OPSTEPGROUPCODE']; ?></span>
                                     </td>
                                     <td class="35"><?php echo $rowdb21['LONGDESCRIPTION']; ?></td>
