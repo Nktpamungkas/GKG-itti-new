@@ -139,14 +139,14 @@
                     <li>
                         <h5 style="font-weight: bold;">DATA PEMAKAIAN BAHAN BAKU</h5>
                     </li>
-                    <li><span>No. Form : <b>FW-14-GKG-09/04</b></span></li>
+                    <li><span>No. Form : <b>FW-14-GKG-09/06</b></span></li>
                     <li><span>-</span></li>
                 </b>
             </td>
         </tr>
     </table>
-    <li style="display:inline; margin-left: 5px;">Tanggal : <?php echo date('Y-m-d')  ?></li>
-    <li style="display:inline; margin-left: 150px;">Shift : <?= $_GET['shift'] ?></li>
+    <li style="display:inline; margin-left: 5px;">Tanggal : <?= $_GET['tgl1']; ?></li>
+    <li style="display:inline; margin-left: 150px;">Shift : <?= $_GET['shift']; ?></li>
     <table class="table-ttd" style="width: 367mm;">
         <thead>
             <tr>
@@ -649,14 +649,13 @@
                 </tr>
         </tbody>
     </table>
-    <li><strong>Keterangan : Sebelum diserahkan ke Dyeing/Finishing Leader shift memastikan product telah sesuai dengan permintaan pada kartu
-            kerja dan diberitanda tickmark(√) pada kolom leader check</strong></li>
+    <li><strong>Keterangan : Sebelum di serahkan ke departement user leader shift memastikan telah sesuai dengan permintaan pada kartu kerja dan di approve leader shift pada kolom leader check</strong></li>
     <table class="table-ttd" style="width: 367mm;">
         <thead>
             <tr>
                 <td></td>
                 <td style="text-align: center;">Dibuat Oleh</td>
-                <td style="text-align: center;">Diketahui Oleh</td>
+                <td style="text-align: center;"></td>
                 <td style="text-align: center;">Disetujui Oleh</td>
             </tr>
         </thead>
@@ -664,19 +663,19 @@
             <tr>
                 <td style="font-weight: bold; width: 25mm;">Nama</td>
                 <td align="center"><input type="text" width="100%" style="text-align:center; text-transform: uppercase; border:none; font-size: 8pt;" placeholder="_ _ _ _ _ _ _ _ _ _ _ _"></td>
-                <td align="center"><input type="text" width="100%" style="text-align:center; text-transform: uppercase; border:none; font-size: 8pt;" placeholder="_ _ _ _ _ _ _ _ _ _ _ _"></td>
+                <td align="center"><input type="text" width="100%" style="text-align:center; text-transform: uppercase; border:none; font-size: 8pt;"></td>
                 <td align="center"><input type="text" width="100%" style="text-align:center; text-transform: uppercase; border:none; font-size: 8pt;" placeholder="_ _ _ _ _ _ _ _ _ _ _ _"></td>
             </tr>
             <tr>
                 <td style=" font-weight: bold;">Jabatan</td>
                 <td align="center">LEADER</td>
-                <td align="center">LEADER</td>
+                <td align="center"><input type="text" width="100%" style="text-align:center; text-transform: uppercase; border:none; font-size: 8pt;"></td>
                 <td align="center">Assistant SPV</td>
             </tr>
             <tr>
                 <td style="font-weight: bold;">Tanggal</td>
                 <td align="center"><input type="text" width="100%" class="datepick" style="text-align:center; border:none; font-size: 8pt;" placeholder="____ __ __"></td>
-                <td align="center"><input type="text" width="100%" class="datepick" style="text-align:center; border:none; font-size: 8pt;" placeholder="____ __ __"></td>
+                <td align="center"><input type="text" width="100%" class="datepick" style="text-align:center; border:none; font-size: 8pt;"></td>
                 <td align="center"><input type="text" width="100%" class="datepick" style="text-align:center; border:none; font-size: 8pt;" placeholder="____ __ __"></td>
             </tr>
         </tbody>
