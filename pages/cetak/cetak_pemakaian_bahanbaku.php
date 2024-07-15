@@ -184,461 +184,461 @@
             </tr>
         </thead>
         <tbody>
-            <?php
-                if ($_GET["shift"] != 'ALL') {
-                    if ($_GET["shift"] == 1) {
-                        $start_shift3 = $_GET['tgl1'] . " 07:00:00";
-                        $end_shift3 = $_GET['tgl2'] . " 15:00:00";
-                    } else if ($_GET["shift"] == 2) {
-                        $start_shift3 = $_GET['tgl1'] . " 15:00:00";
-                        $end_shift3 = $_GET['tgl2'] . " 23:00:00";
-                    } else if ($_GET["shift"] == 3) {
-                        $start_shift3 = $_GET['tgl1'] . " 23:00:00";
-                        $end_shift3 = $_GET['tgl2'] . " 07:00:00";
-                    }
-                    $sqlDB21 = "SELECT
-                                    TRIM(x.PRODUCTIONORDERCODE) AS PRODUCTIONORDERCODE,
-                                    x.OPERATIONCODE, 
-                                    x.OPERATORCODE,
-                                    x.PROGRESSSTARTPROCESSDATE, 
-                                    x.PROGRESSSTARTPROCESSTIME ,
-                                    x.MACHINECODE ,
-                                    x.CREATIONDATETIME,
-                                    r.LONGDESCRIPTION,  
-                                    i.SUBCODE01,
-                                    i.SUBCODE02,
-                                    i.SUBCODE03,
-                                    i.SUBCODE04,
-                                    i.SUBCODE05,
-                                    i.SUBCODE06,
-                                    i.SUBCODE07,
-                                    i.SUBCODE08,
-                                    i.SUBCODE09,
-                                    i.SUBCODE10,
-                                    i.ITEMNO,
-                                    LISTAGG(TRIM(i.PRO_ORDER), ', ') PRO_ORDER,
-                                    LISTAGG(TRIM(i.PRODUCTIONDEMANDCODE), ', ') PRODUCTIONDEMANDCODE,
-                                    LISTAGG(i.LANGGANAN, ', ') AS LANGGANAN,
-                                    i.WARNA,
-                                    i.NO_WARNA,
-                                    i.JENISKAIN,
-                                    i.LOT
-                                FROM
-                                    PRODUCTIONPROGRESS x
-                                LEFT OUTER JOIN (
-                                        SELECT
-                                            p.SUBCODE01,
-                                            p.SUBCODE02,
-                                            p.SUBCODE03,
-                                            p.SUBCODE04,
-                                            p.SUBCODE05,
-                                            p.SUBCODE06,
-                                            p.SUBCODE07,
-                                            p.SUBCODE08,
-                                            p.SUBCODE09,
-                                            p.SUBCODE10,
-                                            CONCAT(TRIM(p.SUBCODE02), TRIM(p.SUBCODE03)) AS ITEMNO,
-                                            p.ORIGDLVSALORDLINESALORDERCODE AS PRO_ORDER,
-                                            ps.PRODUCTIONORDERCODE,
-                                            ps.PRODUCTIONDEMANDCODE,
-                                            E.LEGALNAME1 AS LANGGANAN,
-                                            TRIM(f.LONGDESCRIPTION) AS WARNA,
-                                            TRIM(f.CODE) AS NO_WARNA,
-                                            PRODUCT.LONGDESCRIPTION AS JENISKAIN,
-                                            p.DESCRIPTION AS LOT
-                                        FROM
-                                            PRODUCTIONDEMAND p
-                                        LEFT JOIN PRODUCT PRODUCT ON PRODUCT.ITEMTYPECODE = p.ITEMTYPEAFICODE
-                                                                AND PRODUCT.SUBCODE01 = p.SUBCODE01
-                                                                AND PRODUCT.SUBCODE02 = p.SUBCODE02
-                                                                AND PRODUCT.SUBCODE03 = p.SUBCODE03
-                                                                AND PRODUCT.SUBCODE04 = p.SUBCODE04
-                                                                AND PRODUCT.SUBCODE05 = p.SUBCODE05
-                                                                AND PRODUCT.SUBCODE06 = p.SUBCODE06
-                                                                AND PRODUCT.SUBCODE07 = p.SUBCODE07
-                                                                AND PRODUCT.SUBCODE08 = p.SUBCODE08
-                                                                AND PRODUCT.SUBCODE09 = p.SUBCODE09
-                                                                AND PRODUCT.SUBCODE10 = p.SUBCODE10
-                                        LEFT OUTER JOIN 
-                                                (
-                                                SELECT
-                                                    PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
-                                                    PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
-                                                FROM
-                                                    PRODUCTIONDEMANDSTEP PRODUCTIONDEMANDSTEP
-                                                GROUP BY
-                                                    PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
-                                                    PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
-                                            ) ps ON p.CODE = ps.PRODUCTIONDEMANDCODE
-                                        LEFT OUTER JOIN
-                                                (
-                                                SELECT
-                                                    BUSINESSPARTNER.LEGALNAME1,
-                                                    ORDERPARTNER.CUSTOMERSUPPLIERCODE
-                                                FROM
-                                                    BUSINESSPARTNER BUSINESSPARTNER
-                                                LEFT JOIN ORDERPARTNER ORDERPARTNER ON
-                                                    BUSINESSPARTNER.NUMBERID = ORDERPARTNER.ORDERBUSINESSPARTNERNUMBERID
-                                            ) E ON p.CUSTOMERCODE = E.CUSTOMERSUPPLIERCODE
-                                        LEFT OUTER JOIN USERGENERICGROUP f ON p.SUBCODE05 = f.CODE AND f.USERGENERICGROUPTYPECODE = 'CL1'
-                                        LEFT OUTER JOIN PRODUCTIONDEMAND h ON p.ORIGDLVSALORDLINESALORDERCODE = h.ORIGDLVSALORDLINESALORDERCODE
-                                            AND p.SUBCODE01 = h.SUBCODE01
-                                            AND p.SUBCODE02 = h.SUBCODE02
-                                            AND p.SUBCODE03 = h.SUBCODE03
-                                            AND p.SUBCODE04 = h.SUBCODE04
-                                            AND h.ITEMTYPEAFICODE = 'KFF'
-                                        GROUP BY
-                                            p.SUBCODE01,
-                                            p.SUBCODE02,
-                                            p.SUBCODE03,
-                                            p.SUBCODE04,
-                                            p.SUBCODE05,
-                                            p.SUBCODE06,
-                                            p.SUBCODE07,
-                                            p.SUBCODE08,
-                                            p.SUBCODE09,
-                                            p.SUBCODE10,
-                                            p.ORIGDLVSALORDLINESALORDERCODE,
-                                            ps.PRODUCTIONORDERCODE,
-                                            ps.PRODUCTIONDEMANDCODE,
-                                            E.LEGALNAME1,
-                                            f.LONGDESCRIPTION,
-                                            f.CODE,
-                                            PRODUCT.LONGDESCRIPTION,
-                                            p.DESCRIPTION
-                                    ) i ON i.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE
-                                LEFT OUTER JOIN RESOURCES r ON r.CODE = x.OPERATORCODE
-                                WHERE
-                                    (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1')
-                                    AND x.PROGRESSTEMPLATECODE = 'S01'
-                                    AND TIMESTAMP(TRIM(x.PROGRESSSTARTPROCESSDATE), TRIM(x.PROGRESSSTARTPROCESSTIME)) BETWEEN '$start_shift3' AND '$end_shift3'
-                                GROUP BY 
-                                    x.PRODUCTIONORDERCODE,
-                                    x.OPERATIONCODE, 
-                                    x.OPERATORCODE,
-                                    x.PROGRESSSTARTPROCESSDATE, 
-                                    x.PROGRESSSTARTPROCESSTIME ,
-                                    x.MACHINECODE ,
-                                    x.CREATIONDATETIME,
-                                    r.LONGDESCRIPTION,
-                                    i.SUBCODE01,
-                                    i.SUBCODE02,
-                                    i.SUBCODE03,
-                                    i.SUBCODE04,
-                                    i.SUBCODE05,
-                                    i.SUBCODE06,
-                                    i.SUBCODE07,
-                                    i.SUBCODE08,
-                                    i.SUBCODE09,
-                                    i.SUBCODE10,
-                                    i.ITEMNO,
-                                    i.WARNA,
-                                    i.NO_WARNA,
-                                    i.JENISKAIN,
-                                    i.LOT";
-                    $stmt1   = db2_exec($conn1, $sqlDB21);
-                } else if ($_GET["shift"] == 'ALL') {
-                    $sqlDB21 = "SELECT
-                                    TRIM(x.PRODUCTIONORDERCODE) AS PRODUCTIONORDERCODE,
-                                    x.OPERATIONCODE, 
-                                    x.OPERATORCODE,
-                                    x.PROGRESSSTARTPROCESSDATE, 
-                                    x.PROGRESSSTARTPROCESSTIME ,
-                                    x.MACHINECODE ,
-                                    x.CREATIONDATETIME,
-                                    r.LONGDESCRIPTION,  
-                                    i.SUBCODE01,
-                                    i.SUBCODE02,
-                                    i.SUBCODE03,
-                                    i.SUBCODE04,
-                                    i.SUBCODE05,
-                                    i.SUBCODE06,
-                                    i.SUBCODE07,
-                                    i.SUBCODE08,
-                                    i.SUBCODE09,
-                                    i.SUBCODE10,
-                                    i.ITEMNO,
-                                    LISTAGG(TRIM(i.PRO_ORDER), ', ') PRO_ORDER,
-                                    LISTAGG(TRIM(i.PRODUCTIONDEMANDCODE), ', ') PRODUCTIONDEMANDCODE,
-                                    LISTAGG(i.LANGGANAN, ', ') AS LANGGANAN,
-                                    i.WARNA,
-                                    i.NO_WARNA,
-                                    i.JENISKAIN,
-                                    i.LOT
-                                FROM
-                                    PRODUCTIONPROGRESS x
-                                LEFT OUTER JOIN (
-                                        SELECT
-                                            p.SUBCODE01,
-                                            p.SUBCODE02,
-                                            p.SUBCODE03,
-                                            p.SUBCODE04,
-                                            p.SUBCODE05,
-                                            p.SUBCODE06,
-                                            p.SUBCODE07,
-                                            p.SUBCODE08,
-                                            p.SUBCODE09,
-                                            p.SUBCODE10,
-                                            CONCAT(TRIM(p.SUBCODE02), TRIM(p.SUBCODE03)) AS ITEMNO,
-                                            p.ORIGDLVSALORDLINESALORDERCODE AS PRO_ORDER,
-                                            ps.PRODUCTIONORDERCODE,
-                                            ps.PRODUCTIONDEMANDCODE,
-                                            E.LEGALNAME1 AS LANGGANAN,
-                                            TRIM(f.LONGDESCRIPTION) AS WARNA,
-                                            TRIM(f.CODE) AS NO_WARNA,
-                                            PRODUCT.LONGDESCRIPTION AS JENISKAIN,
-                                            p.DESCRIPTION AS LOT
-                                        FROM
-                                            PRODUCTIONDEMAND p
-                                        LEFT JOIN PRODUCT PRODUCT ON PRODUCT.ITEMTYPECODE = p.ITEMTYPEAFICODE
-                                                                AND PRODUCT.SUBCODE01 = p.SUBCODE01
-                                                                AND PRODUCT.SUBCODE02 = p.SUBCODE02
-                                                                AND PRODUCT.SUBCODE03 = p.SUBCODE03
-                                                                AND PRODUCT.SUBCODE04 = p.SUBCODE04
-                                                                AND PRODUCT.SUBCODE05 = p.SUBCODE05
-                                                                AND PRODUCT.SUBCODE06 = p.SUBCODE06
-                                                                AND PRODUCT.SUBCODE07 = p.SUBCODE07
-                                                                AND PRODUCT.SUBCODE08 = p.SUBCODE08
-                                                                AND PRODUCT.SUBCODE09 = p.SUBCODE09
-                                                                AND PRODUCT.SUBCODE10 = p.SUBCODE10
-                                        LEFT OUTER JOIN 
-                                            (
-                                                SELECT
-                                                    PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
-                                                    PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
-                                                FROM
-                                                    PRODUCTIONDEMANDSTEP PRODUCTIONDEMANDSTEP
-                                                GROUP BY
-                                                    PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
-                                                    PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
-                                            ) ps ON p.CODE = ps.PRODUCTIONDEMANDCODE
-                                        LEFT OUTER JOIN
-                                            (
-                                                SELECT
-                                                    BUSINESSPARTNER.LEGALNAME1,
-                                                    ORDERPARTNER.CUSTOMERSUPPLIERCODE
-                                                FROM
-                                                    BUSINESSPARTNER BUSINESSPARTNER
-                                                LEFT JOIN ORDERPARTNER ORDERPARTNER ON
-                                                    BUSINESSPARTNER.NUMBERID = ORDERPARTNER.ORDERBUSINESSPARTNERNUMBERID
-                                            ) E ON p.CUSTOMERCODE = E.CUSTOMERSUPPLIERCODE
-                                        LEFT OUTER JOIN USERGENERICGROUP f ON p.SUBCODE05 = f.CODE AND f.USERGENERICGROUPTYPECODE = 'CL1'
-                                        LEFT OUTER JOIN PRODUCTIONDEMAND h ON p.ORIGDLVSALORDLINESALORDERCODE = h.ORIGDLVSALORDLINESALORDERCODE
-                                            AND p.SUBCODE01 = h.SUBCODE01
-                                            AND p.SUBCODE02 = h.SUBCODE02
-                                            AND p.SUBCODE03 = h.SUBCODE03
-                                            AND p.SUBCODE04 = h.SUBCODE04
-                                            AND h.ITEMTYPEAFICODE = 'KFF'
-                                        GROUP BY
-                                            p.SUBCODE01,
-                                            p.SUBCODE02,
-                                            p.SUBCODE03,
-                                            p.SUBCODE04,
-                                            p.SUBCODE05,
-                                            p.SUBCODE06,
-                                            p.SUBCODE07,
-                                            p.SUBCODE08,
-                                            p.SUBCODE09,
-                                            p.SUBCODE10,
-                                            p.ORIGDLVSALORDLINESALORDERCODE,
-                                            ps.PRODUCTIONORDERCODE,
-                                            ps.PRODUCTIONDEMANDCODE,
-                                            E.LEGALNAME1,
-                                            f.LONGDESCRIPTION,
-                                            f.CODE,
-                                            PRODUCT.LONGDESCRIPTION,
-                                            p.DESCRIPTION
-                                    ) i ON i.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE
-                                LEFT OUTER JOIN RESOURCES r ON r.CODE = x.OPERATORCODE
-                                WHERE
-                                    (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1')
-                                    AND x.PROGRESSTEMPLATECODE = 'S01'
-                                    AND TIMESTAMP(TRIM(x.PROGRESSSTARTPROCESSDATE), TRIM(x.PROGRESSSTARTPROCESSTIME)) BETWEEN '$_GET[tgl1] 23:00:00' AND '$_GET[tgl2] 23:00:00'
-                                GROUP BY 
-                                    x.PRODUCTIONORDERCODE,
-                                    x.OPERATIONCODE, 
-                                    x.OPERATORCODE,
-                                    x.PROGRESSSTARTPROCESSDATE, 
-                                    x.PROGRESSSTARTPROCESSTIME ,
-                                    x.MACHINECODE ,
-                                    x.CREATIONDATETIME,
-                                    r.LONGDESCRIPTION,
-                                    i.SUBCODE01,
-                                    i.SUBCODE02,
-                                    i.SUBCODE03,
-                                    i.SUBCODE04,
-                                    i.SUBCODE05,
-                                    i.SUBCODE06,
-                                    i.SUBCODE07,
-                                    i.SUBCODE08,
-                                    i.SUBCODE09,
-                                    i.SUBCODE10,
-                                    i.ITEMNO,
-                                    i.LANGGANAN,
-                                    i.WARNA,
-                                    i.NO_WARNA,
-                                    i.JENISKAIN,
-                                    i.LOT";
-                    $stmt1   = db2_exec($conn1, $sqlDB21);
+        <?php
+            if ($_GET["shift"] != 'ALL') {
+                if ($_GET["shift"] == 1) {
+                    $start_shift3 = $_GET['tgl1'] . " 07:00:00";
+                    $end_shift3 = $_GET['tgl2'] . " 15:00:00";
+                } else if ($_GET["shift"] == 2) {
+                    $start_shift3 = $_GET['tgl1'] . " 15:00:00";
+                    $end_shift3 = $_GET['tgl2'] . " 23:00:00";
+                } else if ($_GET["shift"] == 3) {
+                    $start_shift3 = $_GET['tgl1'] . " 23:00:00";
+                    $end_shift3 = $_GET['tgl2'] . " 07:00:00";
                 }
-
-                $totalQtyBagiKain = 0;
-                $totalRollBagiKain = 0;
-            ?>
-            <?php while ($rowdb21 = db2_fetch_assoc($stmt1)) : ?>
-                <tr>
-                    <td align="left" valign="top"><?= $rowdb21['LANGGANAN']; ?></td>
-                    <td align="left" valign="top"><?= $rowdb21['PRO_ORDER']; ?></td>
-                    <td align="left" valign="top" style="font-size: 10px;"><?= $rowdb21['JENISKAIN']; ?></td>
-                    <td align="left" valign="top"><?= $rowdb21['WARNA']; ?></td>
-                    <td align="left" valign="top"><?= $rowdb21['PRODUCTIONORDERCODE']; ?></td>
-                    <td align="left" valign="top"><?= $rowdb21['PRODUCTIONDEMANDCODE']; ?></td>
-                    <td align="left" valign="top"><?= $rowdb21['LOT']; ?></td>
-                    <td align="left" valign="top">
-                        <?php 
-                            $q_roll_tdk_gabung  = db2_exec($conn1, "SELECT count(*) AS ROLL, s2.PRODUCTIONORDERCODE
-                                                                        FROM STOCKTRANSACTION s2 
-                                                                        WHERE s2.ITEMTYPECODE ='KGF' AND s2.PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
-                                                                        GROUP BY s2.PRODUCTIONORDERCODE");
-                            $d_roll_tdk_gabung  = db2_fetch_assoc($q_roll_tdk_gabung);
-                            echo $roll   = $d_roll_tdk_gabung['ROLL'];
-                            $totalRollBagiKain += $d_roll_tdk_gabung['ROLL'];
-                        ?>
-                    </td>
-
-                    <td align="center" valign="top">
-                        <?php
-                            $sqlkg = "SELECT DISTINCT
-                                                    GROUPSTEPNUMBER,
-                                                    INITIALUSERPRIMARYQUANTITY AS QTY_BAGI_KAIN,
-                                                    INITIALUSERSECONDARYQUANTITY AS QTY_ORDER_YARD
-                                                FROM 
-                                                    VIEWPRODUCTIONDEMANDSTEP 
-                                                WHERE 
-                                                    PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
-                                                ORDER BY
-                                                    GROUPSTEPNUMBER ASC LIMIT 1";
-                            $stmtkg11 = db2_exec($conn1, $sqlkg, array('cursor' => DB2_SCROLLABLE));
-                            $rowkg = db2_fetch_assoc($stmtkg11);
-                            echo round($rowkg['QTY_BAGI_KAIN'], 2); // BAGIKAIN RESERVATION
-                            $totalQtyBagiKain += $rowkg['QTY_BAGI_KAIN'];
-                        ?>
-                    </td>
-                    <td align="center" valign="top">
-                        <?php 
-                            $sqlOutTo = "SELECT
-                                            p.OPERATIONCODE,
-                                            p.OPSTEPGROUPCODE
-                                        FROM
+                $sqlDB21 = "SELECT
+                                TRIM(x.PRODUCTIONORDERCODE) AS PRODUCTIONORDERCODE,
+                                x.OPERATIONCODE, 
+                                x.OPERATORCODE,
+                                x.PROGRESSSTARTPROCESSDATE, 
+                                x.PROGRESSSTARTPROCESSTIME ,
+                                x.MACHINECODE ,
+                                x.CREATIONDATETIME,
+                                r.LONGDESCRIPTION,  
+                                i.SUBCODE01,
+                                i.SUBCODE02,
+                                i.SUBCODE03,
+                                i.SUBCODE04,
+                                i.SUBCODE05,
+                                i.SUBCODE06,
+                                i.SUBCODE07,
+                                i.SUBCODE08,
+                                i.SUBCODE09,
+                                i.SUBCODE10,
+                                i.ITEMNO,
+                                LISTAGG(TRIM(i.PRO_ORDER), ', ') PRO_ORDER,
+                                LISTAGG(TRIM(i.PRODUCTIONDEMANDCODE), ', ') PRODUCTIONDEMANDCODE,
+                                LISTAGG(i.LANGGANAN, ', ') AS LANGGANAN,
+                                i.WARNA,
+                                i.NO_WARNA,
+                                i.JENISKAIN,
+                                i.LOT
+                            FROM
+                                PRODUCTIONPROGRESS x
+                            LEFT OUTER JOIN (
+                                    SELECT
+                                        p.SUBCODE01,
+                                        p.SUBCODE02,
+                                        p.SUBCODE03,
+                                        p.SUBCODE04,
+                                        p.SUBCODE05,
+                                        p.SUBCODE06,
+                                        p.SUBCODE07,
+                                        p.SUBCODE08,
+                                        p.SUBCODE09,
+                                        p.SUBCODE10,
+                                        CONCAT(TRIM(p.SUBCODE02), TRIM(p.SUBCODE03)) AS ITEMNO,
+                                        p.ORIGDLVSALORDLINESALORDERCODE AS PRO_ORDER,
+                                        ps.PRODUCTIONORDERCODE,
+                                        ps.PRODUCTIONDEMANDCODE,
+                                        E.LEGALNAME1 AS LANGGANAN,
+                                        TRIM(f.LONGDESCRIPTION) AS WARNA,
+                                        TRIM(f.CODE) AS NO_WARNA,
+                                        PRODUCT.LONGDESCRIPTION AS JENISKAIN,
+                                        p.DESCRIPTION AS LOT
+                                    FROM
+                                        PRODUCTIONDEMAND p
+                                    LEFT JOIN PRODUCT PRODUCT ON PRODUCT.ITEMTYPECODE = p.ITEMTYPEAFICODE
+                                                            AND PRODUCT.SUBCODE01 = p.SUBCODE01
+                                                            AND PRODUCT.SUBCODE02 = p.SUBCODE02
+                                                            AND PRODUCT.SUBCODE03 = p.SUBCODE03
+                                                            AND PRODUCT.SUBCODE04 = p.SUBCODE04
+                                                            AND PRODUCT.SUBCODE05 = p.SUBCODE05
+                                                            AND PRODUCT.SUBCODE06 = p.SUBCODE06
+                                                            AND PRODUCT.SUBCODE07 = p.SUBCODE07
+                                                            AND PRODUCT.SUBCODE08 = p.SUBCODE08
+                                                            AND PRODUCT.SUBCODE09 = p.SUBCODE09
+                                                            AND PRODUCT.SUBCODE10 = p.SUBCODE10
+                                    LEFT OUTER JOIN 
                                             (
                                             SELECT
-                                                GROUPSTEPNUMBER,
-                                                PRODUCTIONORDERCODE
+                                                PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
+                                                PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
                                             FROM
-                                                VIEWPRODUCTIONDEMANDSTEP
-                                            WHERE
-                                                PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
-                                                AND (OPERATIONCODE = 'BAT2'
-                                                    OR OPERATIONCODE = 'BKN1'
-                                                    OR OPERATIONCODE = 'JHP1') ) s
-                                        LEFT OUTER JOIN VIEWPRODUCTIONDEMANDSTEP p ON
-                                            s.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
-                                            AND s.GROUPSTEPNUMBER < p.GROUPSTEPNUMBER";
-                            $stmtOutTo = db2_exec($conn1, $sqlOutTo, array('cursor' => DB2_SCROLLABLE));
-                            $rowOutTo = db2_fetch_assoc($stmtOutTo);
-                        ?>
-                        <?= $rowOutTo['OPERATIONCODE']; ?> /
-                        <?= $rowOutTo['OPSTEPGROUPCODE']; ?>
-                    </td>
-                    <?php
-                    // QUERY DIBAWAH INI MENGIKUTI QUERY POSISI KK DI LAPORAN
-                        $sqlOut = "SELECT
-                                        p.PRODUCTIONORDERCODE,
-                                        p.STEPNUMBER AS STEPNUMBER,
-                                        CASE
-                                            WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
-                                            ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
-                                        END AS OPERATIONCODE,
-                                        TRIM(o.OPERATIONGROUPCODE) AS DEPT,
-                                        o.LONGDESCRIPTION,
-                                        CASE
-                                            WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
-                                            WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
-                                            WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
-                                            WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
-                                        END AS STATUS_OPERATION,
-                                        iptip.MULAI,
-                                        CASE
-                                            WHEN p.PROGRESSSTATUS = 3 THEN COALESCE(iptop.SELESAI, SUBSTRING(p.LASTUPDATEDATETIME, 1, 19) || '(Run Manual Closures)')
-                                            ELSE iptop.SELESAI
-                                        END AS SELESAI,
-                                        p.PRODUCTIONORDERCODE,
-                                        p.PRODUCTIONDEMANDCODE,
-                                        iptip.LONGDESCRIPTION AS OP1,
-                                        iptop.LONGDESCRIPTION AS OP2,
-                                        CASE
-                                            WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
-                                            ELSE LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ')
-                                        END AS GEROBAK,
-                                        idqd.WORKCENTERCODE 
-                                    FROM 
-                                        PRODUCTIONDEMANDSTEP p 
-                                    LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
-                                    LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
-                                    LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-                                    LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-                                    LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
-                                                                        -- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
-                                                                        AND idqd.OPERATIONCODE = CASE
-                                                                                                    WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
-                                                                                                    ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
-                                                                                                END
-                                                                        AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
-                                                                        AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB2' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB3' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB4' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB5' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB6' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB7' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB8')
-                                                                        AND NOT (idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 1 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
-                                    WHERE
-                                        p.PRODUCTIONORDERCODE  = '$rowdb21[PRODUCTIONORDERCODE]' AND p.OPERATIONCODE = '$rowdb21[OPERATIONCODE]'
+                                                PRODUCTIONDEMANDSTEP PRODUCTIONDEMANDSTEP
+                                            GROUP BY
+                                                PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
+                                                PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
+                                        ) ps ON p.CODE = ps.PRODUCTIONDEMANDCODE
+                                    LEFT OUTER JOIN
+                                            (
+                                            SELECT
+                                                BUSINESSPARTNER.LEGALNAME1,
+                                                ORDERPARTNER.CUSTOMERSUPPLIERCODE
+                                            FROM
+                                                BUSINESSPARTNER BUSINESSPARTNER
+                                            LEFT JOIN ORDERPARTNER ORDERPARTNER ON
+                                                BUSINESSPARTNER.NUMBERID = ORDERPARTNER.ORDERBUSINESSPARTNERNUMBERID
+                                        ) E ON p.CUSTOMERCODE = E.CUSTOMERSUPPLIERCODE
+                                    LEFT OUTER JOIN USERGENERICGROUP f ON p.SUBCODE05 = f.CODE AND f.USERGENERICGROUPTYPECODE = 'CL1'
+                                    LEFT OUTER JOIN PRODUCTIONDEMAND h ON p.ORIGDLVSALORDLINESALORDERCODE = h.ORIGDLVSALORDLINESALORDERCODE
+                                        AND p.SUBCODE01 = h.SUBCODE01
+                                        AND p.SUBCODE02 = h.SUBCODE02
+                                        AND p.SUBCODE03 = h.SUBCODE03
+                                        AND p.SUBCODE04 = h.SUBCODE04
+                                        AND h.ITEMTYPEAFICODE = 'KFF'
                                     GROUP BY
-                                        p.PRODUCTIONORDERCODE,
-                                        p.STEPNUMBER,
-                                        p.OPERATIONCODE,
-                                        p.PRODRESERVATIONLINKGROUPCODE,
-                                        o.OPERATIONGROUPCODE,
-                                        o.LONGDESCRIPTION,
-                                        p.PROGRESSSTATUS,
-                                        iptip.MULAI,
-                                        iptop.SELESAI,
-                                        p.LASTUPDATEDATETIME,
-                                        p.PRODUCTIONORDERCODE,
-                                        p.PRODUCTIONDEMANDCODE,
-                                        iptip.LONGDESCRIPTION,
-                                        iptop.LONGDESCRIPTION,
-                                        a.VALUEBOOLEAN,
-                                        idqd.WORKCENTERCODE 
-                                    ORDER BY p.STEPNUMBER ASC";
-                        $stmtOut = db2_exec($conn1, $sqlOut, array('cursor' => DB2_SCROLLABLE));
-                        $rowOut = db2_fetch_assoc($stmtOut);
+                                        p.SUBCODE01,
+                                        p.SUBCODE02,
+                                        p.SUBCODE03,
+                                        p.SUBCODE04,
+                                        p.SUBCODE05,
+                                        p.SUBCODE06,
+                                        p.SUBCODE07,
+                                        p.SUBCODE08,
+                                        p.SUBCODE09,
+                                        p.SUBCODE10,
+                                        p.ORIGDLVSALORDLINESALORDERCODE,
+                                        ps.PRODUCTIONORDERCODE,
+                                        ps.PRODUCTIONDEMANDCODE,
+                                        E.LEGALNAME1,
+                                        f.LONGDESCRIPTION,
+                                        f.CODE,
+                                        PRODUCT.LONGDESCRIPTION,
+                                        p.DESCRIPTION
+                                ) i ON i.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE
+                            LEFT OUTER JOIN RESOURCES r ON r.CODE = x.OPERATORCODE
+                            WHERE
+                                (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1')
+                                AND x.PROGRESSTEMPLATECODE = 'S01'
+                                AND TIMESTAMP(TRIM(x.PROGRESSSTARTPROCESSDATE), TRIM(x.PROGRESSSTARTPROCESSTIME)) BETWEEN '$start_shift3' AND '$end_shift3'
+                            GROUP BY 
+                                x.PRODUCTIONORDERCODE,
+                                x.OPERATIONCODE, 
+                                x.OPERATORCODE,
+                                x.PROGRESSSTARTPROCESSDATE, 
+                                x.PROGRESSSTARTPROCESSTIME ,
+                                x.MACHINECODE ,
+                                x.CREATIONDATETIME,
+                                r.LONGDESCRIPTION,
+                                i.SUBCODE01,
+                                i.SUBCODE02,
+                                i.SUBCODE03,
+                                i.SUBCODE04,
+                                i.SUBCODE05,
+                                i.SUBCODE06,
+                                i.SUBCODE07,
+                                i.SUBCODE08,
+                                i.SUBCODE09,
+                                i.SUBCODE10,
+                                i.ITEMNO,
+                                i.WARNA,
+                                i.NO_WARNA,
+                                i.JENISKAIN,
+                                i.LOT";
+                $stmt1   = db2_exec($conn1, $sqlDB21);
+            } else if ($_GET["shift"] == 'ALL') {
+                $sqlDB21 = "SELECT
+                                TRIM(x.PRODUCTIONORDERCODE) AS PRODUCTIONORDERCODE,
+                                x.OPERATIONCODE, 
+                                x.OPERATORCODE,
+                                x.PROGRESSSTARTPROCESSDATE, 
+                                x.PROGRESSSTARTPROCESSTIME ,
+                                x.MACHINECODE ,
+                                x.CREATIONDATETIME,
+                                r.LONGDESCRIPTION,  
+                                i.SUBCODE01,
+                                i.SUBCODE02,
+                                i.SUBCODE03,
+                                i.SUBCODE04,
+                                i.SUBCODE05,
+                                i.SUBCODE06,
+                                i.SUBCODE07,
+                                i.SUBCODE08,
+                                i.SUBCODE09,
+                                i.SUBCODE10,
+                                i.ITEMNO,
+                                LISTAGG(TRIM(i.PRO_ORDER), ', ') PRO_ORDER,
+                                LISTAGG(TRIM(i.PRODUCTIONDEMANDCODE), ', ') PRODUCTIONDEMANDCODE,
+                                LISTAGG(i.LANGGANAN, ', ') AS LANGGANAN,
+                                i.WARNA,
+                                i.NO_WARNA,
+                                i.JENISKAIN,
+                                i.LOT
+                            FROM
+                                PRODUCTIONPROGRESS x
+                            LEFT OUTER JOIN (
+                                    SELECT
+                                        p.SUBCODE01,
+                                        p.SUBCODE02,
+                                        p.SUBCODE03,
+                                        p.SUBCODE04,
+                                        p.SUBCODE05,
+                                        p.SUBCODE06,
+                                        p.SUBCODE07,
+                                        p.SUBCODE08,
+                                        p.SUBCODE09,
+                                        p.SUBCODE10,
+                                        CONCAT(TRIM(p.SUBCODE02), TRIM(p.SUBCODE03)) AS ITEMNO,
+                                        p.ORIGDLVSALORDLINESALORDERCODE AS PRO_ORDER,
+                                        ps.PRODUCTIONORDERCODE,
+                                        ps.PRODUCTIONDEMANDCODE,
+                                        E.LEGALNAME1 AS LANGGANAN,
+                                        TRIM(f.LONGDESCRIPTION) AS WARNA,
+                                        TRIM(f.CODE) AS NO_WARNA,
+                                        PRODUCT.LONGDESCRIPTION AS JENISKAIN,
+                                        p.DESCRIPTION AS LOT
+                                    FROM
+                                        PRODUCTIONDEMAND p
+                                    LEFT JOIN PRODUCT PRODUCT ON PRODUCT.ITEMTYPECODE = p.ITEMTYPEAFICODE
+                                                            AND PRODUCT.SUBCODE01 = p.SUBCODE01
+                                                            AND PRODUCT.SUBCODE02 = p.SUBCODE02
+                                                            AND PRODUCT.SUBCODE03 = p.SUBCODE03
+                                                            AND PRODUCT.SUBCODE04 = p.SUBCODE04
+                                                            AND PRODUCT.SUBCODE05 = p.SUBCODE05
+                                                            AND PRODUCT.SUBCODE06 = p.SUBCODE06
+                                                            AND PRODUCT.SUBCODE07 = p.SUBCODE07
+                                                            AND PRODUCT.SUBCODE08 = p.SUBCODE08
+                                                            AND PRODUCT.SUBCODE09 = p.SUBCODE09
+                                                            AND PRODUCT.SUBCODE10 = p.SUBCODE10
+                                    LEFT OUTER JOIN 
+                                        (
+                                            SELECT
+                                                PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
+                                                PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
+                                            FROM
+                                                PRODUCTIONDEMANDSTEP PRODUCTIONDEMANDSTEP
+                                            GROUP BY
+                                                PRODUCTIONDEMANDSTEP.PRODUCTIONORDERCODE,
+                                                PRODUCTIONDEMANDSTEP.PRODUCTIONDEMANDCODE
+                                        ) ps ON p.CODE = ps.PRODUCTIONDEMANDCODE
+                                    LEFT OUTER JOIN
+                                        (
+                                            SELECT
+                                                BUSINESSPARTNER.LEGALNAME1,
+                                                ORDERPARTNER.CUSTOMERSUPPLIERCODE
+                                            FROM
+                                                BUSINESSPARTNER BUSINESSPARTNER
+                                            LEFT JOIN ORDERPARTNER ORDERPARTNER ON
+                                                BUSINESSPARTNER.NUMBERID = ORDERPARTNER.ORDERBUSINESSPARTNERNUMBERID
+                                        ) E ON p.CUSTOMERCODE = E.CUSTOMERSUPPLIERCODE
+                                    LEFT OUTER JOIN USERGENERICGROUP f ON p.SUBCODE05 = f.CODE AND f.USERGENERICGROUPTYPECODE = 'CL1'
+                                    LEFT OUTER JOIN PRODUCTIONDEMAND h ON p.ORIGDLVSALORDLINESALORDERCODE = h.ORIGDLVSALORDLINESALORDERCODE
+                                        AND p.SUBCODE01 = h.SUBCODE01
+                                        AND p.SUBCODE02 = h.SUBCODE02
+                                        AND p.SUBCODE03 = h.SUBCODE03
+                                        AND p.SUBCODE04 = h.SUBCODE04
+                                        AND h.ITEMTYPEAFICODE = 'KFF'
+                                    GROUP BY
+                                        p.SUBCODE01,
+                                        p.SUBCODE02,
+                                        p.SUBCODE03,
+                                        p.SUBCODE04,
+                                        p.SUBCODE05,
+                                        p.SUBCODE06,
+                                        p.SUBCODE07,
+                                        p.SUBCODE08,
+                                        p.SUBCODE09,
+                                        p.SUBCODE10,
+                                        p.ORIGDLVSALORDLINESALORDERCODE,
+                                        ps.PRODUCTIONORDERCODE,
+                                        ps.PRODUCTIONDEMANDCODE,
+                                        E.LEGALNAME1,
+                                        f.LONGDESCRIPTION,
+                                        f.CODE,
+                                        PRODUCT.LONGDESCRIPTION,
+                                        p.DESCRIPTION
+                                ) i ON i.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE
+                            LEFT OUTER JOIN RESOURCES r ON r.CODE = x.OPERATORCODE
+                            WHERE
+                                (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1')
+                                AND x.PROGRESSTEMPLATECODE = 'S01'
+                                AND TIMESTAMP(TRIM(x.PROGRESSSTARTPROCESSDATE), TRIM(x.PROGRESSSTARTPROCESSTIME)) BETWEEN '$_GET[tgl1] 23:00:00' AND '$_GET[tgl2] 23:00:00'
+                            GROUP BY 
+                                x.PRODUCTIONORDERCODE,
+                                x.OPERATIONCODE, 
+                                x.OPERATORCODE,
+                                x.PROGRESSSTARTPROCESSDATE, 
+                                x.PROGRESSSTARTPROCESSTIME ,
+                                x.MACHINECODE ,
+                                x.CREATIONDATETIME,
+                                r.LONGDESCRIPTION,
+                                i.SUBCODE01,
+                                i.SUBCODE02,
+                                i.SUBCODE03,
+                                i.SUBCODE04,
+                                i.SUBCODE05,
+                                i.SUBCODE06,
+                                i.SUBCODE07,
+                                i.SUBCODE08,
+                                i.SUBCODE09,
+                                i.SUBCODE10,
+                                i.ITEMNO,
+                                i.LANGGANAN,
+                                i.WARNA,
+                                i.NO_WARNA,
+                                i.JENISKAIN,
+                                i.LOT";
+                $stmt1   = db2_exec($conn1, $sqlDB21);
+            }
+
+            $totalQtyBagiKain = 0;
+            $totalRollBagiKain = 0;
+        ?>
+        <?php while ($rowdb21 = db2_fetch_assoc($stmt1)) : ?>
+            <tr>
+                <td align="left" valign="top"><?= $rowdb21['LANGGANAN']; ?></td>
+                <td align="left" valign="top"><?= $rowdb21['PRO_ORDER']; ?></td>
+                <td align="left" valign="top" style="font-size: 10px;"><?= $rowdb21['JENISKAIN']; ?></td>
+                <td align="left" valign="top"><?= $rowdb21['WARNA']; ?></td>
+                <td align="left" valign="top"><?= $rowdb21['PRODUCTIONORDERCODE']; ?></td>
+                <td align="left" valign="top"><?= $rowdb21['PRODUCTIONDEMANDCODE']; ?></td>
+                <td align="left" valign="top"><?= $rowdb21['LOT']; ?></td>
+                <td align="left" valign="top">
+                    <?php 
+                        $q_roll_tdk_gabung  = db2_exec($conn1, "SELECT count(*) AS ROLL, s2.PRODUCTIONORDERCODE
+                                                                    FROM STOCKTRANSACTION s2 
+                                                                    WHERE s2.ITEMTYPECODE ='KGF' AND s2.PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
+                                                                    GROUP BY s2.PRODUCTIONORDERCODE");
+                        $d_roll_tdk_gabung  = db2_fetch_assoc($q_roll_tdk_gabung);
+                        echo $roll   = $d_roll_tdk_gabung['ROLL'];
+                        $totalRollBagiKain += $d_roll_tdk_gabung['ROLL'];
                     ?>
+                </td>
 
-                    <td align="left" valign="top"><?= $rowOut['OPERATIONCODE']; ?></td>
-                    
-                    <td align="left" valign="top"><?= $rowOut['MULAI']; ?></td>
-                    <td align="left" valign="top"><?= $rowOut['SELESAI']; ?></td>
+                <td align="center" valign="top">
+                    <?php
+                        $sqlkg = "SELECT DISTINCT
+                                                GROUPSTEPNUMBER,
+                                                INITIALUSERPRIMARYQUANTITY AS QTY_BAGI_KAIN,
+                                                INITIALUSERSECONDARYQUANTITY AS QTY_ORDER_YARD
+                                            FROM 
+                                                VIEWPRODUCTIONDEMANDSTEP 
+                                            WHERE 
+                                                PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
+                                            ORDER BY
+                                                GROUPSTEPNUMBER ASC LIMIT 1";
+                        $stmtkg11 = db2_exec($conn1, $sqlkg, array('cursor' => DB2_SCROLLABLE));
+                        $rowkg = db2_fetch_assoc($stmtkg11);
+                        echo round($rowkg['QTY_BAGI_KAIN'], 2); // BAGIKAIN RESERVATION
+                        $totalQtyBagiKain += $rowkg['QTY_BAGI_KAIN'];
+                    ?>
+                </td>
+                <td align="center" valign="top">
+                    <?php 
+                        $sqlOutTo = "SELECT
+                                        p.OPERATIONCODE,
+                                        p.OPSTEPGROUPCODE
+                                    FROM
+                                        (
+                                        SELECT
+                                            GROUPSTEPNUMBER,
+                                            PRODUCTIONORDERCODE
+                                        FROM
+                                            VIEWPRODUCTIONDEMANDSTEP
+                                        WHERE
+                                            PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
+                                            AND (OPERATIONCODE = 'BAT2'
+                                                OR OPERATIONCODE = 'BKN1'
+                                                OR OPERATIONCODE = 'JHP1') ) s
+                                    LEFT OUTER JOIN VIEWPRODUCTIONDEMANDSTEP p ON
+                                        s.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
+                                        AND s.GROUPSTEPNUMBER < p.GROUPSTEPNUMBER";
+                        $stmtOutTo = db2_exec($conn1, $sqlOutTo, array('cursor' => DB2_SCROLLABLE));
+                        $rowOutTo = db2_fetch_assoc($stmtOutTo);
+                    ?>
+                    <?= $rowOutTo['OPERATIONCODE']; ?> /
+                    <?= $rowOutTo['OPSTEPGROUPCODE']; ?>
+                </td>
+                <?php
+                // QUERY DIBAWAH INI MENGIKUTI QUERY POSISI KK DI LAPORAN
+                    $sqlOut = "SELECT
+                                    p.PRODUCTIONORDERCODE,
+                                    p.STEPNUMBER AS STEPNUMBER,
+                                    CASE
+                                        WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+                                        ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+                                    END AS OPERATIONCODE,
+                                    TRIM(o.OPERATIONGROUPCODE) AS DEPT,
+                                    o.LONGDESCRIPTION,
+                                    CASE
+                                        WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
+                                        WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
+                                        WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
+                                        WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
+                                    END AS STATUS_OPERATION,
+                                    iptip.MULAI,
+                                    CASE
+                                        WHEN p.PROGRESSSTATUS = 3 THEN COALESCE(iptop.SELESAI, SUBSTRING(p.LASTUPDATEDATETIME, 1, 19) || '(Run Manual Closures)')
+                                        ELSE iptop.SELESAI
+                                    END AS SELESAI,
+                                    p.PRODUCTIONORDERCODE,
+                                    p.PRODUCTIONDEMANDCODE,
+                                    iptip.LONGDESCRIPTION AS OP1,
+                                    iptop.LONGDESCRIPTION AS OP2,
+                                    CASE
+                                        WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
+                                        ELSE LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ')
+                                    END AS GEROBAK,
+                                    idqd.WORKCENTERCODE 
+                                FROM 
+                                    PRODUCTIONDEMANDSTEP p 
+                                LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+                                LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
+                                LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+                                LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+                                LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
+                                                                    -- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
+                                                                    AND idqd.OPERATIONCODE = CASE
+                                                                                                WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+                                                                                                ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+                                                                                            END
+                                                                    AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
+                                                                    AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
+                                                                        idqd.CHARACTERISTICCODE = 'GRB2' OR
+                                                                        idqd.CHARACTERISTICCODE = 'GRB3' OR
+                                                                        idqd.CHARACTERISTICCODE = 'GRB4' OR
+                                                                        idqd.CHARACTERISTICCODE = 'GRB5' OR
+                                                                        idqd.CHARACTERISTICCODE = 'GRB6' OR
+                                                                        idqd.CHARACTERISTICCODE = 'GRB7' OR
+                                                                        idqd.CHARACTERISTICCODE = 'GRB8')
+                                                                    AND NOT (idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 1 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
+                                WHERE
+                                    p.PRODUCTIONORDERCODE  = '$rowdb21[PRODUCTIONORDERCODE]' AND p.OPERATIONCODE = '$rowdb21[OPERATIONCODE]'
+                                GROUP BY
+                                    p.PRODUCTIONORDERCODE,
+                                    p.STEPNUMBER,
+                                    p.OPERATIONCODE,
+                                    p.PRODRESERVATIONLINKGROUPCODE,
+                                    o.OPERATIONGROUPCODE,
+                                    o.LONGDESCRIPTION,
+                                    p.PROGRESSSTATUS,
+                                    iptip.MULAI,
+                                    iptop.SELESAI,
+                                    p.LASTUPDATEDATETIME,
+                                    p.PRODUCTIONORDERCODE,
+                                    p.PRODUCTIONDEMANDCODE,
+                                    iptip.LONGDESCRIPTION,
+                                    iptop.LONGDESCRIPTION,
+                                    a.VALUEBOOLEAN,
+                                    idqd.WORKCENTERCODE 
+                                ORDER BY p.STEPNUMBER ASC";
+                    $stmtOut = db2_exec($conn1, $sqlOut, array('cursor' => DB2_SCROLLABLE));
+                    $rowOut = db2_fetch_assoc($stmtOut);
+                ?>
 
-                    <td align="left" valign="top"><?= $rowOut['WORKCENTERCODE']; ?></td>
-                    <td align="left" valign="top"><?= $rowOut['GEROBAK']; ?></td>
+                <td align="left" valign="top"><?= $rowOut['OPERATIONCODE']; ?></td>
+                
+                <td align="left" valign="top"><?= $rowOut['MULAI']; ?></td>
+                <td align="left" valign="top"><?= $rowOut['SELESAI']; ?></td>
 
-                    <td align="center" valign="top"><?= $rowOut['OP1']; ?></td>
-                    <td align="center" valign="top"><?= $rowOut['OP2']; ?></td>
-                    <td align="center" valign="top"><?= $_SESSION['nama1Gkg']; ?></td>
-                </tr>
+                <td align="left" valign="top"><?= $rowOut['WORKCENTERCODE']; ?></td>
+                <td align="left" valign="top"><?= $rowOut['GEROBAK']; ?></td>
+
+                <td align="center" valign="top"><?= $rowOut['OP1']; ?></td>
+                <td align="center" valign="top"><?= $rowOut['OP2']; ?></td>
+                <td align="center" valign="top"><?= $_SESSION['nama1Gkg']; ?></td>
+            </tr>
         <?php endwhile; ?>
                 <tr id="tr-footer">
                     <td align="center" valign="bottom" colspan="7" style="text-align: right;" valign="bottom">Total</td>
