@@ -309,7 +309,7 @@
                                     ) i ON i.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE
                                 LEFT OUTER JOIN RESOURCES r ON r.CODE = x.OPERATORCODE
                                 WHERE
-                                    (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1')
+                                    (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1')
                                     AND x.PROGRESSTEMPLATECODE = 'S01'
                                     AND TIMESTAMP(TRIM(x.PROGRESSSTARTPROCESSDATE), TRIM(x.PROGRESSSTARTPROCESSTIME)) BETWEEN '$start_shift3' AND '$end_shift3'
                                 GROUP BY 
@@ -451,7 +451,7 @@
                                     ) i ON i.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE
                                 LEFT OUTER JOIN RESOURCES r ON r.CODE = x.OPERATORCODE
                                 WHERE
-                                    (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1')
+                                    (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1')
                                     AND x.PROGRESSTEMPLATECODE = 'S01'
                                     AND TIMESTAMP(TRIM(x.PROGRESSSTARTPROCESSDATE), TRIM(x.PROGRESSSTARTPROCESSTIME)) BETWEEN '$_GET[tgl1] 23:00:00' AND '$_GET[tgl2] 23:00:00'
                                 GROUP BY 

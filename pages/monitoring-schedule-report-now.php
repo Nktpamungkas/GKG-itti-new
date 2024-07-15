@@ -160,8 +160,7 @@ include "koneksi.php";
                                 r.CODE = x.OPERATORCODE
                             WHERE
                                 (
-                                    x.OPERATIONCODE = 'BAT2'
-                                        OR x.OPERATIONCODE = 'BKN1'
+                                    x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1'
                                 )
                                 AND x.PROGRESSTEMPLATECODE = 'S01'
                                 AND TIMESTAMP(
@@ -311,8 +310,7 @@ include "koneksi.php";
                             r.CODE = x.OPERATORCODE
                         WHERE
                             (
-                                x.OPERATIONCODE = 'BAT2'
-                                    OR x.OPERATIONCODE = 'BKN1'
+                                x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1'
                             )
                             AND x.PROGRESSTEMPLATECODE = 'S01'
                             AND TIMESTAMP(
