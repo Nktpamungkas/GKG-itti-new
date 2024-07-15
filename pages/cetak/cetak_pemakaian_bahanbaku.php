@@ -578,7 +578,13 @@
                                     iptop.LONGDESCRIPTION AS OP2,
                                     CASE
                                         WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
-                                        ELSE LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ')
+                                        ELSE 
+                                            CASE
+                                                WHEN LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ') = '1' THEN 'PLASTIK'
+                                                WHEN LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ') = '2' THEN 'TONG'
+                                                WHEN LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ') = '3' THEN 'DALAM MESIN'
+                                                ELSE LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ')
+                                            END
                                     END AS GEROBAK,
                                     idqd.WORKCENTERCODE 
                                 FROM 
@@ -601,8 +607,9 @@
                                                                         idqd.CHARACTERISTICCODE = 'GRB5' OR
                                                                         idqd.CHARACTERISTICCODE = 'GRB6' OR
                                                                         idqd.CHARACTERISTICCODE = 'GRB7' OR
-                                                                        idqd.CHARACTERISTICCODE = 'GRB8')
-                                                                    AND NOT (idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 1 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
+                                                                        idqd.CHARACTERISTICCODE = 'GRB8' OR
+                                                                        idqd.CHARACTERISTICCODE = 'AREA')
+                                                                    AND NOT (idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
                                 WHERE
                                     p.PRODUCTIONORDERCODE  = '$rowdb21[PRODUCTIONORDERCODE]' AND p.OPERATIONCODE = '$rowdb21[OPERATIONCODE]'
                                 GROUP BY
