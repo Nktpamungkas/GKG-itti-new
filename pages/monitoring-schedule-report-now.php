@@ -165,7 +165,6 @@ include "koneksi.php";
                                     OR x.OPERATIONCODE = 'BKN1' 
                                     OR x.OPERATIONCODE = 'BEL1' 
                                     OR x.OPERATIONCODE = 'BAT3' 
-                                    OR x.OPERATIONCODE = 'BAT1' 
                                     OR x.OPERATIONCODE = 'BBS1' 
                                     OR x.OPERATIONCODE = 'JHP1' 
                                     OR x.OPERATIONCODE = 'WAIT36'
@@ -322,7 +321,6 @@ include "koneksi.php";
                                 OR x.OPERATIONCODE = 'BKN1' 
                                 OR x.OPERATIONCODE = 'BEL1' 
                                 OR x.OPERATIONCODE = 'BAT3' 
-                                OR x.OPERATIONCODE = 'BAT1' 
                                 OR x.OPERATIONCODE = 'BBS1' 
                                 OR x.OPERATIONCODE = 'JHP1' 
                                 OR x.OPERATIONCODE = 'WAIT36')
