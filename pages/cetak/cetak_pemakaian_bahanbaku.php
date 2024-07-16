@@ -222,7 +222,7 @@ li {
                                     i.WARNA,
                                     i.NO_WARNA,
                                     i.JENISKAIN,
-                                    i.LOT
+                                    LISTAGG(i.LOT, ', ') AS LOT
                                 FROM
                                     PRODUCTIONPROGRESS x
                                 LEFT OUTER JOIN (
@@ -334,8 +334,7 @@ li {
                                     i.ITEMNO,
                                     i.WARNA,
                                     i.NO_WARNA,
-                                    i.JENISKAIN,
-                                    i.LOT";
+                                    i.JENISKAIN";
                 $stmt1 = db2_exec($conn1, $sqlDB21);
             } else if ($_GET["shift"] == 'ALL') {
                 $sqlDB21 = "SELECT
@@ -364,7 +363,7 @@ li {
                                     i.WARNA,
                                     i.NO_WARNA,
                                     i.JENISKAIN,
-                                    i.LOT
+                                    LISTAGG(i.LOT, ', ') AS LOT
                                 FROM
                                     PRODUCTIONPROGRESS x
                                 LEFT OUTER JOIN (
@@ -477,8 +476,7 @@ li {
                                     i.LANGGANAN,
                                     i.WARNA,
                                     i.NO_WARNA,
-                                    i.JENISKAIN,
-                                    i.LOT";
+                                    i.JENISKAIN";
                 $stmt1 = db2_exec($conn1, $sqlDB21);
             }
 
