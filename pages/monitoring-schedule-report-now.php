@@ -751,7 +751,12 @@ include "koneksi.php";
                                                     PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
                                                     AND (OPERATIONCODE = 'BAT2'
                                                         OR OPERATIONCODE = 'BKN1'
-                                                        OR OPERATIONCODE = 'JHP1') ) s
+                                                        OR OPERATIONCODE = 'JHP1'
+                                                        OR OPERATIONCODE = 'BAT2'
+                                                        OR OPERATIONCODE = 'BEL1'
+                                                        OR OPERATIONCODE = 'BAT3'
+                                                        OR OPERATIONCODE = 'BBS1'
+                                                        OR OPERATIONCODE = 'WAIT36) ) s
                                             LEFT OUTER JOIN VIEWPRODUCTIONDEMANDSTEP p ON
                                                 s.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
                                                 AND s.GROUPSTEPNUMBER < p.GROUPSTEPNUMBER";
