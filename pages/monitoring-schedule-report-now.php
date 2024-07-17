@@ -756,7 +756,7 @@ include "koneksi.php";
                                                         OR OPERATIONCODE = 'BEL1'
                                                         OR OPERATIONCODE = 'BAT3'
                                                         OR OPERATIONCODE = 'BBS1'
-                                                        OR OPERATIONCODE = 'WAIT36) ) s
+                                                        OR OPERATIONCODE = 'WAIT36') ) s
                                             LEFT OUTER JOIN VIEWPRODUCTIONDEMANDSTEP p ON
                                                 s.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
                                                 AND s.GROUPSTEPNUMBER < p.GROUPSTEPNUMBER";
