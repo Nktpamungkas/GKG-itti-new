@@ -23,6 +23,30 @@ include "koneksi.php";
           </a>
         </div>-->
 				<h2>Data Keluar Kain Greige Perhari</h2>
+
+				<?php 
+					$q_min		= mysqli_query($connn, "SELECT
+														* 
+													FROM
+														( SELECT tgl_tutup FROM tblkeluarkain GROUP BY tgl_tutup ORDER BY tgl_tutup DESC LIMIT 30 ) AS subquery 
+													ORDER BY
+														tgl_tutup ASC 
+														LIMIT 1");
+					$date_min	= mysqli_fetch_assoc($q_min);
+					
+					$q_max		= mysqli_query($connn, "SELECT
+														* 
+													FROM
+														( SELECT tgl_tutup FROM tblkeluarkain GROUP BY tgl_tutup ORDER BY tgl_tutup DESC LIMIT 30 ) AS subquery 
+													ORDER BY
+														tgl_tutup DESC 
+														LIMIT 1");
+					$date_max	= mysqli_fetch_assoc($q_max);
+				?>
+				
+				<input type="date" min="<?= $date_min['tgl_tutup']; ?>" max="<?= $date_max['tgl_tutup']; ?>">
+
+
 				<div class="box-body">
 					<table id="example1" class="table table-bordered table-hover table-striped" width="100%">
 						<thead class="bg-blue">
@@ -91,85 +115,145 @@ include "koneksi.php";
 						</thead>
 						<tbody>
 							<?php
-              $no = 1;
-              $sql1 = mysqli_query($connn, "SELECT *
-                                            FROM tblkeluarkain
-                                            WHERE tgl_tutup <= CURDATE() -- Memilih data sampai dengan hari ini
-                                            AND demand IS NOT NULL
-                                            ORDER BY tgl_tutup DESC, id DESC
-                                            LIMIT 1000");
+								$no = 1;
+								$sql1 = mysqli_query($connn, "SELECT 
+																	*
+																FROM 
+																	tblkeluarkain
+																WHERE 
+																	tgl_tutup = '2024-07-17'
+																	AND demand IS NOT NULL
+																ORDER BY 
+																	tgl_tutup DESC, 
+																	id DESC");
+								while ($r = mysqli_fetch_array($sql1)) {
 
-              if (!$sql1) {
-                die("Query Error: " . mysqli_error($connn));
-              }
-
-              while ($r = mysqli_fetch_array($sql1)) {
-                ?>
-							<tr>
-								<td align="center">
-									<font size="-1"><?php echo $no; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['tglkeluar']; ?></font>
-								</td>
-								<td>
-									<font size="-1"><?php echo $r['buyer']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['custumer']; ?></font>
-								</td>
-								<td>
-									<font size="-1"><?php echo $r['projectcode']; ?></font>
-								</td>
-								<td>
-									<font size="-1"><?php echo $r['prod_order']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['demand']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['code']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['lot']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['benang1']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['benang2']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['benang3']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['benang4']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['warna']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['jenis_kain']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['qty']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['berat']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['proj_awal']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['ket']; ?></font>
-								</td>
-								<td align="center">
-									<font size="-1"><?php echo $r['userid']; ?></font>
-								</td>
-							</tr>
-							<?php
-                $no++;
-              } ?>
+								$sqlDB2 = "SELECT
+											p.PRODUCTIONORDERCODE,
+											p.PRODUCTIONDEMANDCODE,
+											CASE
+												WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+												ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+											END AS OPERATIONCODE,
+											CASE
+												WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
+												WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
+												WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
+												WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
+											END AS STATUS_OPERATION 
+										FROM 
+											PRODUCTIONDEMANDSTEP p 
+										LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
+										LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
+										LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+										LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
+										LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
+																			-- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
+																			AND idqd.OPERATIONCODE = CASE
+																										WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
+																										ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
+																									END
+																			AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
+																			AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
+																				idqd.CHARACTERISTICCODE = 'GRB2' OR
+																				idqd.CHARACTERISTICCODE = 'GRB3' OR
+																				idqd.CHARACTERISTICCODE = 'GRB4' OR
+																				idqd.CHARACTERISTICCODE = 'GRB5' OR
+																				idqd.CHARACTERISTICCODE = 'GRB6' OR
+																				idqd.CHARACTERISTICCODE = 'GRB7' OR
+																				idqd.CHARACTERISTICCODE = 'GRB8' OR
+																				idqd.CHARACTERISTICCODE = 'AREA')
+																			AND NOT (idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
+										WHERE
+											p.PRODUCTIONORDERCODE  = '$r[prod_order]' AND p.PRODUCTIONDEMANDCODE = '$r[demand]' AND TRIM(p.OPERATIONCODE) = 'BAT2'
+										GROUP BY
+											p.PRODUCTIONORDERCODE,
+											p.STEPNUMBER,
+											p.OPERATIONCODE,
+											p.PRODRESERVATIONLINKGROUPCODE,
+											o.OPERATIONGROUPCODE,
+											o.LONGDESCRIPTION,
+											p.PROGRESSSTATUS,
+											iptip.MULAI,
+											iptop.SELESAI,
+											p.LASTUPDATEDATETIME,
+											p.PRODUCTIONORDERCODE,
+											p.PRODUCTIONDEMANDCODE,
+											iptip.LONGDESCRIPTION,
+											iptop.LONGDESCRIPTION,
+											a.VALUEBOOLEAN,
+											idqd.WORKCENTERCODE 
+										ORDER BY p.STEPNUMBER ASC";
+								$stmt = db2_exec($conn1, $sqlDB2);
+								$rowdb2 = db2_fetch_assoc($stmt);
+							?>
+							<?php if($rowdb2['STATUS_OPERATION'] != 'Closed') : ?>
+								<tr>
+									<td align="center">
+										<font size="-1"><?= $no; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['tglkeluar']; ?></font>
+									</td>
+									<td>
+										<font size="-1"><?= $r['buyer']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><? $r['custumer']; ?></font>
+									</td>
+									<td>
+										<font size="-1"><?= $r['projectcode']; ?></font>
+									</td>
+									<td>
+										<font size="-1"><?= $r['prod_order']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1">
+											<a target="_BLANK" href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $r['demand']; ?>&prod_order=<?= $r['prod_order']; ?>"><?= $r['demand']; ?></a>	
+										</font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['code']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['lot']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['benang1']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['benang2']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['benang3']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['benang4']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['warna']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['jenis_kain']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['qty']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['berat']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['proj_awal']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['ket']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['userid']; ?></font>
+									</td>
+								</tr>
+							<?php endif; ?>
+							<?php $no++; } ?>
 						</tbody>
 					</table>
 				</div>
