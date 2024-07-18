@@ -65,7 +65,8 @@ include "koneksi.php";
 						<label for="selected_date">Pilih Tanggal:</label>
 						<select id="selected_date" name="selected_date" required>
 							<?php foreach ($dates as $date): ?>
-							<option value="<?= $date; ?>" <?= $date == $selected_date ? 'selected' : ''; ?>><?= $date; ?>
+							<option value="<?= $date; ?>" <?= $date == $selected_date ? 'selected' : ''; ?>>
+								<?= $date; ?>
 							</option>
 							<?php endforeach; ?>
 						</select>
@@ -211,74 +212,75 @@ include "koneksi.php";
 										$rowdb2 = db2_fetch_assoc($stmt);
 								?>
 								<?php if($rowdb2['STATUS_OPERATION'] != 'Closed') : ?>
-									<tr>
-										<td align="center">
-											<font size="-1"><?= $no; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['tglkeluar']; ?></font>
-										</td>
-										<td>
-											<font size="-1"><?= $r['buyer']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['custumer']; ?></font>
-										</td>
-										<td>
-											<font size="-1"><?= $r['projectcode']; ?></font>
-										</td>
-										<td>
-											<font size="-1"><?= $r['prod_order']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1">
-												<a target="_BLANK"
-													href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $r['demand']; ?>&prod_order=<?= $r['prod_order']; ?>"><?= $r['demand']; ?></a>
-											</font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['code']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['lot']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['benang1']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['benang2']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['benang3']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['benang4']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['warna']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['jenis_kain']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['qty']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['berat']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['proj_awal']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['ket']; ?></font>
-										</td>
-										<td align="center">
-											<font size="-1"><?= $r['userid']; ?></font>
-										</td>
-									</tr>
-								<?php endif; ?>
+								<tr>
+									<td align="center">
+										<font size="-1"><?= $no; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['tglkeluar']; ?></font>
+									</td>
+									<td>
+										<font size="-1"><?= $r['buyer']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['custumer']; ?></font>
+									</td>
+									<td>
+										<font size="-1"><?= $r['projectcode']; ?></font>
+									</td>
+									<td>
+										<font size="-1"><?= $r['prod_order']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1">
+											<a target="_BLANK"
+												href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $r['demand']; ?>&prod_order=<?= $r['prod_order']; ?>"><?= $r['demand']; ?></a>
+										</font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['code']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['lot']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['benang1']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['benang2']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['benang3']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['benang4']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['warna']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['jenis_kain']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['qty']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['berat']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['proj_awal']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['ket']; ?></font>
+									</td>
+									<td align="center">
+										<font size="-1"><?= $r['userid']; ?></font>
+									</td>
+								</tr>
+								<?php 
+									$no++;
+								 	endif; ?>
 								<?php
-								$no++;
 							} ?>
 							</tbody>
 						</table>
