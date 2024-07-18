@@ -195,7 +195,7 @@ $page = strtolower($page);
 					} ?>"><a href="Schedule"><i class="fa fa-download text-success"></i> <span>Pick-up
 								Schedule</span></a>
 					</li>
-					<li class="<?php if ($_GET['p'] == "Schedule") {
+					<li class="<?php if ($_GET['p'] == "ScheduleNOW") {
 						echo "active";
 					} ?>"><a href="ScheduleNOW"><i class="fa fa-eye text-success"></i> <span>Pick-up Schedule
 								NOW</span></a>
