@@ -10,6 +10,50 @@ include "koneksi.php";
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Schedule</title>
+	<style>
+	body {
+		font-family: Arial, sans-serif;
+	}
+
+	.container {
+		max-width: 600px;
+		margin: 0 auto;
+		padding: 20px;
+	}
+
+	.form-group {
+		margin-bottom: 20px;
+	}
+
+	label {
+		font-weight: bold;
+		margin-bottom: 5px;
+		display: block;
+	}
+
+	select {
+		width: 10%;
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		font-size: 16px;
+	}
+
+	input[type="submit"] {
+		background-color: #4CAF50;
+		color: white;
+		padding: 10px 10px;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-size: 16px;
+	}
+
+	input[type="submit"]:hover {
+		background-color: #45a049;
+	}
+	</style>
+
 </head>
 
 <body>
@@ -33,89 +77,91 @@ include "koneksi.php";
 
 				// Set default selected date to the latest date available
 				$default_date = $dates[0];
+				$selected_date = isset($_POST['selected_date']) ? $_POST['selected_date'] : $default_date;
 				?>
 
 				<form method="POST" action="">
 					<label for="selected_date">Pilih Tanggal:</label>
 					<select id="selected_date" name="selected_date" required>
 						<?php foreach ($dates as $date): ?>
-							<option value="<?= $date; ?>" <?= $date == $default_date ? 'selected' : ''; ?>><?= $date; ?>
-							</option>
+						<option value="<?= $date; ?>" <?= $date == $selected_date ? 'selected' : ''; ?>><?= $date; ?>
+						</option>
 						<?php endforeach; ?>
 					</select>
 					<input type="submit" value="Filter">
 				</form>
 
 				<div class="box-body">
-					<table id="TableLeaderCheck" class="table table-bordered table-hover table-striped" width="100%">
-						<thead class="bg-blue">
-							<tr>
-								<th width="100">
-									<div align="center">No</div>
-								</th>
-								<th width="45">
-									<div align="center">Tgl Keluar</div>
-								</th>
-								<th width="24">
-									<div align="center">Buyer</div>
-								</th>
-								<th width="162">
-									<div align="center">Customer</div>
-								</th>
-								<th width="118">
-									<div align="center">Project Code</div>
-								</th>
-								<th width="122">
-									<div align="center">Prod. Order</div>
-								</th>
-								<th width="122">
-									<div align="center">Demand</div>
-								</th>
-								<th width="86">
-									<div align="center">Item Code</div>
-								</th>
-								<th width="83">
-									<div align="center">Lot</div>
-								</th>
-								<th width="38">
-									<div align="center">Jenis Benang 1</div>
-								</th>
-								<th width="38">
-									<div align="center">Jenis Benang 2</div>
-								</th>
-								<th width="38">
-									<div align="center">Jenis Benang 3</div>
-								</th>
-								<th width="38">
-									<div align="center">Jenis Benang 4</div>
-								</th>
-								<th width="79">
-									<div align="center">Warna</div>
-								</th>
-								<th width="46">
-									<div align="center">Jenis Kain</div>
-								</th>
-								<th width="48">
-									<div align="center">Qty</div>
-								</th>
-								<th width="59">
-									<div align="center">Berat/Kg</div>
-								</th>
-								<th>
-									<div align="center">Project Awal</div>
-								</th>
-								<th>
-									<div align="center">Note</div>
-								</th>
-								<th>
-									<div align="center">User</div>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
+					<div style="overflow-x:auto;">
+						<table id="TableLeaderCheck" class="table table-bordered table-hover table-striped"
+							width="100%">
+							<thead class="bg-blue">
+								<tr>
+									<th width="100">
+										<div align="center">No</div>
+									</th>
+									<th width="45">
+										<div align="center">Tgl Keluar</div>
+									</th>
+									<th width="24">
+										<div align="center">Buyer</div>
+									</th>
+									<th width="162">
+										<div align="center">Customer</div>
+									</th>
+									<th width="118">
+										<div align="center">Project Code</div>
+									</th>
+									<th width="122">
+										<div align="center">Prod. Order</div>
+									</th>
+									<th width="122">
+										<div align="center">Demand</div>
+									</th>
+									<th width="86">
+										<div align="center">Item Code</div>
+									</th>
+									<th width="83">
+										<div align="center">Lot</div>
+									</th>
+									<th width="38">
+										<div align="center">Jenis Benang 1</div>
+									</th>
+									<th width="38">
+										<div align="center">Jenis Benang 2</div>
+									</th>
+									<th width="38">
+										<div align="center">Jenis Benang 3</div>
+									</th>
+									<th width="38">
+										<div align="center">Jenis Benang 4</div>
+									</th>
+									<th width="79">
+										<div align="center">Warna</div>
+									</th>
+									<th width="46">
+										<div align="center">Jenis Kain</div>
+									</th>
+									<th width="48">
+										<div align="center">Qty</div>
+									</th>
+									<th width="59">
+										<div align="center">Berat/Kg</div>
+									</th>
+									<th>
+										<div align="center">Project Awal</div>
+									</th>
+									<th>
+										<div align="center">Note</div>
+									</th>
+									<th>
+										<div align="center">User</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
 							$no = 1;
-							$selected_date = isset($_POST['selected_date']) ? $_POST['selected_date'] : $default_date;
 
 							$sql1 = mysqli_query($connn, "SELECT *
 															FROM tblkeluarkain
@@ -193,24 +239,25 @@ include "koneksi.php";
 								<?php
 								$no++;
 							} ?>
-						</tbody>
-					</table>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
 <script type="text/javascript">
-	$(document).ready(function () {
-		var table = $('#TableLeaderCheck').DataTable({
-			dom: 'Bfrtip',
-			buttons: [
-				'copyHtml5',
-				'excelHtml5',
-				'csvHtml5'
-			]
-		});
+$(document).ready(function() {
+	var table = $('#TableLeaderCheck').DataTable({
+		dom: 'Bfrtip',
+		buttons: [
+			'copyHtml5',
+			'excelHtml5',
+			'csvHtml5'
+		]
 	});
+});
 </script>
 
 </html>
