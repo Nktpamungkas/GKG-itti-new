@@ -31,10 +31,10 @@ $page = strtolower($page);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>GKG-ITTI |
 		<?php if ($_GET['p'] != "") {
-      echo ucwords($_GET['p']);
-    } else {
-      echo "Home";
-    } ?>
+			echo ucwords($_GET['p']);
+		} else {
+			echo "Home";
+		} ?>
 	</title>
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -111,10 +111,10 @@ $page = strtolower($page);
 				<span class="logo-lg"><b>GKG</b>-ITTI</span>
 			</a>
 			<?php if ($_SESSION['deptGkg'] == "GKG") {
-        $Wdept = " ";
-      } else {
-        $Wdept = " AND dept='$_SESSION[deptGkg]' ";
-      } ?>
+				$Wdept = " ";
+			} else {
+				$Wdept = " AND dept='$_SESSION[deptGkg]' ";
+			} ?>
 			<!-- Header Navbar -->
 			<nav class="navbar navbar-static-top" role="navigation">
 				<!-- Sidebar toggle button-->
@@ -187,40 +187,40 @@ $page = strtolower($page);
 					<li class="header">HEADER</li>
 					<!-- Optionally, you can add icons to the links -->
 					<li class="<?php if ($_GET['p'] == "Home" or $_GET['p'] == "") {
-            echo "active";
-          } ?>"><a href="Home"><i class="fa fa-dashboard text-gray"></i> <span>DashBoard</span></a>
+						echo "active";
+					} ?>"><a href="Home"><i class="fa fa-dashboard text-gray"></i> <span>DashBoard</span></a>
 					</li>
 					<li class="<?php if ($_GET['p'] == "Schedule") {
-            echo "active";
-          } ?>"><a href="Schedule"><i class="fa fa-download text-success"></i> <span>Pick-up
+						echo "active";
+					} ?>"><a href="Schedule"><i class="fa fa-download text-success"></i> <span>Pick-up
 								Schedule</span></a>
 					</li>
 					<li class="<?php if ($_GET['p'] == "Schedule") {
-            echo "active";
-          } ?>"><a href="ScheduleNOW"><i class="fa fa-download text-success"></i> <span>Pick-up Schedule
+						echo "active";
+					} ?>"><a href="ScheduleNOW"><i class="fa fa-eye text-success"></i> <span>Pick-up Schedule
 								NOW</span></a>
 					</li>
 					<li class="<?php if ($_GET['p'] == "Schedule-Ongoing") {
-            echo "active";
-          } ?>"><a href="Scheduleongoing"><i class="fa fa-line-chart text-danger"></i> <span>Schedule on
+						echo "active";
+					} ?>"><a href="Scheduleongoing"><i class="fa fa-line-chart text-danger"></i> <span>Schedule on
 								Going</span></a>
 					</li>
 					<li class="<?php if ($_GET['p'] == "Need-Leader-Check") {
-            echo "active";
-          } ?>"><a href="NeedLeaderCheck"><i class="fa fa-check text-primary"></i> <span>Need Leader
+						echo "active";
+					} ?>"><a href="NeedLeaderCheck"><i class="fa fa-check text-primary"></i> <span>Need Leader
 								Check</span></a>
 					</li>
 					<li class="<?php if ($_GET['p'] == "Lap-Schedule") {
-            echo "active";
-          } ?>"><a href="LapSchedule"><i class="fa fa-laptop"></i> <span>Report Schedule</span></a>
+						echo "active";
+					} ?>"><a href="LapSchedule"><i class="fa fa-laptop"></i> <span>Report Schedule</span></a>
 					</li>
 
 					<li class="treeview <?php if (
-            $_GET['p'] == "Status-Mesin" or $_GET['p'] == "Line-News"
-            or $_GET['p'] == "Monitoring-Schedule-Report" or $_GET['p'] == "Monitoring_report_operator" or $_GET['p'] == "history_status_mesin" or $_GET['p'] == "Delete_khusus_report" or $_GET['p'] == "Stoppage_Mc" or $_GET['p'] == "Lap-Stoppage-MC"
-          ) {
-            echo "active";
-          } ?>">
+						$_GET['p'] == "Status-Mesin" or $_GET['p'] == "Line-News"
+						or $_GET['p'] == "Monitoring-Schedule-Report" or $_GET['p'] == "Monitoring_report_operator" or $_GET['p'] == "history_status_mesin" or $_GET['p'] == "Delete_khusus_report" or $_GET['p'] == "Stoppage_Mc" or $_GET['p'] == "Lap-Stoppage-MC"
+					) {
+						echo "active";
+					} ?>">
 						<a href="#"><i class="fa fa-archive text-warning"></i> <span>GKG</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-left pull-right"></i>
@@ -228,57 +228,57 @@ $page = strtolower($page);
 						</a>
 						<ul class="treeview-menu">
 							<li class="<?php if ($_GET['p'] == "Monitoring-Schedule-Report") {
-                echo "active";
-              } ?>"><a href="MonitoringScheduleReport"><i class="fa fa-users text-danger"></i>
+								echo "active";
+							} ?>"><a href="MonitoringScheduleReport"><i class="fa fa-users text-danger"></i>
 									<span>Schedule Report Group</span></a>
 							</li>
 							<li class="<?php if ($_GET['p'] == "Monitoring-Schedule-Report-Now") {
-                echo "active";
-              } ?>"><a href="MonitoringScheduleReportNow"><i class="fa fa-users text-danger"></i>
+								echo "active";
+							} ?>"><a href="MonitoringScheduleReportNow"><i class="fa fa-users text-danger"></i>
 									<span>Schedule Report Group NOW</span></a>
 							</li>
 							<li class="<?php if ($_GET['p'] == "Monitoring_report_operator") {
-                echo "active";
-              } ?>"><a href="Monitoring_report_operator"><i class="fa fa-user text-info"></i>
+								echo "active";
+							} ?>"><a href="Monitoring_report_operator"><i class="fa fa-user text-info"></i>
 									<span>Schedule Report Operator</span></a>
 							</li>
 							<li class="<?php if ($_GET['p'] == "history_status_mesin") {
-                echo "active";
-              } ?>"><a href="history_status_mesin"><i class="fa fa-industry" aria-hidden="true"></i>
+								echo "active";
+							} ?>"><a href="history_status_mesin"><i class="fa fa-industry" aria-hidden="true"></i>
 									<span>History status mesin</span></a>
 							</li>
 							<li <?php if ($_SESSION['nama1Gkg'] != "GKG-LEADER")
-                echo "style='display:none;'"; ?> class="<?php if ($_GET['p'] == "Delete_khusus_report") {
-                     echo "active";
-                   } ?>"><a href="Delete_khusus_report"><i class="fa fa-free-code-camp" aria-hidden="true"></i>
+								echo "style='display:none;'"; ?> class="<?php if ($_GET['p'] == "Delete_khusus_report") {
+									   echo "active";
+								   } ?>"><a href="Delete_khusus_report"><i class="fa fa-free-code-camp" aria-hidden="true"></i>
 									<span>Fitur Khusus</span></a>
 							</li>
 							<li <?php if ($_SESSION['nama1Gkg'] != "GKG-LEADER")
-                echo "style='display:none;'"; ?> class="<?php if ($_GET['p'] == "Line-News") {
-                     echo "active";
-                   } ?>"><a href="LineNews"><i class="fa fa-volume-up text-danger" aria-hidden="true"></i>
+								echo "style='display:none;'"; ?> class="<?php if ($_GET['p'] == "Line-News") {
+									   echo "active";
+								   } ?>"><a href="LineNews"><i class="fa fa-volume-up text-danger" aria-hidden="true"></i>
 									<span>Line News</span></a>
 							</li>
 							<li class="<?php if ($_GET['p'] == "Status-Mesin") {
-                echo "active";
-              } ?>"><a href="StatusMesin"><i class="fa fa-television text-primary"></i> <span>Status
+								echo "active";
+							} ?>"><a href="StatusMesin"><i class="fa fa-television text-primary"></i> <span>Status
 										Mesin</span></a>
 							</li>
 							<li class="<?php if ($_GET['p'] == "Stoppage_Mc") {
-                echo "active";
-              } ?>"><a href="StoppageMC"><i class="fa fa-stop-circle text-primary"></i> <span>Stoppage
+								echo "active";
+							} ?>"><a href="StoppageMC"><i class="fa fa-stop-circle text-primary"></i> <span>Stoppage
 										Mesin</span></a>
 							</li>
 							<li class="<?php if ($_GET['p'] == "Lap-Stoppage-MC") {
-                echo "active";
-              } ?>"><a href="LapStoppageMC"><i class="fa fa-stop-circle text-primary"></i> <span>Laporan
+								echo "active";
+							} ?>"><a href="LapStoppageMC"><i class="fa fa-stop-circle text-primary"></i> <span>Laporan
 										Stoppage Mesin</span></a>
 							</li>
 						</ul>
 					</li>
 					<li class="treeview <?php if ($_GET['p'] == "manage_user" or $_GET['p'] == "manage_mesin" or $_GET['p'] == "Ganti_Password" or $_GET['p'] == "manage_mesin_gkg") {
-            echo "active";
-          } ?>">
+						echo "active";
+					} ?>">
 						<a href="#"><i class="fa fa-cog"></i> <span>SETTING</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-left pull-right"></i>
@@ -286,39 +286,39 @@ $page = strtolower($page);
 						</a>
 						<ul class="treeview-menu">
 							<li class="<?php if ($_GET['p'] == "manage_user") {
-                echo "active";
-              } ?>" <?php if ($_SESSION['lvl_idGkg'] == "USER" or $_SESSION['lvl_idGkg'] == "LEADER")
-                 echo "style='display: none';" ?>>
+								echo "active";
+							} ?>" <?php if ($_SESSION['lvl_idGkg'] == "USER" or $_SESSION['lvl_idGkg'] == "LEADER")
+								 echo "style='display: none';" ?>>
 								<a href="manage_user"><i class="fa fa-user text-danger"></i> <span>Manage
 										User</span></a>
 							</li>
 							<li class="<?php if ($_GET['p'] == "manage_mesin") {
-                 echo "active";
-               } ?>" <?php if ($_SESSION['lvl_idGkg'] == "USER" or $_SESSION['lvl_idGkg'] == "LEADER")
-                  echo "style='display: none';" ?>>
+								 echo "active";
+							 } ?>" <?php if ($_SESSION['lvl_idGkg'] == "USER" or $_SESSION['lvl_idGkg'] == "LEADER")
+								  echo "style='display: none';" ?>>
 								<a href="manage_mesin"><i class="fa fa-cogs"></i> <span>Manage Mesin</span></a>
 							</li>
 							<li class="<?php if ($_GET['p'] == "manage_mesin_gkg") {
-                  echo "active";
-                } ?>" <?php if ($_SESSION['lvl_idGkg'] == "USER" or $_SESSION['lvl_idGkg'] == "LEADER")
-                   echo "style='display: none';" ?>>
+								  echo "active";
+							  } ?>" <?php if ($_SESSION['lvl_idGkg'] == "USER" or $_SESSION['lvl_idGkg'] == "LEADER")
+								   echo "style='display: none';" ?>>
 								<a href="manage_mesin_gkg"><i class="fa fa-cogs"></i> <span>Manage Mesin GKG</span></a>
 							</li>
 							<li class="<?php if ($_GET['p'] == "Ganti_Password") {
-                   echo "active";
-                 } ?>"><a href="Ganti_Password"><i class="fa fa-key"></i> <span>Change Password</span></a>
+								   echo "active";
+							   } ?>"><a href="Ganti_Password"><i class="fa fa-key"></i> <span>Change Password</span></a>
 							</li>
 						</ul>
 					</li>
 					<li <?php if ($_SESSION['lvl_idGkg'] != 'LEADER')
-            echo 'style=display:none;' ?> class="<?php if ($_GET['p'] == "Schedule-jalan") {
-            echo "active";
-          } ?>"><a href="Schedule-jalan"><i class="fa fa-tags text-danger"></i> <span>Schedule Belum
+						echo 'style=display:none;' ?> class="<?php if ($_GET['p'] == "Schedule-jalan") {
+						echo "active";
+					} ?>"><a href="Schedule-jalan"><i class="fa fa-tags text-danger"></i> <span>Schedule Belum
 								Selesai</span></a>
 					</li>
 					<li class="<?php if ($_GET['p'] == "Laporan_shift") {
-            echo "active";
-          } ?>"><a href="Laporan_shift">
+						echo "active";
+					} ?>"><a href="Laporan_shift">
 							<i class="fa fa-file-pdf-o text-success" aria-hidden="true"></i>
 							<span>Laporan shift</span></a>
 					</li>
@@ -338,21 +338,21 @@ $page = strtolower($page);
 			<!-- Main content -->
 			<section class="content container-fluid">
 				<?php
-        if (!empty($page) and !empty($act)) {
-          $files = 'pages/' . $page . '.' . $act . '.php';
-        } else
-          if (!empty($page)) {
-            $files = 'pages/' . $page . '.php';
-          } else {
-            $files = 'pages/home.php';
-          }
+				if (!empty($page) and !empty($act)) {
+					$files = 'pages/' . $page . '.' . $act . '.php';
+				} else
+					if (!empty($page)) {
+						$files = 'pages/' . $page . '.php';
+					} else {
+						$files = 'pages/home.php';
+					}
 
-        if (file_exists($files)) {
-          include ($files);
-        } else {
-          include ("blank.php");
-        }
-        ?>
+				if (file_exists($files)) {
+					include ($files);
+				} else {
+					include ("blank.php");
+				}
+				?>
 
 			</section>
 			<!-- /.content -->
