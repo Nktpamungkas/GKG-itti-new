@@ -11,28 +11,12 @@ include "koneksi.php";
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Schedule</title>
 	<style>
-		.container {
-			max-width: 600px;
-			margin: 0 auto;
-			padding: 20px;
-		}
-
-		.form-group {
-			margin-bottom: 20px;
-		}
-
-		label {
-			font-weight: bold;
-			margin-bottom: 5px;
-			display: block;
-		}
-
 		select {
 			width: 10%;
-			padding: 5px;
+			padding: 7px;
 			border: 1px solid #ccc;
 			border-radius: 4px;
-			font-size: 12px;
+
 		}
 	</style>
 
