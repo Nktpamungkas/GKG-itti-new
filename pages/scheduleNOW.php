@@ -129,30 +129,52 @@ include "koneksi.php";
 								<?php
 								$no = 1;
 
-								$sql1 = mysqli_query($connn, "SELECT tglkeluar,
-																	 buyer,
-																	 custumer,
-																	 projectcode,
-																	 prod_order,
-																	 demand,
-																	 code,
-																	 lot,
-																	 benang1,
-																	 benang2,
-																	 benang3,
-																	 benang4,
-																	 warna,
-																	 jenis_kain,
-																	 qty,
-																	 berat,
-																	 proj_awal,
-																	 ket,
-																	 userid,
-																	DATEDIFF(now(),tglkeluar) as sisa
-																	FROM tblkeluarkain
-																	WHERE tgl_tutup = '$selected_date'
-																	AND demand IS NOT NULL
-																	ORDER BY tgl_tutup DESC, id DESC");
+								$sql1 = mysqli_query($connn, "SELECT
+																tglkeluar,
+																buyer,
+																custumer,
+																projectcode,
+																prod_order,
+																demand,
+																code,
+																GROUP_CONCAT(DISTINCT TRIM(lot), ' ') AS lot,
+																benang1,
+																benang2,
+																benang3,
+																benang4,
+																warna,
+																jenis_kain,
+																SUM(qty) AS qty,
+																SUM(berat) AS berat,
+																proj_awal,
+																ket,
+																GROUP_CONCAT(DISTINCT TRIM(userid), ' ') AS userid,
+																DATEDIFF( now(), tglkeluar ) AS sisa 
+															FROM
+																tblkeluarkain 
+															WHERE
+																tgl_tutup = '$selected_date'
+																AND demand IS NOT NULL
+															GROUP BY
+																tglkeluar,
+																buyer,
+																custumer,
+																projectcode,
+																prod_order,
+																demand,
+																CODE,
+																benang1,
+																benang2,
+																benang3,
+																benang4,
+																warna,
+																jenis_kain,
+																proj_awal,
+																ket,
+																tglkeluar
+															ORDER BY
+																tgl_tutup DESC,
+																id DESC");
 								while ($r = mysqli_fetch_array($sql1)) {
 
 									$sqlDB2 = "SELECT
