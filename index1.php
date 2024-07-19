@@ -190,17 +190,17 @@ $page = strtolower($page);
 						echo "active";
 					} ?>"><a href="Home"><i class="fa fa-dashboard text-gray"></i> <span>DashBoard</span></a>
 					</li>
-					<li class="<?php if ($_GET['p'] == "Schedule") {
+					<!--<li class="<?php if ($_GET['p'] == "Schedule") {
 						echo "active";
 					} ?>"><a href="Schedule"><i class="fa fa-download text-success"></i> <span>Pick-up
 								Schedule</span></a>
-					</li>
+					</li>-->
 					<li class="<?php if ($_GET['p'] == "ScheduleNOW") {
 						echo "active";
 					} ?>"><a href="ScheduleNOW"><i class="fa fa-eye text-success"></i> <span>Pick-up Schedule
 								NOW</span></a>
 					</li>
-					<li class="<?php if ($_GET['p'] == "Schedule-Ongoing") {
+					<!--<li class="<?php if ($_GET['p'] == "Schedule-Ongoing") {
 						echo "active";
 					} ?>"><a href="Scheduleongoing"><i class="fa fa-line-chart text-danger"></i> <span>Schedule on
 								Going</span></a>
@@ -209,7 +209,7 @@ $page = strtolower($page);
 						echo "active";
 					} ?>"><a href="NeedLeaderCheck"><i class="fa fa-check text-primary"></i> <span>Need Leader
 								Check</span></a>
-					</li>
+					</li>-->
 					<li class="<?php if ($_GET['p'] == "Lap-Schedule") {
 						echo "active";
 					} ?>"><a href="LapSchedule"><i class="fa fa-laptop"></i> <span>Report Schedule</span></a>
