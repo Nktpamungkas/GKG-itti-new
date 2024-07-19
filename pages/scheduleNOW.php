@@ -11,29 +11,29 @@ include "koneksi.php";
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Schedule</title>
 	<style>
-	.container {
-		max-width: 600px;
-		margin: 0 auto;
-		padding: 20px;
-	}
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 20px;
+		}
 
-	.form-group {
-		margin-bottom: 20px;
-	}
+		.form-group {
+			margin-bottom: 20px;
+		}
 
-	label {
-		font-weight: bold;
-		margin-bottom: 5px;
-		display: block;
-	}
+		label {
+			font-weight: bold;
+			margin-bottom: 5px;
+			display: block;
+		}
 
-	select {
-		width: 10%;
-		padding: 5px;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		font-size: 12px;
-	}
+		select {
+			width: 10%;
+			padding: 5px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			font-size: 12px;
+		}
 	</style>
 
 </head>
@@ -45,29 +45,29 @@ include "koneksi.php";
 				<div class="box-header">
 					<!-- <h2>Data Keluar Kain Greige Perhari</h2> -->
 					<?php
-						// Query to get distinct dates with demand not null
-						$q_dates = mysqli_query($connn, "SELECT DISTINCT tgl_tutup 
+					// Query to get distinct dates with demand not null
+					$q_dates = mysqli_query($connn, "SELECT DISTINCT tgl_tutup 
 														FROM tblkeluarkain 
 														WHERE demand IS NOT NULL 
 														ORDER BY tgl_tutup DESC 
 														LIMIT 30");
 
-						$dates = [];
-						while ($row = mysqli_fetch_assoc($q_dates)) {
-							$dates[] = $row['tgl_tutup'];
-						}
+					$dates = [];
+					while ($row = mysqli_fetch_assoc($q_dates)) {
+						$dates[] = $row['tgl_tutup'];
+					}
 
-						// Set default selected date to the latest date available
-						$default_date = $dates[0];
-						$selected_date = isset($_POST['selected_date']) ? $_POST['selected_date'] : $default_date;
+					// Set default selected date to the latest date available
+					$default_date = $dates[0];
+					$selected_date = isset($_POST['selected_date']) ? $_POST['selected_date'] : $default_date;
 					?>
 					<form method="POST" action="">
 						<label for="selected_date">Pilih Tanggal:</label>
 						<select id="selected_date" name="selected_date" required>
 							<?php foreach ($dates as $date): ?>
-							<option value="<?= $date; ?>" <?= $date == $selected_date ? 'selected' : ''; ?>>
-								<?= $date; ?>
-							</option>
+								<option value="<?= $date; ?>" <?= $date == $selected_date ? 'selected' : ''; ?>>
+									<?= $date; ?>
+								</option>
 							<?php endforeach; ?>
 						</select>
 						<input type="submit" value="Filter" class="btn btn-success">
@@ -143,16 +143,35 @@ include "koneksi.php";
 							</thead>
 							<tbody>
 								<?php
-									$no = 1;
+								$no = 1;
 
-									$sql1 = mysqli_query($connn, "SELECT *
+								$sql1 = mysqli_query($connn, "SELECT tglkeluar,
+																	 buyer,
+																	 custumer,
+																	 projectcode,
+																	 prod_order,
+																	 demand,
+																	 code,
+																	 lot,
+																	 benang1,
+																	 benang2,
+																	 benang3,
+																	 benang4,
+																	 warna,
+																	 jenis_kain,
+																	 qty,
+																	 berat,
+																	 proj_awal,
+																	 ket,
+																	 userid,
+																	DATEDIFF(now(),tglkeluar) as sisa
 																	FROM tblkeluarkain
 																	WHERE tgl_tutup = '$selected_date'
 																	AND demand IS NOT NULL
 																	ORDER BY tgl_tutup DESC, id DESC");
-									while ($r = mysqli_fetch_array($sql1)) {
+								while ($r = mysqli_fetch_array($sql1)) {
 
-										$sqlDB2 = "SELECT
+									$sqlDB2 = "SELECT
 													p.PRODUCTIONORDERCODE,
 													p.PRODUCTIONDEMANDCODE,
 													CASE
@@ -208,80 +227,85 @@ include "koneksi.php";
 													a.VALUEBOOLEAN,
 													idqd.WORKCENTERCODE 
 												ORDER BY p.STEPNUMBER ASC";
-										$stmt = db2_exec($conn1, $sqlDB2);
-										$rowdb2 = db2_fetch_assoc($stmt);
-								?>
-								<?php if($rowdb2['STATUS_OPERATION'] != 'Closed') : ?>
-								<tr>
-									<td align="center">
-										<font size="-1"><?= $no; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['tglkeluar']; ?></font>
-									</td>
-									<td>
-										<font size="-1"><?= $r['buyer']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['custumer']; ?></font>
-									</td>
-									<td>
-										<font size="-1"><?= $r['projectcode']; ?></font>
-									</td>
-									<td>
-										<font size="-1"><?= $r['prod_order']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1">
-											<a target="_BLANK"
-												href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $r['demand']; ?>&prod_order=<?= $r['prod_order']; ?>"><?= $r['demand']; ?></a>
-										</font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['code']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['lot']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['benang1']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['benang2']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['benang3']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['benang4']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['warna']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['jenis_kain']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['qty']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['berat']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['proj_awal']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['ket']; ?></font>
-									</td>
-									<td align="center">
-										<font size="-1"><?= $r['userid']; ?></font>
-									</td>
-								</tr>
-								<?php 
-									$no++;
-								 	endif; ?>
-								<?php
-							} ?>
+									$stmt = db2_exec($conn1, $sqlDB2);
+									$rowdb2 = db2_fetch_assoc($stmt);
+									?>
+									<?php if ($rowdb2['STATUS_OPERATION'] != 'Closed'): ?>
+										<tr>
+											<td align="center">
+												<font size="-1"><?= $no; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['tglkeluar']; ?></font><br>
+												<?php if (abs($r['sisa']) == "0") {
+													echo "<span class='badge bg-blue'>New</span>";
+												} else {
+													echo "<span class='badge bg-red'>" . abs($r['sisa']) . " Hari</span>";
+												} ?>
+											</td>
+											<td>
+												<font size="-1"><?= $r['buyer']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['custumer']; ?></font>
+											</td>
+											<td>
+												<font size="-1"><?= $r['projectcode']; ?></font>
+											</td>
+											<td>
+												<font size="-1"><?= $r['prod_order']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1">
+													<a target="_BLANK"
+														href="http://online.indotaichen.com/laporan/ppc_filter_steps.php?demand=<?= $r['demand']; ?>&prod_order=<?= $r['prod_order']; ?>"><?= $r['demand']; ?></a>
+												</font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['code']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['lot']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['benang1']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['benang2']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['benang3']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['benang4']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['warna']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['jenis_kain']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['qty']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['berat']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['proj_awal']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['ket']; ?></font>
+											</td>
+											<td align="center">
+												<font size="-1"><?= $r['userid']; ?></font>
+											</td>
+										</tr>
+										<?php
+										$no++;
+									endif; ?>
+									<?php
+								} ?>
 							</tbody>
 						</table>
 					</div>
@@ -291,16 +315,16 @@ include "koneksi.php";
 	</div>
 </body>
 <script type="text/javascript">
-$(document).ready(function() {
-	var table = $('#TableLeaderCheck').DataTable({
-		dom: 'Bfrtip',
-		buttons: [
-			'copyHtml5',
-			'excelHtml5',
-			'csvHtml5'
-		]
+	$(document).ready(function () {
+		var table = $('#TableLeaderCheck').DataTable({
+			dom: 'Bfrtip',
+			buttons: [
+				'copyHtml5',
+				'excelHtml5',
+				'csvHtml5'
+			]
+		});
 	});
-});
 </script>
 
 </html>
