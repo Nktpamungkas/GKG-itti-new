@@ -739,14 +739,15 @@ include "koneksi.php";
 
                                 $sqlOutTo = "SELECT
                                                 p.OPERATIONCODE,
+                                                p.STEPNUMBER,
                                                 p.OPSTEPGROUPCODE
                                             FROM
                                                 (
                                                 SELECT
-                                                    GROUPSTEPNUMBER,
+                                                    STEPNUMBER,
                                                     PRODUCTIONORDERCODE
                                                 FROM
-                                                    VIEWPRODUCTIONDEMANDSTEP
+                                                    PRODUCTIONDEMANDSTEP
                                                 WHERE
                                                     PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
                                                     AND (OPERATIONCODE = 'BAT2'
@@ -756,10 +757,11 @@ include "koneksi.php";
                                                         OR OPERATIONCODE = 'BEL1'
                                                         OR OPERATIONCODE = 'BAT3'
                                                         OR OPERATIONCODE = 'BBS1'
-                                                        OR OPERATIONCODE = 'WAIT36') ) s
-                                            LEFT OUTER JOIN VIEWPRODUCTIONDEMANDSTEP p ON
-                                                s.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
-                                                AND s.GROUPSTEPNUMBER < p.GROUPSTEPNUMBER";
+                                                        OR OPERATIONCODE = 'WAIT36') ORDER BY STEPNUMBER DESC LIMIT 1 ) s
+                                            LEFT OUTER JOIN PRODUCTIONDEMANDSTEP p ON p.PRODUCTIONORDERCODE = s.PRODUCTIONORDERCODE
+                                                                                    AND p.STEPNUMBER > s.STEPNUMBER
+                                            ORDER BY
+                                                p.STEPNUMBER ASC";
                                 $stmtOutTo = db2_exec($conn1, $sqlOutTo, array('cursor' => DB2_SCROLLABLE));
                                 $rowOutTo = db2_fetch_assoc($stmtOutTo);
 
