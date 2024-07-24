@@ -674,7 +674,7 @@ include "koneksi.php";
                                                     DB2ADMIN.STOCKTRANSACTION x
                                                 WHERE
                                                     ORDERCODE = '" . $rowdb21['PRODUCTIONORDERCODE'] . "'
-                                                    AND ITEMTYPECODE = 'KFF'";
+                                                    AND (ITEMTYPECODE = 'KFF' OR ITEMTYPECODE = 'FKG')";
                                     $stmt111 = db2_exec($conn1, $sqlroll1, array('cursor' => DB2_SCROLLABLE));
                                     $rowr1 = db2_fetch_assoc($stmt111);
 
@@ -828,14 +828,49 @@ include "koneksi.php";
                                     <td align="center"><?php echo $rowdb21['PRO_ORDER']; ?></td>
                                     <td><?php echo $rowdb21['ITEMNO']; ?></td>
                                     <td align="center"><?php echo $rowdb21['WARNA']; ?></td>
-                                    <td align="center">
+                                    <td align="center" title="ngambil dari color remarks di salesorderline, harusnya isiannya itu terakhir nomor roll. Contoh (10 ROLLS)">
                                         <?php
-                                            if ($rowr['JML_ROLL'] == "") {
-                                                echo $rowr1['ROLL'];
-                                            } else {
-                                                echo $rowr['JML_ROLL'];
+                                            if(substr($rowdb21['PRO_ORDER'], 0, 3) == 'CWD'){
+                                                $q_roll_jasa        = db2_exec($conn1, "SELECT
+                                                                                            s.ABSUNIQUEID 
+                                                                                        FROM
+                                                                                            PRODUCTIONDEMAND p 
+                                                                                        LEFT JOIN SALESORDERLINE s ON s.SALESORDERCODE = p.ORIGDLVSALORDLINESALORDERCODE 
+                                                                                                                    AND s.ORDERLINE = p.ORIGDLVSALORDERLINEORDERLINE 
+                                                                                        WHERE
+                                                                                            p.CODE = '$rowdb21[PRODUCTIONDEMANDCODE]'");
+                                                $data_roll_jasa     = db2_fetch_assoc($q_roll_jasa);
+                                                
+                                                $q_roll_jasa2        = db2_exec($conn1, "SELECT
+                                                                                                UNIQUEID,
+                                                                                                SUBSTR(ROLL, 1,2) AS ROLL
+                                                                                            FROM (SELECT
+                                                                                                    UNIQUEID,
+                                                                                                    CASE 
+                                                                                                        WHEN LOCATE('(', VALUESTRING) > 0 AND LOCATE(')', VALUESTRING) > 0 THEN
+                                                                                                            SUBSTRING(VALUESTRING, LOCATE('(', VALUESTRING) + 1, LOCATE(')', VALUESTRING) - LOCATE('(', VALUESTRING) - 1)
+                                                                                                    END AS ROLL
+                                                                                                FROM
+                                                                                                    ADSTORAGE
+                                                                                                WHERE
+                                                                                                    NAMENAME = 'ColorRemarks'
+                                                                                                    AND VALUESTRING LIKE '%ROLL%'
+                                                                                                    AND UNIQUEID = '$data_roll_jasa[ABSUNIQUEID]'
+                                                                                                    AND NOT CASE 
+                                                                                                        WHEN LOCATE('(', VALUESTRING) > 0 AND LOCATE(')', VALUESTRING) > 0 THEN
+                                                                                                            SUBSTRING(VALUESTRING, LOCATE('(', VALUESTRING) + 1, LOCATE(')', VALUESTRING) - LOCATE('(', VALUESTRING) - 1)
+                                                                                                    END IS NULL)");
+                                                $data_roll_jasa2     = db2_fetch_assoc($q_roll_jasa2);
+
+                                                echo $data_roll_jasa2['ROLL'];
+                                            }else{
+                                                if ($rowr['JML_ROLL'] == "") {
+                                                    echo $rowr1['ROLL'];
+                                                } else {
+                                                    echo $rowr['JML_ROLL'];
+                                                }
                                             }
-                                            ?>
+                                        ?>
                                     </td>
                                     <td align="right">
                                         <?php

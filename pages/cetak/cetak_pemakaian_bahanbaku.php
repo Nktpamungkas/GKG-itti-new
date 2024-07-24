@@ -491,16 +491,51 @@ li {
 				<td align="left" valign="top"><?= $rowdb21['PRODUCTIONDEMANDCODE']; ?></td>
 				<td align="left" valign="top"><?= $rowdb21['LOT']; ?></td>
 				<td align="left" valign="top">
-					<?php
-                        $q_roll_tdk_gabung = db2_exec($conn1, "SELECT count(*) AS ROLL, s2.PRODUCTIONORDERCODE
+                <?php
+                        if(substr($rowdb21['PRO_ORDER'], 0, 3) == 'CWD'){
+                            $q_roll_jasa        = db2_exec($conn1, "SELECT
+                                                                        s.ABSUNIQUEID 
+                                                                    FROM
+                                                                        PRODUCTIONDEMAND p 
+                                                                    LEFT JOIN SALESORDERLINE s ON s.SALESORDERCODE = p.ORIGDLVSALORDLINESALORDERCODE 
+                                                                                                AND s.ORDERLINE = p.ORIGDLVSALORDERLINEORDERLINE 
+                                                                    WHERE
+                                                                        p.CODE = '$rowdb21[PRODUCTIONDEMANDCODE]'");
+                            $data_roll_jasa     = db2_fetch_assoc($q_roll_jasa);
+                            
+                            $q_roll_jasa2        = db2_exec($conn1, "SELECT
+                                                                            UNIQUEID,
+                                                                            SUBSTR(ROLL, 1,2) AS ROLL
+                                                                        FROM (SELECT
+                                                                                UNIQUEID,
+                                                                                CASE 
+                                                                                    WHEN LOCATE('(', VALUESTRING) > 0 AND LOCATE(')', VALUESTRING) > 0 THEN
+                                                                                        SUBSTRING(VALUESTRING, LOCATE('(', VALUESTRING) + 1, LOCATE(')', VALUESTRING) - LOCATE('(', VALUESTRING) - 1)
+                                                                                END AS ROLL
+                                                                            FROM
+                                                                                ADSTORAGE
+                                                                            WHERE
+                                                                                NAMENAME = 'ColorRemarks'
+                                                                                AND VALUESTRING LIKE '%ROLL%'
+                                                                                AND UNIQUEID = '$data_roll_jasa[ABSUNIQUEID]'
+                                                                                AND NOT CASE 
+                                                                                    WHEN LOCATE('(', VALUESTRING) > 0 AND LOCATE(')', VALUESTRING) > 0 THEN
+                                                                                        SUBSTRING(VALUESTRING, LOCATE('(', VALUESTRING) + 1, LOCATE(')', VALUESTRING) - LOCATE('(', VALUESTRING) - 1)
+                                                                                END IS NULL)");
+                            $data_roll_jasa2     = db2_fetch_assoc($q_roll_jasa2);
+
+                            echo $data_roll_jasa2['ROLL'];
+                        }else{
+                            $q_roll_tdk_gabung = db2_exec($conn1, "SELECT count(*) AS ROLL, s2.PRODUCTIONORDERCODE
                                                                         FROM STOCKTRANSACTION s2 
-                                                                        WHERE  (s2.ITEMTYPECODE ='KGF' OR s2.ITEMTYPECODE = 'KFF')
+                                                                        WHERE  (s2.ITEMTYPECODE ='KGF' OR s2.ITEMTYPECODE = 'KFF' OR s2.ITEMTYPECODE = 'FKG')
                                                                         AND s2.PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
                                                                         GROUP BY s2.PRODUCTIONORDERCODE");
                         $d_roll_tdk_gabung = db2_fetch_assoc($q_roll_tdk_gabung);
                         echo $roll = $d_roll_tdk_gabung['ROLL'];
                         $totalRollBagiKain += $d_roll_tdk_gabung['ROLL'];
-                        ?>
+                        }
+                    ?>
 				</td>
 
 				<td align="center" valign="top">
