@@ -195,6 +195,15 @@ li {
                 } else if ($_GET["shift"] == 3) {
                     $start_shift3 = $_GET['tgl1'] . " 23:00:00";
                     $end_shift3 = $_GET['tgl2'] . " 07:00:00";
+                } else if ($_GET["shift"] == '1 TIDAK FULL') {
+                    $start_shift3 = $_GET['tgl1'] . " 07:00:00";
+                    $end_shift3 = $_GET['tgl2'] . " 12:00:00";
+                } else if ($_GET["shift"] == '2 TIDAK FULL') {
+                    $start_shift3 = $_GET['tgl1'] . " 12:00:00";
+                    $end_shift3 = $_GET['tgl2'] . " 17:00:00";
+                } else if ($_GET["shift"] == '3 TIDAK FULL') {
+                    $start_shift3 = $_GET['tgl1'] . " 17:00:00";
+                    $end_shift3 = $_GET['tgl2'] . " 22:00:00";
                 }
                 $sqlDB21 = "SELECT
                                 TRIM(x.PRODUCTIONORDERCODE) AS PRODUCTIONORDERCODE,

@@ -47,6 +47,15 @@ include "koneksi.php";
             } else if ($_POST['w_shift'] == 3) {
                 $start_shift3 = $_POST["date-start"] . " 23:00:00";
                 $end_shift3 = $_POST["date-end"] . " 07:00:00";
+            } else if ($_POST['w_shift'] == "1 TIDAK FULL") {
+                $start_shift3 = $_POST["date-start"] . " 07:00:00";
+                $end_shift3 = $_POST["date-end"] . " 12:00:00";
+            } else if ($_POST['w_shift'] == "2 TIDAK FULL") {
+                $start_shift3 = $_POST["date-start"] . " 12:00:00";
+                $end_shift3 = $_POST["date-end"] . " 15:00:00";
+            } else if ($_POST['w_shift'] == "3 TIDAK FULL") {
+                $start_shift3 = $_POST["date-start"] . " 15:00:00";
+                $end_shift3 = $_POST["date-end"] . " 22:00:00";
             }
             $sqlDB21 = "SELECT
                                 x.PRODUCTIONORDERCODE,
@@ -553,6 +562,12 @@ include "koneksi.php";
                                                 echo "selected"; ?> value="2">2</option>
 											<option <?php if ($shift == "3")
                                                 echo "selected"; ?> value="3">3</option>
+											<option <?php if ($shift == "1 TIDAK FULL")
+                                                echo "selected"; ?> value="1 TIDAK FULL">1 TIDAK FULL</option>
+											<option <?php if ($shift == "2 TIDAK FULL")
+                                                echo "selected"; ?> value="2 TIDAK FULL">2 TIDAK FULL</option>
+											<option <?php if ($shift == "3 TIDAK FULL")
+                                                echo "selected"; ?> value="3 TIDAK FULL">3 TIDAK FULL</option>
 										</select>
 									</div>
 								</div>
