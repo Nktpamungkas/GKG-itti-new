@@ -214,7 +214,14 @@ include "koneksi.php";
 																						idqd.CHARACTERISTICCODE = 'AREA')
 																					AND NOT (idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
 												WHERE
-													p.PRODUCTIONORDERCODE  = '$r[prod_order]' AND p.PRODUCTIONDEMANDCODE = '$r[demand]' AND TRIM(p.OPERATIONCODE) = 'BAT2'
+													p.PRODUCTIONORDERCODE  = '$r[prod_order]' 
+													AND p.PRODUCTIONDEMANDCODE = '$r[demand]' 
+													AND (
+														TRIM(p.OPERATIONCODE) = 'BAT2' 
+														OR TRIM(p.OPERATIONCODE) = 'BKN1' 
+														OR TRIM(p.OPERATIONCODE) = 'BEL1'
+														OR TRIM(p.OPERATIONCODE) = 'JHP1'
+													)
 												GROUP BY
 													p.PRODUCTIONORDERCODE,
 													p.STEPNUMBER,
