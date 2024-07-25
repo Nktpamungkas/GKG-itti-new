@@ -69,7 +69,7 @@ include "koneksi.php";
                                 i.SUBCODE01,
                                 i.SUBCODE02,
                                 i.SUBCODE03,
-                                i.SUBCODE04,
+                                LISTAGG(TRIM(i.SUBCODE04), ', ') AS SUBCODE04,
                                 i.SUBCODE05,
                                 i.SUBCODE06,
                                 i.SUBCODE07,
@@ -195,7 +195,6 @@ include "koneksi.php";
                                 i.SUBCODE01,
                                 i.SUBCODE02,
                                 i.SUBCODE03,
-                                i.SUBCODE04,
                                 i.SUBCODE05,
                                 i.SUBCODE06,
                                 i.SUBCODE07,
@@ -219,7 +218,7 @@ include "koneksi.php";
                             i.SUBCODE01,
                             i.SUBCODE02,
                             i.SUBCODE03,
-                            i.SUBCODE04,
+                            LISTAGG(TRIM(i.SUBCODE04), ', ') AS SUBCODE04,
                             i.SUBCODE05,
                             i.SUBCODE06,
                             i.SUBCODE07,
@@ -351,7 +350,6 @@ include "koneksi.php";
                             i.SUBCODE01,
                             i.SUBCODE02,
                             i.SUBCODE03,
-                            i.SUBCODE04,
                             i.SUBCODE05,
                             i.SUBCODE06,
                             i.SUBCODE07,
@@ -595,374 +593,411 @@ include "koneksi.php";
                         </div>
                     -->
 				</div>
-				<div class="box-body">
-					<table id="table_Report" class="table table-bordered table-hover table-striped display compact"
-						width="100%">
-						<thead class="bg-blue">
-							<tr>
-								<th width="10">
-									#
-								</th>
-								<th width="5">
-									hidden number
-								</th>
-								<th width="162">
-									<div align="center">Mesin / Operation</div>
-								</th>
-								<th width="162">
-									<div align="center">Pelanggan</div>
-								</th>
-								<th width="118">
-									<div align="center">No. Order</div>
-								</th>
-								<th width="122">
-									<div align="center">Item</div>
-								</th>
-								<th width="86">
-									<div align="center">Warna</div>
-								</th>
-								<th width="46">
-									<div align="center">Rol</div>
-								</th>
-								<th width="48">
-									<div align="center">Kg</div>
-								</th>
-								<th width="38">
-									<div align="center">Prod. Demand</div>
-								</th>
-								<th>
-									<div align="center">Delivery</div>
-								</th>
-								<th width="79">
-									<div align="center">Prod. Order</div>
-								</th>
-								<th class="12">gerobak 1</th>
-								<th class="13">out gerobak 1</th>
-								<th class="14">gerobak 2</th>
-								<th class="15">out gerobak 2</th>
-								<th class="16">gerobak 3</th>
-								<th class="17">out gerobak 3</th>
-								<th class="18">gerobak 4</th>
-								<th class="19">out gerobak 4</th>
-								<th class="20">gerobak 5</th>
-								<th class="21">out gerobak 5</th>
-								<th class="22">gerobak 6</th>
-								<th class="23">out gerobak 6</th>
-								<th class="24">id</th>
-								<th class="25">create_time</th>
-								<th class="26">tgl_mulai</th>
-								<th class="27">tgl_update</th>
-								<th class="28">tgl_stop</th>
-								<th class="29">approve_time</th>
-								<th class="30">petugas_buka</th>
-								<th class="31">approve_by</th>
-								<th class="32">create_by</th>
-								<th class="33">selesai_by</th>
-								<th class="34">Procs/To</th>
-								<th class="35">PIC</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-                            $col = 0;
-                            $no = 1;
-                            while ($rowdb21 = db2_fetch_assoc($stmt1)) {
-                                $bgcolor = ($col++ & 1) ? 'gainsboro' : 'antiquewhite';
-                                $sqlroll = "SELECT
-                                                STOCKTRANSACTION.ORDERCODE,
-                                                COUNT(STOCKTRANSACTION.ITEMELEMENTCODE) AS JML_ROLL
-                                            FROM
-                                                STOCKTRANSACTION STOCKTRANSACTION
-                                            WHERE
-                                                STOCKTRANSACTION.ORDERCODE = '" . $rowdb21['PRODUCTIONORDERCODE'] . "'
-                                                AND STOCKTRANSACTION.TEMPLATECODE = '120'
-                                                AND STOCKTRANSACTION.ITEMTYPECODE = 'KGF'
-                                            GROUP BY
-                                                STOCKTRANSACTION.ORDERCODE";
-                                $stmt11 = db2_exec($conn1, $sqlroll, array('cursor' => DB2_SCROLLABLE));
-
-                                $rowr = db2_fetch_assoc($stmt11);
-
-                                $sqlroll1 = "SELECT
-                                                SUM(USERPRIMARYQUANTITY) AS KG,
-                                                COUNT(ITEMELEMENTCODE) AS ROLL
-                                            FROM
-                                                DB2ADMIN.STOCKTRANSACTION x
-                                            WHERE
-                                                ORDERCODE = '" . $rowdb21['PRODUCTIONORDERCODE'] . "'
-                                                AND ITEMTYPECODE = 'KFF'";
-                                $stmt111 = db2_exec($conn1, $sqlroll1, array('cursor' => DB2_SCROLLABLE));
-                                $rowr1 = db2_fetch_assoc($stmt111);
-
-                                $sqlkg = "SELECT DISTINCT
-                                                GROUPSTEPNUMBER,
-                                                INITIALUSERPRIMARYQUANTITY AS QTY_BAGI_KAIN,
-                                                INITIALUSERSECONDARYQUANTITY AS QTY_ORDER_YARD
-                                            FROM 
-                                                VIEWPRODUCTIONDEMANDSTEP 
-                                            WHERE 
-                                                PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
-                                            ORDER BY
-                                                GROUPSTEPNUMBER ASC LIMIT 1";
-                                $stmtkg11 = db2_exec($conn1, $sqlkg, array('cursor' => DB2_SCROLLABLE));
-                                $rowkg = db2_fetch_assoc($stmtkg11);
-
-                                $sqlds = "SELECT
-                                            PRODUCTIONRESERVATION.PRODUCTIONORDERCODE,
-                                            LISTAGG(
-                                                TRIM(PRODUCTIONRESERVATION.ORDERCODE),
-                                                ','
-                                            ) ORDERCODE,
-                                            SALESORDERDELIVERY.DELIVERYDATE,
-                                            PRODUCTIONRESERVATION.ITEMTYPEAFICODE
-                                        FROM
-                                            PRODUCTIONRESERVATION
-                                        LEFT OUTER JOIN PRODUCTIONDEMAND ON
-                                            PRODUCTIONRESERVATION.ORDERCODE = PRODUCTIONDEMAND.CODE
-                                        LEFT JOIN SALESORDERDELIVERY SALESORDERDELIVERY ON
-                                            SALESORDERDELIVERY.SALESORDERLINESALESORDERCODE = PRODUCTIONDEMAND.DLVSALORDERLINESALESORDERCODE
-                                            AND SALESORDERDELIVERY.SALESORDERLINEORDERLINE = PRODUCTIONDEMAND.DLVSALESORDERLINEORDERLINE
-                                        WHERE
-                                            PRODUCTIONRESERVATION.ITEMTYPEAFICODE = 'KGF'
-                                            AND PRODUCTIONRESERVATION.PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
-                                            AND PRODUCTIONRESERVATION.ORDERCODE IN ('" . implode("', '", explode(', ', $rowdb21['PRODUCTIONDEMANDCODE'])) . "'
-                                            )
-                                        GROUP BY
-                                            PRODUCTIONRESERVATION.PRODUCTIONORDERCODE,
-                                            SALESORDERDELIVERY.DELIVERYDATE,
-                                            PRODUCTIONRESERVATION.ITEMTYPEAFICODE";
-                                $stmtkg11ds = db2_exec($conn1, $sqlds, array('cursor' => DB2_SCROLLABLE));
-                                $rowds = db2_fetch_assoc($stmtkg11ds);
-
-                                $sqlOut = "SELECT
-                                            p2.PROGRESSTEMPLATECODE,
-                                            p2.PROGRESSENDDATE,
-                                            p2.PROGRESSENDTIME,
-                                            p2.MACHINECODE,
-                                            r.LONGDESCRIPTION
-                                        FROM
-                                        PRODUCTIONPROGRESS p2 
-                                        LEFT JOIN RESOURCES r ON
-                                            r.CODE = p2.OPERATORCODE
-                                        WHERE
-                                            p2.INACTIVE = 1
-                                            AND p2.PROGRESSTEMPLATECODE = 'E01'
-                                            AND p2.OPERATIONCODE = '$rowdb21[OPERATIONCODE]'
-                                            AND p2.PRODUCTIONORDERCODE  = '$rowdb21[PRODUCTIONORDERCODE]'";
-                                $stmtOut = db2_exec($conn1, $sqlOut, array('cursor' => DB2_SCROLLABLE));
-                                $rowOut = db2_fetch_assoc($stmtOut);
-
-                                $sqlOutTo = "SELECT
-                                                p.OPERATIONCODE,
-                                                p.STEPNUMBER,
-                                                p.OPSTEPGROUPCODE
-                                            FROM
-                                                (
-                                                SELECT
-                                                    STEPNUMBER,
-                                                    PRODUCTIONORDERCODE
+                <?php if (!empty($_POST["submit"])) : ?>
+                    <div class="box-body">
+                        <table id="table_Report" class="table table-bordered table-hover table-striped display compact"
+                            width="100%">
+                            <thead class="bg-blue">
+                                <tr>
+                                    <th width="10">
+                                        #
+                                    </th>
+                                    <th width="5">
+                                        hidden number
+                                    </th>
+                                    <th width="162">
+                                        <div align="center">Mesin / Operation</div>
+                                    </th>
+                                    <th width="162">
+                                        <div align="center">Pelanggan</div>
+                                    </th>
+                                    <th width="118">
+                                        <div align="center">No. Order</div>
+                                    </th>
+                                    <th width="122">
+                                        <div align="center">Item</div>
+                                    </th>
+                                    <th width="86">
+                                        <div align="center">Warna</div>
+                                    </th>
+                                    <th width="46">
+                                        <div align="center">Rol</div>
+                                    </th>
+                                    <th width="48">
+                                        <div align="center">Kg</div>
+                                    </th>
+                                    <th width="38">
+                                        <div align="center">Prod. Demand</div>
+                                    </th>
+                                    <th>
+                                        <div align="center">Delivery</div>
+                                    </th>
+                                    <th width="79">
+                                        <div align="center">Prod. Order</div>
+                                    </th>
+                                    <th class="12">gerobak 1</th>
+                                    <th class="13">out gerobak 1</th>
+                                    <th class="14">gerobak 2</th>
+                                    <th class="15">out gerobak 2</th>
+                                    <th class="16">gerobak 3</th>
+                                    <th class="17">out gerobak 3</th>
+                                    <th class="18">gerobak 4</th>
+                                    <th class="19">out gerobak 4</th>
+                                    <th class="20">gerobak 5</th>
+                                    <th class="21">out gerobak 5</th>
+                                    <th class="22">gerobak 6</th>
+                                    <th class="23">out gerobak 6</th>
+                                    <th class="24">id</th>
+                                    <th class="25">create_time</th>
+                                    <th class="26">tgl_mulai</th>
+                                    <th class="27">tgl_update</th>
+                                    <th class="28">tgl_stop</th>
+                                    <th class="29">approve_time</th>
+                                    <th class="30">petugas_buka</th>
+                                    <th class="31">approve_by</th>
+                                    <th class="32">create_by</th>
+                                    <th class="33">selesai_by</th>
+                                    <th class="34">Procs/To</th>
+                                    <th class="35">PIC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $col = 0;
+                                $no = 1;
+                                while ($rowdb21 = db2_fetch_assoc($stmt1)) {
+                                    $bgcolor = ($col++ & 1) ? 'gainsboro' : 'antiquewhite';
+                                    $sqlroll = "SELECT
+                                                    STOCKTRANSACTION.ORDERCODE,
+                                                    COUNT(STOCKTRANSACTION.ITEMELEMENTCODE) AS JML_ROLL
                                                 FROM
-                                                    PRODUCTIONDEMANDSTEP
+                                                    STOCKTRANSACTION STOCKTRANSACTION
                                                 WHERE
-                                                    PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
-                                                    AND (OPERATIONCODE = 'BAT2'
-                                                        OR OPERATIONCODE = 'BKN1'
-                                                        OR OPERATIONCODE = 'JHP1'
-                                                        OR OPERATIONCODE = 'BAT2'
-                                                        OR OPERATIONCODE = 'BEL1'
-                                                        OR OPERATIONCODE = 'BAT3'
-                                                        OR OPERATIONCODE = 'BBS1'
-                                                        OR OPERATIONCODE = 'WAIT36') ORDER BY STEPNUMBER DESC LIMIT 1 ) s
-                                            LEFT OUTER JOIN PRODUCTIONDEMANDSTEP p ON p.PRODUCTIONORDERCODE = s.PRODUCTIONORDERCODE
-                                                                                    AND p.STEPNUMBER > s.STEPNUMBER
-                                            ORDER BY
-                                                p.STEPNUMBER ASC";
-                                $stmtOutTo = db2_exec($conn1, $sqlOutTo, array('cursor' => DB2_SCROLLABLE));
-                                $rowOutTo = db2_fetch_assoc($stmtOutTo);
+                                                    STOCKTRANSACTION.ORDERCODE = '" . $rowdb21['PRODUCTIONORDERCODE'] . "'
+                                                    AND STOCKTRANSACTION.TEMPLATECODE = '120'
+                                                    AND STOCKTRANSACTION.ITEMTYPECODE = 'KGF'
+                                                GROUP BY
+                                                    STOCKTRANSACTION.ORDERCODE";
+                                    $stmt11 = db2_exec($conn1, $sqlroll, array('cursor' => DB2_SCROLLABLE));
 
-                                $sqlGerobak = "SELECT
-                                                    LISTAGG(a.VALUEQUANTITY, ', ') AS NO_GEROBAK,
-                                                    LISTAGG(TRIM(a.CHARACTERISTICCODE), ', ') AS KODE,
-                                                    LISTAGG(TRIM(a.LASTUPDATEDATETIME), ', ') AS TGL
+                                    $rowr = db2_fetch_assoc($stmt11);
+
+                                    $sqlroll1 = "SELECT
+                                                    SUM(USERPRIMARYQUANTITY) AS KG,
+                                                    COUNT(ITEMELEMENTCODE) AS ROLL
+                                                FROM
+                                                    DB2ADMIN.STOCKTRANSACTION x
+                                                WHERE
+                                                    ORDERCODE = '" . $rowdb21['PRODUCTIONORDERCODE'] . "'
+                                                    AND (ITEMTYPECODE = 'KFF' OR ITEMTYPECODE = 'FKG')";
+                                    $stmt111 = db2_exec($conn1, $sqlroll1, array('cursor' => DB2_SCROLLABLE));
+                                    $rowr1 = db2_fetch_assoc($stmt111);
+
+                                    $sqlkg = "SELECT DISTINCT
+                                                    GROUPSTEPNUMBER,
+                                                    INITIALUSERPRIMARYQUANTITY AS QTY_BAGI_KAIN,
+                                                    INITIALUSERSECONDARYQUANTITY AS QTY_ORDER_YARD
+                                                FROM 
+                                                    VIEWPRODUCTIONDEMANDSTEP 
+                                                WHERE 
+                                                    PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
+                                                ORDER BY
+                                                    GROUPSTEPNUMBER ASC LIMIT 1";
+                                    $stmtkg11 = db2_exec($conn1, $sqlkg, array('cursor' => DB2_SCROLLABLE));
+                                    $rowkg = db2_fetch_assoc($stmtkg11);
+
+                                    $sqlds = "SELECT
+                                                PRODUCTIONRESERVATION.PRODUCTIONORDERCODE,
+                                                LISTAGG(
+                                                    TRIM(PRODUCTIONRESERVATION.ORDERCODE),
+                                                    ','
+                                                ) ORDERCODE,
+                                                SALESORDERDELIVERY.DELIVERYDATE,
+                                                PRODUCTIONRESERVATION.ITEMTYPEAFICODE
+                                            FROM
+                                                PRODUCTIONRESERVATION
+                                            LEFT OUTER JOIN PRODUCTIONDEMAND ON
+                                                PRODUCTIONRESERVATION.ORDERCODE = PRODUCTIONDEMAND.CODE
+                                            LEFT JOIN SALESORDERDELIVERY SALESORDERDELIVERY ON
+                                                SALESORDERDELIVERY.SALESORDERLINESALESORDERCODE = PRODUCTIONDEMAND.DLVSALORDERLINESALESORDERCODE
+                                                AND SALESORDERDELIVERY.SALESORDERLINEORDERLINE = PRODUCTIONDEMAND.DLVSALESORDERLINEORDERLINE
+                                            WHERE
+                                                PRODUCTIONRESERVATION.ITEMTYPEAFICODE = 'KGF'
+                                                AND PRODUCTIONRESERVATION.PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
+                                                AND PRODUCTIONRESERVATION.ORDERCODE IN ('" . implode("', '", explode(', ', $rowdb21['PRODUCTIONDEMANDCODE'])) . "'
+                                                )
+                                            GROUP BY
+                                                PRODUCTIONRESERVATION.PRODUCTIONORDERCODE,
+                                                SALESORDERDELIVERY.DELIVERYDATE,
+                                                PRODUCTIONRESERVATION.ITEMTYPEAFICODE";
+                                    $stmtkg11ds = db2_exec($conn1, $sqlds, array('cursor' => DB2_SCROLLABLE));
+                                    $rowds = db2_fetch_assoc($stmtkg11ds);
+
+                                    $sqlOut = "SELECT
+                                                p2.PROGRESSTEMPLATECODE,
+                                                p2.PROGRESSENDDATE,
+                                                p2.PROGRESSENDTIME,
+                                                p2.MACHINECODE,
+                                                r.LONGDESCRIPTION
+                                            FROM
+                                            PRODUCTIONPROGRESS p2 
+                                            LEFT JOIN RESOURCES r ON
+                                                r.CODE = p2.OPERATORCODE
+                                            WHERE
+                                                p2.INACTIVE = 1
+                                                AND p2.PROGRESSTEMPLATECODE = 'E01'
+                                                AND p2.OPERATIONCODE = '$rowdb21[OPERATIONCODE]'
+                                                AND p2.PRODUCTIONORDERCODE  = '$rowdb21[PRODUCTIONORDERCODE]'";
+                                    $stmtOut = db2_exec($conn1, $sqlOut, array('cursor' => DB2_SCROLLABLE));
+                                    $rowOut = db2_fetch_assoc($stmtOut);
+
+                                    $sqlOutTo = "SELECT
+                                                    p.OPERATIONCODE,
+                                                    p.STEPNUMBER,
+                                                    p.OPSTEPGROUPCODE
                                                 FROM
                                                     (
-                                                        SELECT
-                                                            a.CHARACTERISTICCODE,
-                                                            a.VALUEQUANTITY,
-                                                            b.LASTUPDATEDATETIME
-                                                        FROM
-                                                            ITXVIEW_DETAIL_QA_DATA a
-                                                        LEFT OUTER JOIN QUALITYDOCLINE b ON
-                                                            a.QUALITYDOCUMENTHEADERNUMBERID = b.QUALITYDOCUMENTHEADERNUMBERID
-                                                            AND a.QUALITYDOCUMENTHEADERLINE = b.QUALITYDOCUMENTHEADERLINE
-                                                            AND a.CHARACTERISTICCODE = b.CHARACTERISTICCODE
-                                                            AND a.PRODUCTIONORDERCODE = b.QUALITYDOCPRODUCTIONORDERCODE
-                                                        WHERE
-                                                            a.PRODUCTIONORDERCODE = '" . $rowdb21[' PRODUCTIONORDERCODE'] . "'
-                                                            AND (
-                                                                a.CHARACTERISTICCODE = 'GRB1'
-                                                                    OR a.CHARACTERISTICCODE = 'GRB2'
-                                                                    OR a.CHARACTERISTICCODE = 'GRB3'
-                                                                    OR a.CHARACTERISTICCODE = 'GRB4'
-                                                                    OR a.CHARACTERISTICCODE = 'GRB5'
-                                                                    OR a.CHARACTERISTICCODE = 'GRB6'
-                                                            )
-                                                            AND NOT (
-                                                                a.VALUEQUANTITY = '9'
-                                                                    OR a.VALUEQUANTITY = '999'
-                                                                    OR a.VALUEQUANTITY = '1'
-                                                                    OR a.VALUEQUANTITY = '9999'
-                                                                    OR a.VALUEQUANTITY = '99999'
-                                                                    OR a.VALUEQUANTITY = '99'
-                                                            )
-                                                            AND (
-                                                                a.OPERATIONCODE = 'BAT2'
-                                                                    OR a.OPERATIONCODE = 'BKN1'
-                                                                    OR a.OPERATIONCODE = 'JHP1'
-                                                            )
-                                                        GROUP BY
-                                                            a.CHARACTERISTICCODE,
-                                                            a.VALUEQUANTITY,
-                                                            b.LASTUPDATEDATETIME
-                                                        ORDER BY
-                                                            a.CHARACTERISTICCODE
-                                                    ) a";
-                                $stmtGerobak = db2_exec($conn1, $sqlGerobak, array('cursor' => DB2_SCROLLABLE));
-                                $rowG = db2_fetch_assoc($stmtGerobak);
+                                                    SELECT
+                                                        STEPNUMBER,
+                                                        PRODUCTIONORDERCODE
+                                                    FROM
+                                                        PRODUCTIONDEMANDSTEP
+                                                    WHERE
+                                                        PRODUCTIONORDERCODE = '$rowdb21[PRODUCTIONORDERCODE]'
+                                                        AND (OPERATIONCODE = 'BAT2'
+                                                            OR OPERATIONCODE = 'BKN1'
+                                                            OR OPERATIONCODE = 'JHP1'
+                                                            OR OPERATIONCODE = 'BAT2'
+                                                            OR OPERATIONCODE = 'BEL1'
+                                                            OR OPERATIONCODE = 'BAT3'
+                                                            OR OPERATIONCODE = 'BBS1'
+                                                            OR OPERATIONCODE = 'WAIT36') ORDER BY STEPNUMBER DESC LIMIT 1 ) s
+                                                LEFT OUTER JOIN PRODUCTIONDEMANDSTEP p ON p.PRODUCTIONORDERCODE = s.PRODUCTIONORDERCODE
+                                                                                        AND p.STEPNUMBER > s.STEPNUMBER
+                                                ORDER BY
+                                                    p.STEPNUMBER ASC";
+                                    $stmtOutTo = db2_exec($conn1, $sqlOutTo, array('cursor' => DB2_SCROLLABLE));
+                                    $rowOutTo = db2_fetch_assoc($stmtOutTo);
 
-                                $Ngrk = $rowG['NO_GEROBAK'];
-                                $arr = explode(",", $Ngrk);
-                                $Ngrk1 = $rowG['TGL'];
-                                $arr1 = explode(",", $Ngrk1);
-                                ?>
-							<tr bgcolor="<?php echo $bgcolor; ?>">
-								<td class="details-control"></td>
-								<td align="center">&nbsp;</td>
-								<td><?php echo $rowdb21['MACHINECODE']; ?> / <?php echo $rowdb21['OPERATIONCODE']; ?>
-								</td>
-								<td><?php echo $rowdb21['LANGGANAN']; ?></td>
-								<td align="center"><?php echo $rowdb21['PRO_ORDER']; ?></td>
-								<td><?php echo $rowdb21['ITEMNO']; ?></td>
-								<td align="center"><?php echo $rowdb21['WARNA']; ?></td>
-								<td align="center">
-									<?php
-                                        if ($rowr['JML_ROLL'] == "") {
-                                            echo $rowr1['ROLL'];
-                                        } else {
-                                            echo $rowr['JML_ROLL'];
-                                        }
+                                    $sqlGerobak = "SELECT
+                                                        LISTAGG(a.VALUEQUANTITY, ', ') AS NO_GEROBAK,
+                                                        LISTAGG(TRIM(a.CHARACTERISTICCODE), ', ') AS KODE,
+                                                        LISTAGG(TRIM(a.LASTUPDATEDATETIME), ', ') AS TGL
+                                                    FROM
+                                                        (
+                                                            SELECT
+                                                                a.CHARACTERISTICCODE,
+                                                                a.VALUEQUANTITY,
+                                                                b.LASTUPDATEDATETIME
+                                                            FROM
+                                                                ITXVIEW_DETAIL_QA_DATA a
+                                                            LEFT OUTER JOIN QUALITYDOCLINE b ON
+                                                                a.QUALITYDOCUMENTHEADERNUMBERID = b.QUALITYDOCUMENTHEADERNUMBERID
+                                                                AND a.QUALITYDOCUMENTHEADERLINE = b.QUALITYDOCUMENTHEADERLINE
+                                                                AND a.CHARACTERISTICCODE = b.CHARACTERISTICCODE
+                                                                AND a.PRODUCTIONORDERCODE = b.QUALITYDOCPRODUCTIONORDERCODE
+                                                            WHERE
+                                                                a.PRODUCTIONORDERCODE = '" . $rowdb21[' PRODUCTIONORDERCODE'] . "'
+                                                                AND (
+                                                                    a.CHARACTERISTICCODE = 'GRB1'
+                                                                        OR a.CHARACTERISTICCODE = 'GRB2'
+                                                                        OR a.CHARACTERISTICCODE = 'GRB3'
+                                                                        OR a.CHARACTERISTICCODE = 'GRB4'
+                                                                        OR a.CHARACTERISTICCODE = 'GRB5'
+                                                                        OR a.CHARACTERISTICCODE = 'GRB6'
+                                                                )
+                                                                AND NOT (
+                                                                    a.VALUEQUANTITY = '9'
+                                                                        OR a.VALUEQUANTITY = '999'
+                                                                        OR a.VALUEQUANTITY = '1'
+                                                                        OR a.VALUEQUANTITY = '9999'
+                                                                        OR a.VALUEQUANTITY = '99999'
+                                                                        OR a.VALUEQUANTITY = '99'
+                                                                )
+                                                                AND (
+                                                                    a.OPERATIONCODE = 'BAT2'
+                                                                        OR a.OPERATIONCODE = 'BKN1'
+                                                                        OR a.OPERATIONCODE = 'JHP1'
+                                                                )
+                                                            GROUP BY
+                                                                a.CHARACTERISTICCODE,
+                                                                a.VALUEQUANTITY,
+                                                                b.LASTUPDATEDATETIME
+                                                            ORDER BY
+                                                                a.CHARACTERISTICCODE
+                                                        ) a";
+                                    $stmtGerobak = db2_exec($conn1, $sqlGerobak, array('cursor' => DB2_SCROLLABLE));
+                                    $rowG = db2_fetch_assoc($stmtGerobak);
+
+                                    $Ngrk = $rowG['NO_GEROBAK'];
+                                    $arr = explode(",", $Ngrk);
+                                    $Ngrk1 = $rowG['TGL'];
+                                    $arr1 = explode(",", $Ngrk1);
+                                    ?>
+                                <tr bgcolor="<?php echo $bgcolor; ?>">
+                                    <td class="details-control"></td>
+                                    <td align="center">&nbsp;</td>
+                                    <td><?php echo $rowdb21['MACHINECODE']; ?> / <?php echo $rowdb21['OPERATIONCODE']; ?>
+                                    </td>
+                                    <td><?php echo $rowdb21['LANGGANAN']; ?></td>
+                                    <td align="center"><?php echo $rowdb21['PRO_ORDER']; ?></td>
+                                    <td><?php echo $rowdb21['ITEMNO']; ?></td>
+                                    <td align="center"><?php echo $rowdb21['WARNA']; ?></td>
+                                    <td align="center" title="ngambil dari color remarks di salesorderline, harusnya isiannya itu terakhir nomor roll. Contoh (10 ROLLS)">
+                                        <?php
+                                            if(substr($rowdb21['PRO_ORDER'], 0, 3) == 'CWD'){
+                                                $q_roll_jasa        = db2_exec($conn1, "SELECT
+                                                                                            s.ABSUNIQUEID 
+                                                                                        FROM
+                                                                                            PRODUCTIONDEMAND p 
+                                                                                        LEFT JOIN SALESORDERLINE s ON s.SALESORDERCODE = p.ORIGDLVSALORDLINESALORDERCODE 
+                                                                                                                    AND s.ORDERLINE = p.ORIGDLVSALORDERLINEORDERLINE 
+                                                                                        WHERE
+                                                                                            p.CODE = '$rowdb21[PRODUCTIONDEMANDCODE]'");
+                                                $data_roll_jasa     = db2_fetch_assoc($q_roll_jasa);
+                                                
+                                                $q_roll_jasa2        = db2_exec($conn1, "SELECT
+                                                                                                UNIQUEID,
+                                                                                                SUBSTR(ROLL, 1,2) AS ROLL
+                                                                                            FROM (SELECT
+                                                                                                    UNIQUEID,
+                                                                                                    CASE 
+                                                                                                        WHEN LOCATE('(', VALUESTRING) > 0 AND LOCATE(')', VALUESTRING) > 0 THEN
+                                                                                                            SUBSTRING(VALUESTRING, LOCATE('(', VALUESTRING) + 1, LOCATE(')', VALUESTRING) - LOCATE('(', VALUESTRING) - 1)
+                                                                                                    END AS ROLL
+                                                                                                FROM
+                                                                                                    ADSTORAGE
+                                                                                                WHERE
+                                                                                                    NAMENAME = 'ColorRemarks'
+                                                                                                    AND VALUESTRING LIKE '%ROLL%'
+                                                                                                    AND UNIQUEID = '$data_roll_jasa[ABSUNIQUEID]'
+                                                                                                    AND NOT CASE 
+                                                                                                        WHEN LOCATE('(', VALUESTRING) > 0 AND LOCATE(')', VALUESTRING) > 0 THEN
+                                                                                                            SUBSTRING(VALUESTRING, LOCATE('(', VALUESTRING) + 1, LOCATE(')', VALUESTRING) - LOCATE('(', VALUESTRING) - 1)
+                                                                                                    END IS NULL)");
+                                                $data_roll_jasa2     = db2_fetch_assoc($q_roll_jasa2);
+
+                                                echo $data_roll_jasa2['ROLL'];
+                                            }else{
+                                                if ($rowr['JML_ROLL'] == "") {
+                                                    echo $rowr1['ROLL'];
+                                                } else {
+                                                    echo $rowr['JML_ROLL'];
+                                                }
+                                            }
                                         ?>
-								</td>
-								<td align="right">
-									<?php
-                                        // if (round($rowkg['QTY_BAGI_KAIN'], 2) > 0) {
-                                        echo round($rowkg['QTY_BAGI_KAIN'], 2); // BAGIKAIN RESERVATION
-                                        // } else {
-                                        //     echo round($rowr1['KG'], 2); // STOCKTRANSACTION
-                                        // } 
-                                        ?>
-								</td>
-								<td align="center">
-									<?php echo $rowdb21['PRODUCTIONDEMANDCODE']; ?>
-								</td>
-								<td align="center" width="20"><?php echo $rowds['DELIVERYDATE']; ?></td>
-								<td><?php echo $rowdb21['PRODUCTIONORDERCODE']; ?></td>
-								<td class="12">
-									<?php
-                                        if (intval($arr['0']) > 0) {
-                                            echo intval($arr['0']);
-                                        }
-                                        ?>
-								</td>
-								<td class="13">
-									<span class="12">
-										<?php
-                                            if ($arr1['0'] != "") {
-                                                echo $arr1['0'];
+                                    </td>
+                                    <td align="right">
+                                        <?php
+                                            // if (round($rowkg['QTY_BAGI_KAIN'], 2) > 0) {
+                                            echo round($rowkg['QTY_BAGI_KAIN'], 2); // BAGIKAIN RESERVATION
+                                            // } else {
+                                            //     echo round($rowr1['KG'], 2); // STOCKTRANSACTION
+                                            // } 
+                                            ?>
+                                    </td>
+                                    <td align="center">
+                                        <?php echo $rowdb21['PRODUCTIONDEMANDCODE']; ?>
+                                    </td>
+                                    <td align="center" width="20"><?php echo $rowds['DELIVERYDATE']; ?></td>
+                                    <td><?php echo $rowdb21['PRODUCTIONORDERCODE']; ?></td>
+                                    <td class="12">
+                                        <?php
+                                            if (intval($arr['0']) > 0) {
+                                                echo intval($arr['0']);
                                             }
                                             ?>
-									</span>
-								</td>
-								<td class="14">
-									<?php
-                                        if (intval($arr['1']) > 0) {
-                                            echo intval($arr['1']);
-                                        }
-                                        ?>
-								</td>
-								<td class="15">
-									<span class="12">
-										<?php
-                                            if ($arr1['1'] != "") {
-                                                echo $arr1['1'];
+                                    </td>
+                                    <td class="13">
+                                        <span class="12">
+                                            <?php
+                                                if ($arr1['0'] != "") {
+                                                    echo $arr1['0'];
+                                                }
+                                                ?>
+                                        </span>
+                                    </td>
+                                    <td class="14">
+                                        <?php
+                                            if (intval($arr['1']) > 0) {
+                                                echo intval($arr['1']);
                                             }
                                             ?>
-									</span>
-								</td>
-								<td class="16">
-									<?php if (intval($arr['2']) > 0) {
-                                            echo intval($arr['2']);
-                                        }
-                                        ?>
-								</td>
-								<td class="17"><span class="12">
-										<?php if ($arr1['2'] != "") {
-                                                echo $arr1['2'];
-                                            } ?>
-									</span></td>
-								<td class="18"><?php if (intval($arr['3']) > 0) {
-                                        echo intval($arr['3']);
-                                    } ?></td>
-								<td class="19"><span class="12">
-										<?php if ($arr1['3'] != "") {
-                                                echo $arr1['3'];
-                                            } ?>
-									</span></td>
-								<td class="20"><?php if (intval($arr['4']) > 0) {
-                                        echo intval($arr['4']);
-                                    } ?></td>
-								<td class="21"><span class="12">
-										<?php if ($arr1['4'] != "") {
-                                                echo $arr1['4'];
-                                            } ?>
-									</span></td>
-								<td class="22"><?php if (intval($arr['5']) > 0) {
-                                        echo intval($arr['5']);
-                                    } ?></td>
-								<td class="23"><span class="12">
-										<?php if ($arr1['5'] != "") {
-                                                echo $arr1['5'];
-                                            } ?>
-									</span></td>
-								<td class="24">&nbsp;</td>
-								<td class="25">
-									<?php echo $rowdb21['PROGRESSSTARTPROCESSDATE'] . " " . $rowdb21['PROGRESSSTARTPROCESSTIME']; ?>
-								</td>
-								<td class="26">
-									<?php echo $rowdb21['PROGRESSSTARTPROCESSDATE'] . " " . $rowdb21['PROGRESSSTARTPROCESSTIME']; ?>
-								</td>
-								<td class="27">&nbsp;</td>
-								<td class="28">
-									<?php echo $rowOut['PROGRESSENDDATE'] . " " . $rowOut['PROGRESSENDTIME']; ?>
-								</td>
-								<td class="29">
-									<?php echo $rowOut['PROGRESSENDDATE'] . " " . $rowOut['PROGRESSENDTIME']; ?>
-								</td>
-								<th class="30"><?php echo $rowdb21['LONGDESCRIPTION']; ?></th>
-								<th class="31"><?php echo $rowOut['LONGDESCRIPTION']; ?></th>
-								<th class="32"><?php echo $rowdb21['LONGDESCRIPTION']; ?></th>
-								<th class="33"><?php echo $rowOut['LONGDESCRIPTION']; ?></th>
-								<td class="34">
-									<span class="badge badge-dark"><?php echo $rowOutTo['OPERATIONCODE']; ?></span> /
-									<span class="label label-info"><?php echo $rowOutTo['OPSTEPGROUPCODE']; ?></span>
-								</td>
-								<td class="35"><?php echo $rowdb21['LONGDESCRIPTION']; ?></td>
-							</tr>
-							<?php
-                                $no++;
-                            } ?>
-					</table>
-				</div>
+                                    </td>
+                                    <td class="15">
+                                        <span class="12">
+                                            <?php
+                                                if ($arr1['1'] != "") {
+                                                    echo $arr1['1'];
+                                                }
+                                                ?>
+                                        </span>
+                                    </td>
+                                    <td class="16">
+                                        <?php if (intval($arr['2']) > 0) {
+                                                echo intval($arr['2']);
+                                            }
+                                            ?>
+                                    </td>
+                                    <td class="17"><span class="12">
+                                            <?php if ($arr1['2'] != "") {
+                                                    echo $arr1['2'];
+                                                } ?>
+                                        </span></td>
+                                    <td class="18"><?php if (intval($arr['3']) > 0) {
+                                            echo intval($arr['3']);
+                                        } ?></td>
+                                    <td class="19"><span class="12">
+                                            <?php if ($arr1['3'] != "") {
+                                                    echo $arr1['3'];
+                                                } ?>
+                                        </span></td>
+                                    <td class="20"><?php if (intval($arr['4']) > 0) {
+                                            echo intval($arr['4']);
+                                        } ?></td>
+                                    <td class="21"><span class="12">
+                                            <?php if ($arr1['4'] != "") {
+                                                    echo $arr1['4'];
+                                                } ?>
+                                        </span></td>
+                                    <td class="22"><?php if (intval($arr['5']) > 0) {
+                                            echo intval($arr['5']);
+                                        } ?></td>
+                                    <td class="23"><span class="12">
+                                            <?php if ($arr1['5'] != "") {
+                                                    echo $arr1['5'];
+                                                } ?>
+                                        </span></td>
+                                    <td class="24">&nbsp;</td>
+                                    <td class="25">
+                                        <?php echo $rowdb21['PROGRESSSTARTPROCESSDATE'] . " " . $rowdb21['PROGRESSSTARTPROCESSTIME']; ?>
+                                    </td>
+                                    <td class="26">
+                                        <?php echo $rowdb21['PROGRESSSTARTPROCESSDATE'] . " " . $rowdb21['PROGRESSSTARTPROCESSTIME']; ?>
+                                    </td>
+                                    <td class="27">&nbsp;</td>
+                                    <td class="28">
+                                        <?php echo $rowOut['PROGRESSENDDATE'] . " " . $rowOut['PROGRESSENDTIME']; ?>
+                                    </td>
+                                    <td class="29">
+                                        <?php echo $rowOut['PROGRESSENDDATE'] . " " . $rowOut['PROGRESSENDTIME']; ?>
+                                    </td>
+                                    <th class="30"><?php echo $rowdb21['LONGDESCRIPTION']; ?></th>
+                                    <th class="31"><?php echo $rowOut['LONGDESCRIPTION']; ?></th>
+                                    <th class="32"><?php echo $rowdb21['LONGDESCRIPTION']; ?></th>
+                                    <th class="33"><?php echo $rowOut['LONGDESCRIPTION']; ?></th>
+                                    <td class="34">
+                                        <span class="badge badge-dark"><?php echo $rowOutTo['OPERATIONCODE']; ?></span> /
+                                        <span class="label label-info"><?php echo $rowOutTo['OPSTEPGROUPCODE']; ?></span>
+                                    </td>
+                                    <td class="35"><?php echo $rowdb21['LONGDESCRIPTION']; ?></td>
+                                </tr>
+                                <?php
+                                    $no++;
+                                } ?>
+                        </table>
+                    </div>
+                <?php endif; ?>
 			</div>
 		</div>
 	</div>
