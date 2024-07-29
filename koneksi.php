@@ -10,6 +10,7 @@ $conn = sqlsrv_connect($host, $connInfo);
 $con = mysqli_connect("10.0.0.10", "dit", "4dm1n", "db_ikg");
 //$con = mysqli_connect("localhost", "root", "", "db_ikg");
 $connn = mysqli_connect("10.0.0.10", "dit", "4dm1n", "dbnow_gkg");
+$conr = mysqli_connect("10.0.0.10", "dit", "4dm1n", "dbnow_gerobak");
 
 $hostname = "10.0.0.21";
 $database = "NOWPRD";
