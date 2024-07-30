@@ -210,7 +210,7 @@ include "../../koneksi.php";
                 }
                 $sqlDB21 = "SELECT
                                 TRIM(x.PRODUCTIONORDERCODE) AS PRODUCTIONORDERCODE,
-                                x.OPERATIONCODE, 
+                                LISTAGG(TRIM(x.OPERATIONCODE), ',') AS OPERATIONCODE, 
                                 x.OPERATORCODE,
                                 x.PROGRESSSTARTPROCESSDATE, 
                                 x.PROGRESSSTARTPROCESSTIME ,
@@ -324,9 +324,9 @@ include "../../koneksi.php";
                                 (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1' OR x.OPERATIONCODE = 'BAT3'  OR x.OPERATIONCODE = 'BBS1' OR x.OPERATIONCODE = 'JHP1' OR x.OPERATIONCODE = 'WAIT36')
                                 AND x.PROGRESSTEMPLATECODE = 'S01'
                                 AND TIMESTAMP(TRIM(x.PROGRESSSTARTPROCESSDATE), TRIM(x.PROGRESSSTARTPROCESSTIME)) BETWEEN '$start_shift3' AND '$end_shift3'
+                                AND x.INACTIVE = 1
                             GROUP BY 
                                 x.PRODUCTIONORDERCODE,
-                                x.OPERATIONCODE, 
                                 x.OPERATORCODE,
                                 x.PROGRESSSTARTPROCESSDATE, 
                                 x.PROGRESSSTARTPROCESSTIME ,
@@ -350,7 +350,7 @@ include "../../koneksi.php";
             } else if ($_GET["shift"] == 'ALL') {
                 $sqlDB21 = "SELECT
                                     TRIM(x.PRODUCTIONORDERCODE) AS PRODUCTIONORDERCODE,
-                                    x.OPERATIONCODE, 
+                                     LISTAGG(TRIM(x.OPERATIONCODE), ',') AS OPERATIONCODE,
                                     x.OPERATORCODE,
                                     x.PROGRESSSTARTPROCESSDATE, 
                                     x.PROGRESSSTARTPROCESSTIME ,
@@ -464,9 +464,9 @@ include "../../koneksi.php";
                                     (x.OPERATIONCODE = 'BAT2' OR x.OPERATIONCODE = 'BKN1' OR x.OPERATIONCODE = 'BEL1' OR x.OPERATIONCODE = 'BAT3'  OR x.OPERATIONCODE = 'BBS1' OR x.OPERATIONCODE = 'JHP1' OR x.OPERATIONCODE = 'WAIT36'))
                                     AND x.PROGRESSTEMPLATECODE = 'S01'
                                     AND TIMESTAMP(TRIM(x.PROGRESSSTARTPROCESSDATE), TRIM(x.PROGRESSSTARTPROCESSTIME)) BETWEEN '$_GET[tgl1] 23:00:00' AND '$_GET[tgl2] 23:00:00'
+                                    AND x.INACTIVE = 1
                                 GROUP BY 
                                     x.PRODUCTIONORDERCODE,
-                                    x.OPERATIONCODE, 
                                     x.OPERATORCODE,
                                     x.PROGRESSSTARTPROCESSDATE, 
                                     x.PROGRESSSTARTPROCESSTIME ,
@@ -609,104 +609,27 @@ include "../../koneksi.php";
                     </td>
                     <?php
                     // QUERY DIBAWAH INI MENGIKUTI QUERY POSISI KK DI LAPORAN
-                    $sqlOut = "SELECT
-                                        p.PRODUCTIONORDERCODE,
-                                        p.STEPNUMBER AS STEPNUMBER,
-                                        CASE
-                                            WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
-                                            ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
-                                        END AS OPERATIONCODE,
-                                        TRIM(o.OPERATIONGROUPCODE) AS DEPT,
-                                        o.LONGDESCRIPTION,
-                                        CASE
-                                            WHEN p.PROGRESSSTATUS = 0 THEN 'Entered'
-                                            WHEN p.PROGRESSSTATUS = 1 THEN 'Planned'
-                                            WHEN p.PROGRESSSTATUS = 2 THEN 'Progress'
-                                            WHEN p.PROGRESSSTATUS = 3 THEN 'Closed'
-                                        END AS STATUS_OPERATION,
-                                        iptip.MULAI,
-                                        CASE
-                                            WHEN p.PROGRESSSTATUS = 3 THEN COALESCE(iptop.SELESAI, SUBSTRING(p.LASTUPDATEDATETIME, 1, 19) || '(Run Manual Closures)')
-                                            ELSE iptop.SELESAI
-                                        END AS SELESAI,
-                                        p.PRODUCTIONORDERCODE,
-                                        p.PRODUCTIONDEMANDCODE,
-                                        iptip.LONGDESCRIPTION AS OP1,
-                                        iptop.LONGDESCRIPTION AS OP2,
-                                        CASE
-                                            WHEN a.VALUEBOOLEAN = 1 THEN 'Tidak Perlu Gerobak'
-                                            ELSE 
-                                                CASE
-                                                    WHEN LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ') = '1' THEN 'PLASTIK'
-                                                    WHEN LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ') = '2' THEN 'TONG'
-                                                    WHEN LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ') = '3' THEN 'DALAM MESIN'
-                                                    ELSE LISTAGG(DISTINCT FLOOR(idqd.VALUEQUANTITY), ', ')
-                                                END
-                                        END AS GEROBAK,
-                                        idqd.WORKCENTERCODE 
-                                    FROM 
-                                        PRODUCTIONDEMANDSTEP p 
-                                    LEFT JOIN OPERATION o ON o.CODE = p.OPERATIONCODE 
-                                    LEFT JOIN ADSTORAGE a ON a.UNIQUEID = o.ABSUNIQUEID AND a.FIELDNAME = 'Gerobak'
-                                    LEFT JOIN ITXVIEW_POSISIKK_TGL_IN_PRODORDER iptip ON iptip.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptip.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-                                    LEFT JOIN ITXVIEW_POSISIKK_TGL_OUT_PRODORDER iptop ON iptop.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE AND iptop.DEMANDSTEPSTEPNUMBER = p.STEPNUMBER
-                                    LEFT JOIN ITXVIEW_DETAIL_QA_DATA idqd ON idqd.PRODUCTIONDEMANDCODE = p.PRODUCTIONDEMANDCODE AND idqd.PRODUCTIONORDERCODE = p.PRODUCTIONORDERCODE
-                                                                        -- AND idqd.OPERATIONCODE = COALESCE(p.PRODRESERVATIONLINKGROUPCODE, p.OPERATIONCODE)
-                                                                        AND idqd.OPERATIONCODE = CASE
-                                                                                                    WHEN TRIM(p.PRODRESERVATIONLINKGROUPCODE) IS NULL OR TRIM(p.PRODRESERVATIONLINKGROUPCODE) = '' THEN TRIM(p.OPERATIONCODE)
-                                                                                                    ELSE TRIM(p.PRODRESERVATIONLINKGROUPCODE)
-                                                                                                END
-                                                                        AND (idqd.VALUEINT = p.STEPNUMBER OR idqd.VALUEINT = p.GROUPSTEPNUMBER) 
-                                                                        AND (idqd.CHARACTERISTICCODE = 'GRB1' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB2' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB3' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB4' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB5' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB6' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB7' OR
-                                                                            idqd.CHARACTERISTICCODE = 'GRB8' OR
-                                                                        idqd.CHARACTERISTICCODE = 'AREA')
-                                                                        AND NOT (idqd.VALUEQUANTITY = 999 OR idqd.VALUEQUANTITY = 9999 OR idqd.VALUEQUANTITY = 99999 OR idqd.VALUEQUANTITY = 99 OR idqd.VALUEQUANTITY = 91)
-                                    WHERE
-                                        p.PRODUCTIONORDERCODE  = '$rowdb21[PRODUCTIONORDERCODE]' AND p.OPERATIONCODE = '$rowdb21[OPERATIONCODE]'
-                                    GROUP BY
-                                        p.PRODUCTIONORDERCODE,
-                                        p.STEPNUMBER,
-                                        p.OPERATIONCODE,
-                                        p.PRODRESERVATIONLINKGROUPCODE,
-                                        o.OPERATIONGROUPCODE,
-                                        o.LONGDESCRIPTION,
-                                        p.PROGRESSSTATUS,
-                                        iptip.MULAI,
-                                        iptop.SELESAI,
-                                        p.LASTUPDATEDATETIME,
-                                        p.PRODUCTIONORDERCODE,
-                                        p.PRODUCTIONDEMANDCODE,
-                                        iptip.LONGDESCRIPTION,
-                                        iptop.LONGDESCRIPTION,
-                                        a.VALUEBOOLEAN,
-                                        idqd.WORKCENTERCODE 
-                                    ORDER BY p.STEPNUMBER ASC";
-                    $stmtOut = db2_exec($conn1, $sqlOut, array('cursor' => DB2_SCROLLABLE));
+                    $sqlOut = "SELECT * FROM ITXVIEW_POSISI_KARTU_KERJA WHERE PRODUCTIONORDERCODE  = '$rowdb21[PRODUCTIONORDERCODE]' AND OPERATIONCODE = '$rowdb21[OPERATIONCODE]'";
+                    $stmtOut = db2_exec($conn1, $sqlOut);
                     $rowOut = db2_fetch_assoc($stmtOut);
                     ?>
 
                     <?php
                     $sqlgerobak = "SELECT DISTINCT
-                                                        no_demand,
-                                                        prod_order,
-                                                        bagi_kain,
-                                                        berat,
-                                                        berat_kosong,
-                                                        SUM(berat - berat_kosong) AS beratkain
-                                                    FROM
-                                                        `kain_proses` 
-                                                    WHERE
-                                                    prod_order ='$rowOut[PRODUCTIONORDERCODE]' 
-                                                    AND 
-                                                    proses ='$rowOut[OPERATIONCODE]' 
-                                                    AND 
-                                                    no_step ='$rowOut[STEPNUMBER]' ";
+                                                    no_demand,
+                                                    prod_order,
+                                                    bagi_kain,
+                                                    berat,
+                                                    berat_kosong,
+                                                    SUM(berat - berat_kosong) AS beratkain
+                                                FROM
+                                                    `kain_proses` 
+                                                WHERE
+                                                prod_order ='$rowOut[PRODUCTIONORDERCODE]' 
+                                                AND 
+                                                proses ='$rowOut[OPERATIONCODE]' 
+                                                AND 
+                                                no_step ='$rowOut[STEPNUMBER]' ";
                     $gerobak = mysqli_query($conr, $sqlgerobak);
                     $beratkain = mysqli_fetch_assoc($gerobak);
                     ?>
