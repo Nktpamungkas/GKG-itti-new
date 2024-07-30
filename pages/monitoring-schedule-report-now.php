@@ -183,6 +183,7 @@ include "koneksi.php";
                                     TRIM(x.PROGRESSSTARTPROCESSDATE),
                                     TRIM(x.PROGRESSSTARTPROCESSTIME)
                                 ) BETWEEN '$start_shift3' AND '$end_shift3'
+                            AND x.INACTIVE = 1
                             GROUP BY 
                                 x.PRODUCTIONORDERCODE,
                                 x.OPERATIONCODE, 
@@ -338,6 +339,7 @@ include "koneksi.php";
                                 TRIM(x.PROGRESSSTARTPROCESSDATE),
                                 TRIM(x.PROGRESSSTARTPROCESSTIME)
                             ) BETWEEN '$date_s 23:00:00' AND '$date_e 23:00:00'
+                            AND x.INACTIVE = 1
                         GROUP BY 
                             x.PRODUCTIONORDERCODE,
                             x.OPERATIONCODE, 
