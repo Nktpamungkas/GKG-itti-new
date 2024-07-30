@@ -168,6 +168,7 @@ li {
 
 				<td align="center" rowspan="2">No.MC</td>
 				<td align="center" rowspan="2">No.Grbk</td>
+				<td align="center" rowspan="2">No.Grbk selesai</td>
 
 				<td align="center" colspan="2" align="center">Petugas</td>
 
@@ -627,13 +628,25 @@ li {
                                                 FROM
                                                     `kain_proses` 
                                                 WHERE
-                                                prod_order ='$rowOut[PRODUCTIONORDERCODE]' 
+                                                    prod_order ='$rowOut[PRODUCTIONORDERCODE]' 
                                                 AND 
-                                                proses ='$rowOut[OPERATIONCODE]' 
+                                                    proses ='$rowOut[OPERATIONCODE]' 
                                                 AND 
-                                                no_step ='$rowOut[STEPNUMBER]' ";
+                                                    no_step ='$rowOut[STEPNUMBER]' ";
                     $gerobak = mysqli_query($conr, $sqlgerobak);
                     $beratkain = mysqli_fetch_assoc($gerobak);
+                    ?>
+
+				<?php
+                    $sqlgerobakselesai = "SELECT
+                                                GROUP_CONCAT(DISTINCT no_gerobak SEPARATOR ', ') AS gabungan_no_gerobak
+                                            FROM
+                                                kain_proses 
+                                            WHERE
+                                                prod_order = '$rowOut[PRODUCTIONORDERCODE]' 
+                                            AND no_demand = '$rowOut[PRODUCTIONDEMANDCODE]'";
+                    $gerobakss = mysqli_query($conr, $sqlgerobakselesai);
+                    $gerobakselesai = mysqli_fetch_assoc($gerobakss);
                     ?>
 
 				<td align="center" valign="top" colspan="2">
@@ -644,6 +657,7 @@ li {
 				<td align="left" valign="top"><?= $rowOut['SELESAI']; ?></td>
 				<td align="left" valign="top"><?= $rowOut['WORKCENTERCODE']; ?></td>
 				<td align="left" valign="top"><?= $rowOut['GEROBAK']; ?></td>
+				<td align="left" valign="top"><?= $gerobakselesai['gabungan_no_gerobak']; ?></td>
 				<td align="center" valign="top"><?= $rowOut['OP1']; ?></td>
 				<td align="center" valign="top"><?= $rowOut['OP2']; ?></td>
 				<td align="center" valign="top"><?= $_SESSION['nama1Gkg']; ?></td>
