@@ -644,8 +644,8 @@ include "../../koneksi.php";
                                                 kain_proses 
                                             WHERE
                                                 prod_order = '$rowOut[PRODUCTIONORDERCODE]' 
-                                            AND 
-                                                proses='$rowOut[OPERATIONCODE]'";
+                                                AND proses='$rowOut[OPERATIONCODE]'
+                                                AND no_step='$rowOut[STEPNUMBER]'";
 
                     $gerobakss = mysqli_query($conr, $sqlgerobakselesai);
                     $gerobakselesai = mysqli_fetch_assoc($gerobakss);
