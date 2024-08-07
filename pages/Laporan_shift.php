@@ -13,24 +13,30 @@
             <div class="box-header">
                 <div class="form-group row">
                     <label for="Hadir" class="col-sm-1 col-form-label text-center">Tgl Laporan :</label>
-					<div class="col-sm-2">
-						<select name="fulls" class="form-control input-sm" id="fulls">	
-						<option value="ya">Full</option>	
-						<option value="tidak">Tidak Full</option>
-						</select>
-					</div>
+                    <div class="col-sm-2">
+                        <select name="fulls" class="form-control input-sm" id="fulls">
+                            <option value="ya">Full</option>
+                            <option value="tidak">Tidak Full</option>
+                        </select>
+                    </div>
                     <div class="col-sm-2">
                         <div class="input-group">
-                            <input type="text" class="form-control input-sm datepicker" name="tgl_laporan" id="tgl_laporan" placeholder="Tgl Laporan..." autocomplete="off">
+                            <input type="text" class="form-control input-sm datepicker" name="tgl_laporan"
+                                id="tgl_laporan" placeholder="Tgl Laporan..." autocomplete="off">
                             <span class="input-group-btn">
-                                <button class="btn btn-primary btn-sm" type="button" id="generate"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                                <button class="btn btn-primary btn-sm" type="button" id="generate"><i
+                                        class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
                                 </button>
                             </span>
                         </div><!-- /input-group -->
-                    </div>						
+                    </div>
                     <a href="" class="btn btn-sm btn-success"><i class="fa fa-refresh"></i></a>
-                    <button id="print" class="btn btn-danger btn-sm pull-right" style="margin-right: 20px; font-weight: bold; display: none;">PRINT <i class="fa fa-print"></i></button>
-                    <button type="button" id="hold" class="btn btn-sm btn-info pull-right text-black" style="margin-right: 20px; font-weight: bold; display: none;">SIMPAN <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    <button id="print" class="btn btn-danger btn-sm pull-right"
+                        style="margin-right: 20px; font-weight: bold; display: none;">PRINT <i
+                            class="fa fa-print"></i></button>
+                    <button type="button" id="hold" class="btn btn-sm btn-info pull-right text-black"
+                        style="margin-right: 20px; font-weight: bold; display: none;">SIMPAN <i class="fa fa-floppy-o"
+                            aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
@@ -39,127 +45,153 @@
                     <!-- SHIFT 1 -->
                     <div class="col-md-4" style="border-right: solid gray 1px;">
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-6 col-form-label" style="border-bottom: solid gray 1px;">ABSENSI SHIFT 1 : </label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-6 col-form-label"
+                                    style="border-bottom: solid gray 1px;">ABSENSI SHIFT 1 : </label></h4>
                             <div class="col-md-6">
-                                <input type="text" id="group_s1" oninput="this.value = this.value.toUpperCase()" class="form-control input-sm" maxlength="1" placeholder="Group..." value="">
+                                <input type="text" id="group_s1" oninput="this.value = this.value.toUpperCase()"
+                                    class="form-control input-sm" maxlength="1" placeholder="Group..." value="">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="absensi" class="col-sm-3 col-form-label text-right">Absensi :</label>
                             <div class="col-sm-6">
-                                <input required readonly type="text" class="form-control input-xs" value="0" name="absensi_s1" id="absensi_s1" placeholder="orang...">
+                                <input required readonly type="text" class="form-control input-xs" value="0"
+                                    name="absensi_s1" id="absensi_s1" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Hadir" class="col-sm-3 col-form-label text-right">Hadir :</label>
                             <div class="col-sm-6">
-                                <input required readonly type="text" class="form-control input-xs" value="0" name="hadir_s1" id="hadir_s1" placeholder="orang...">
+                                <input required readonly type="text" class="form-control input-xs" value="0"
+                                    name="hadir_s1" id="hadir_s1" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Sakit" class="col-sm-3 col-form-label text-right">Sakit :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="sakit_s1" id="sakit_s1" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="sakit_s1"
+                                    id="sakit_s1" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Mangkir" class="col-sm-3 col-form-label text-right">Mangkir :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="mangkir_s1" id="mangkir_s1" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="mangkir_s1"
+                                    id="mangkir_s1" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Cuti" class="col-sm-3 col-form-label text-right">Cuti :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="cuti_s1" id="cuti_s1" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="cuti_s1"
+                                    id="cuti_s1" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Libur" class="col-sm-3 col-form-label text-right">Libur :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="libur_s1" id="libur_s1" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="libur_s1"
+                                    id="libur_s1" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Izin" class="col-sm-3 col-form-label text-right">Izin :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="izin_s1" id="izin_s1" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="izin_s1"
+                                    id="izin_s1" placeholder="orang...">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-12 col-form-label text-center" style="border-bottom: solid gray 1px;">PRODUKSI SHIFT 1</label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir"
+                                    class="col-sm-12 col-form-label text-center"
+                                    style="border-bottom: solid gray 1px;">PRODUKSI SHIFT 1</label></h4>
                         </div>
                         <div class=" form-group row">
                             <label for="Masuk" class="col-sm-3 col-form-label text-right">Masuk Kain :</label>
                             <div class="col-sm-7">
-                                <input required type="text" class="form-control input-sm" name="masuk_kain_s1" id="masuk_kain_s1" placeholder="-Jumlah-">
+                                <input required type="text" class="form-control input-sm" name="masuk_kain_s1"
+                                    id="masuk_kain_s1" placeholder="-Jumlah-">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Pembagian" class="col-sm-3 col-form-label text-right">Bagi Kain :</label>
                             <div class="col-sm-7">
-                                <input required type="text" class="form-control input-sm" name="pembagian_kain_s1" id="pembagian_kain_s1" placeholder="-Jumlah-">
+                                <input required type="text" class="form-control input-sm" name="pembagian_kain_s1"
+                                    id="pembagian_kain_s1" placeholder="-Jumlah-">
                             </div>
                         </div>
-						<div class="form-group row">
-							 <label for="Belah" class="col-sm-3 col-form-label text-right">Belah Kain :</label>
-                                <div class="col-sm-7">                                    
-                                    <input required type="text" class="form-control input-sm" name="belahkains1" id="belahkains1" placeholder="-Jumlah-">
-                                </div>
+                        <div class="form-group row">
+                            <label for="Belah" class="col-sm-3 col-form-label text-right">Belah Kain :</label>
+                            <div class="col-sm-7">
+                                <input required type="text" class="form-control input-sm" name="belahkains1"
+                                    id="belahkains1" placeholder="-Jumlah-">
+                            </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Buka" class="col-sm-3 col-form-label text-right">Buka Kain :</label>
                             <div class="col-sm-7">
-                                <input required type="text" class="form-control input-sm" name="buka_kain_s1" id="buka_kain_s1" placeholder="-Jumlah-">
+                                <input required type="text" class="form-control input-sm" name="buka_kain_s1"
+                                    id="buka_kain_s1" placeholder="-Jumlah-">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Penyusunan" class="col-sm-3 col-form-label text-right">Penyusunan Kain :</label>
                             <div class="col-sm-7">
-                                <textarea type="text" class="form-control" name="penyusunan_s1" id="penyusunan_s1"></textarea>
+                                <textarea type="text" class="form-control" name="penyusunan_s1"
+                                    id="penyusunan_s1"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-12 col-form-label text-center" style="border-bottom: solid gray 1px;">MASALAH YANG TERJADI SHIFT 1</label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir"
+                                    class="col-sm-12 col-form-label text-center"
+                                    style="border-bottom: solid gray 1px;">MASALAH YANG TERJADI SHIFT 1</label></h4>
                         </div>
                         <div class=" form-group row">
                             <div class="col-sm-12">
-                                <textarea required type="text" class="form-control" name="masalah_s1" id="masalah_s1"></textarea>
+                                <textarea required type="text" class="form-control" name="masalah_s1"
+                                    id="masalah_s1"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-12 col-form-label text-center" style="border-bottom: solid gray 1px;">LAIN-LAIN DIVISI GKG | CEK MESIN</label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir"
+                                    class="col-sm-12 col-form-label text-center"
+                                    style="border-bottom: solid gray 1px;">LAIN-LAIN DIVISI GKG | CEK MESIN</label></h4>
                         </div>
                         <!-- left lain-lain -->
                         <div class="col-sm-6" style="border-right: solid gray 1px;">
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Terima kain</label>
-                                    <input required type="text" class="form-control input-xs" name="terima_kain_s1" id="terima_kain_s1" placeholder="Terima kain">
+                                    <input required type="text" class="form-control input-xs" name="terima_kain_s1"
+                                        id="terima_kain_s1" placeholder="Terima kain">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Inspeksi</label>
-                                    <input required type="text" class="form-control input-xs" name="inspeksi_s1" id="inspeksi_s1" placeholder="Inspeksi">
+                                    <input required type="text" class="form-control input-xs" name="inspeksi_s1"
+                                        id="inspeksi_s1" placeholder="Inspeksi">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Bagi Kain</label>
-                                    <input type="text" class="form-control input-xs" name="bagi_kain_s1" id="bagi_kain_s1" placeholder="Bagi kain">
+                                    <input type="text" class="form-control input-xs" name="bagi_kain_s1"
+                                        id="bagi_kain_s1" placeholder="Bagi kain">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Buka Kain</label>
-                                    <input required type="text" class="form-control input-xs" name="bukakains1" id="bukakains1" placeholder="Buka kain">
+                                    <input required type="text" class="form-control input-xs" name="bukakains1"
+                                        id="bukakains1" placeholder="Buka kain">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Leader</label>
-                                    <input required type="text" class="form-control input-xs" name="leader_s1" id="leader_s1" placeholder="Leader">
+                                    <input required type="text" class="form-control input-xs" name="leader_s1"
+                                        id="leader_s1" placeholder="Leader">
                                 </div>
                             </div>
                         </div>
@@ -167,28 +199,33 @@
                         <div class="col-sm-6">
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_bk_s1" id="mc_bk_s1" placeholder="MC Buka ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_bk_s1"
+                                        id="mc_bk_s1" placeholder="MC Buka ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_blk_s1" id="mc_blk_s1" placeholder="MC Balik ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_blk_s1"
+                                        id="mc_blk_s1" placeholder="MC Balik ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_blh_s1" id="mc_blh_s1" placeholder="MC Belah ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_blh_s1"
+                                        id="mc_blh_s1" placeholder="MC Belah ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_jhtpgr_s1" id="mc_jhtpgr_s1" placeholder="Jahit Pinggir ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_jhtpgr_s1"
+                                        id="mc_jhtpgr_s1" placeholder="Jahit Pinggir ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Masalah Kehadiran</label>
-                                    <textarea type="text" class="form-control" name="masalah_hadir_s1" id="masalah_hadir_s1"></textarea>
+                                    <textarea type="text" class="form-control" name="masalah_hadir_s1"
+                                        id="masalah_hadir_s1"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -197,127 +234,153 @@
                     <!-- SHIFT 2 -->
                     <div class="col-md-4" style="border-right: solid gray 1px;">
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-6 col-form-label" style="border-bottom: solid gray 1px;">ABSENSI SHIFT 2 : </label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-6 col-form-label"
+                                    style="border-bottom: solid gray 1px;">ABSENSI SHIFT 2 : </label></h4>
                             <div class="col-md-6">
-                                <input type="text" id="group_s2" oninput="this.value = this.value.toUpperCase()" class="form-control input-sm" maxlength="1" placeholder="Group..." value="">
+                                <input type="text" id="group_s2" oninput="this.value = this.value.toUpperCase()"
+                                    class="form-control input-sm" maxlength="1" placeholder="Group..." value="">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="absensi" class="col-sm-3 col-form-label text-right">Absensi :</label>
                             <div class="col-sm-6">
-                                <input required readonly type="text" class="form-control input-xs" value="0" name="absensi_s2" id="absensi_s2" placeholder="orang...">
+                                <input required readonly type="text" class="form-control input-xs" value="0"
+                                    name="absensi_s2" id="absensi_s2" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Hadir" class="col-sm-3 col-form-label text-right">Hadir :</label>
                             <div class="col-sm-6">
-                                <input required readonly type="text" class="form-control input-xs" value="0" name="hadir_s2" id="hadir_s2" placeholder="orang...">
+                                <input required readonly type="text" class="form-control input-xs" value="0"
+                                    name="hadir_s2" id="hadir_s2" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Sakit" class="col-sm-3 col-form-label text-right">Sakit :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="sakit_s2" id="sakit_s2" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="sakit_s2"
+                                    id="sakit_s2" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Mangkir" class="col-sm-3 col-form-label text-right">Mangkir :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="mangkir_s2" id="mangkir_s2" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="mangkir_s2"
+                                    id="mangkir_s2" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Cuti" class="col-sm-3 col-form-label text-right">Cuti :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="cuti_s2" id="cuti_s2" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="cuti_s2"
+                                    id="cuti_s2" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Libur" class="col-sm-3 col-form-label text-right">Libur :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="libur_s2" id="libur_s2" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="libur_s2"
+                                    id="libur_s2" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Izin" class="col-sm-3 col-form-label text-right">Izin :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="izin_s2" id="izin_s2" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="izin_s2"
+                                    id="izin_s2" placeholder="orang...">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-12 col-form-label text-center" style="border-bottom: solid gray 1px;">PRODUKSI SHIFT 2</label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir"
+                                    class="col-sm-12 col-form-label text-center"
+                                    style="border-bottom: solid gray 1px;">PRODUKSI SHIFT 2</label></h4>
                         </div>
                         <div class=" form-group row">
                             <label for="Masuk" class="col-sm-3 col-form-label text-right">Masuk Kain :</label>
                             <div class="col-sm-7">
-                                <input required type="text" class="form-control input-sm" name="masuk_kain_s2" id="masuk_kain_s2" placeholder="-Jumlah-">
+                                <input required type="text" class="form-control input-sm" name="masuk_kain_s2"
+                                    id="masuk_kain_s2" placeholder="-Jumlah-">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Pembagian" class="col-sm-3 col-form-label text-right">Bagi Kain :</label>
                             <div class="col-sm-7">
-                                <input required type="text" class="form-control input-sm" name="pembagian_kain_s2" id="pembagian_kain_s2" placeholder="-Jumlah-">
+                                <input required type="text" class="form-control input-sm" name="pembagian_kain_s2"
+                                    id="pembagian_kain_s2" placeholder="-Jumlah-">
                             </div>
                         </div>
-						<div class="form-group row">
-							 <label for="Belah" class="col-sm-3 col-form-label text-right">Belah Kain :</label>
-                                <div class="col-sm-7">                                    
-                                    <input required type="text" class="form-control input-sm" name="belahkains2" id="belahkains2" placeholder="-Jumlah-">
-                                </div>
+                        <div class="form-group row">
+                            <label for="Belah" class="col-sm-3 col-form-label text-right">Belah Kain :</label>
+                            <div class="col-sm-7">
+                                <input required type="text" class="form-control input-sm" name="belahkains2"
+                                    id="belahkains2" placeholder="-Jumlah-">
+                            </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Buka" class="col-sm-3 col-form-label text-right">Buka Kain :</label>
                             <div class="col-sm-7">
-                                <input required type="text" class="form-control input-sm" name="buka_kain_s2" id="buka_kain_s2" placeholder="-Jumlah-">
+                                <input required type="text" class="form-control input-sm" name="buka_kain_s2"
+                                    id="buka_kain_s2" placeholder="-Jumlah-">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Penyusunan" class="col-sm-3 col-form-label text-right">Penyusunan Kain :</label>
                             <div class="col-sm-7">
-                                <textarea type="text" class="form-control" name="penyusunan_s2" id="penyusunan_s2"></textarea>
+                                <textarea type="text" class="form-control" name="penyusunan_s2"
+                                    id="penyusunan_s2"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-12 col-form-label text-center" style="border-bottom: solid gray 1px;">MASALAH YANG TERJADI SHIFT 2</label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir"
+                                    class="col-sm-12 col-form-label text-center"
+                                    style="border-bottom: solid gray 1px;">MASALAH YANG TERJADI SHIFT 2</label></h4>
                         </div>
                         <div class=" form-group row">
                             <div class="col-sm-12">
-                                <textarea required type="text" class="form-control" name="masalah_s2" id="masalah_s2"></textarea>
+                                <textarea required type="text" class="form-control" name="masalah_s2"
+                                    id="masalah_s2"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-12 col-form-label text-center" style="border-bottom: solid gray 1px;">LAIN-LAIN DIVISI GKG | CEK MESIN</label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir"
+                                    class="col-sm-12 col-form-label text-center"
+                                    style="border-bottom: solid gray 1px;">LAIN-LAIN DIVISI GKG | CEK MESIN</label></h4>
                         </div>
                         <!-- left lain-lain -->
                         <div class="col-sm-6" style="border-right: solid gray 1px;">
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Terima Kain</label>
-                                    <input required type="text" class="form-control input-xs" name="terima_kain_s2" id="terima_kain_s2" placeholder="Terima kain">
+                                    <input required type="text" class="form-control input-xs" name="terima_kain_s2"
+                                        id="terima_kain_s2" placeholder="Terima kain">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Inspeksi</label>
-                                    <input required type="text" class="form-control input-xs" name="inspeksi_s2" id="inspeksi_s2" placeholder="Inspeksi">
+                                    <input required type="text" class="form-control input-xs" name="inspeksi_s2"
+                                        id="inspeksi_s2" placeholder="Inspeksi">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Bagi kain</label>
-                                    <input type="text" class="form-control input-xs" name="bagi_kain_s2" id="bagi_kain_s2" placeholder="Bagi kain">
+                                    <input type="text" class="form-control input-xs" name="bagi_kain_s2"
+                                        id="bagi_kain_s2" placeholder="Bagi kain">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Buka Kain</label>
-                                    <input required type="text" class="form-control input-xs" name="bukakains2" id="bukakains2" placeholder="Buka kain">
+                                    <input required type="text" class="form-control input-xs" name="bukakains2"
+                                        id="bukakains2" placeholder="Buka kain">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Leader</label>
-                                    <input required type="text" class="form-control input-xs" name="leader_s2" id="leader_s2" placeholder="Leader">
+                                    <input required type="text" class="form-control input-xs" name="leader_s2"
+                                        id="leader_s2" placeholder="Leader">
                                 </div>
                             </div>
                         </div>
@@ -325,28 +388,33 @@
                         <div class="col-sm-6">
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_bk_s2" id="mc_bk_s2" placeholder="MC Buka ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_bk_s2"
+                                        id="mc_bk_s2" placeholder="MC Buka ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_blk_s2" id="mc_blk_s2" placeholder="MC Balik ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_blk_s2"
+                                        id="mc_blk_s2" placeholder="MC Balik ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_blh_s2" id="mc_blh_s2" placeholder="MC Belah ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_blh_s2"
+                                        id="mc_blh_s2" placeholder="MC Belah ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_jhtpgr_s2" id="mc_jhtpgr_s2" placeholder="Jahit Pinggir ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_jhtpgr_s2"
+                                        id="mc_jhtpgr_s2" placeholder="Jahit Pinggir ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Masalah Kehadiran</label>
-                                    <textarea type="text" class="form-control" name="masalah_hadir_s2" id="masalah_hadir_s2"></textarea>
+                                    <textarea type="text" class="form-control" name="masalah_hadir_s2"
+                                        id="masalah_hadir_s2"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -355,78 +423,93 @@
                     <!-- SHIFT 3 -->
                     <div class="col-md-4">
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-6 col-form-label" style="border-bottom: solid gray 1px;">ABSENSI SHIFT 3 : </label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-6 col-form-label"
+                                    style="border-bottom: solid gray 1px;">ABSENSI SHIFT 3 : </label></h4>
                             <div class="col-md-6">
-                                <input type="text" id="group_s3" oninput="this.value = this.value.toUpperCase()" class="form-control input-sm" maxlength="1" placeholder="Group..." value="">
+                                <input type="text" id="group_s3" oninput="this.value = this.value.toUpperCase()"
+                                    class="form-control input-sm" maxlength="1" placeholder="Group..." value="">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="absensi" class="col-sm-3 col-form-label text-right">Absensi :</label>
                             <div class="col-sm-6">
-                                <input required readonly type="text" class="form-control input-xs" value="0" name="absensi_s3" id="absensi_s3" placeholder="orang...">
+                                <input required readonly type="text" class="form-control input-xs" value="0"
+                                    name="absensi_s3" id="absensi_s3" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Hadir" class="col-sm-3 col-form-label text-right">Hadir :</label>
                             <div class="col-sm-6">
-                                <input required readonly type="text" class="form-control input-xs" value="0" name="hadir_s3" id="hadir_s3" placeholder="orang...">
+                                <input required readonly type="text" class="form-control input-xs" value="0"
+                                    name="hadir_s3" id="hadir_s3" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Sakit" class="col-sm-3 col-form-label text-right">Sakit :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="sakit_s3" id="sakit_s3" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="sakit_s3"
+                                    id="sakit_s3" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Mangkir" class="col-sm-3 col-form-label text-right">Mangkir :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="mangkir_s3" id="mangkir_s3" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="mangkir_s3"
+                                    id="mangkir_s3" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Cuti" class="col-sm-3 col-form-label text-right">Cuti :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="cuti_s3" id="cuti_s3" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="cuti_s3"
+                                    id="cuti_s3" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Libur" class="col-sm-3 col-form-label text-right">Libur :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="libur_s3" id="libur_s3" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="libur_s3"
+                                    id="libur_s3" placeholder="orang...">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Izin" class="col-sm-3 col-form-label text-right">Izin :</label>
                             <div class="col-sm-6">
-                                <input required type="text" class="form-control input-xs" value="0" name="izin_s3" id="izin_s3" placeholder="orang...">
+                                <input required type="text" class="form-control input-xs" value="0" name="izin_s3"
+                                    id="izin_s3" placeholder="orang...">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-12 col-form-label text-center" style="border-bottom: solid gray 1px;">PRODUKSI SHIFT 3</label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir"
+                                    class="col-sm-12 col-form-label text-center"
+                                    style="border-bottom: solid gray 1px;">PRODUKSI SHIFT 3</label></h4>
                         </div>
                         <div class=" form-group row">
                             <label for="Masuk" class="col-sm-3 col-form-label text-right">Masuk Kain :</label>
                             <div class="col-sm-7">
-                                <input type="text" value="0" class="form-control input-sm" name="masuk_kain_s3" id="masuk_kain_s3" placeholder="-Jumlah-">
+                                <input type="text" value="0" class="form-control input-sm" name="masuk_kain_s3"
+                                    id="masuk_kain_s3" placeholder="-Jumlah-">
                             </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Pembagian" class="col-sm-3 col-form-label text-right">Bagi Kain :</label>
                             <div class="col-sm-7">
-                                <input type="text" value="0" class="form-control input-sm" name="pembagian_kain_s3" id="pembagian_kain_s3" placeholder="-Jumlah-">
+                                <input type="text" value="0" class="form-control input-sm" name="pembagian_kain_s3"
+                                    id="pembagian_kain_s3" placeholder="-Jumlah-">
                             </div>
                         </div>
-						<div class="form-group row">
-							 <label for="Belah" class="col-sm-3 col-form-label text-right">Belah Kain :</label>
-                                <div class="col-sm-7">                                    
-                                    <input required type="text" class="form-control input-sm" name="belahkains3" id="belahkains3" placeholder="-Jumlah-">
-                                </div>
+                        <div class="form-group row">
+                            <label for="Belah" class="col-sm-3 col-form-label text-right">Belah Kain :</label>
+                            <div class="col-sm-7">
+                                <input required type="text" class="form-control input-sm" name="belahkains3"
+                                    id="belahkains3" placeholder="-Jumlah-">
+                            </div>
                         </div>
                         <div class=" form-group row">
                             <label for="Buka" class="col-sm-3 col-form-label text-right">Buka Kain :</label>
                             <div class="col-sm-7">
-                                <input required type="text" class="form-control input-sm" name="buka_kain_s3" id="buka_kain_s3" placeholder="-Jumlah-">
+                                <input required type="text" class="form-control input-sm" name="buka_kain_s3"
+                                    id="buka_kain_s3" placeholder="-Jumlah-">
                             </div>
                         </div>
                         <!-- <div class=" form-group row">
@@ -444,50 +527,61 @@
                         <div class=" form-group row">
                             <label for="Penyusunan" class="col-sm-3 col-form-label text-right">Penyusunan Kain :</label>
                             <div class="col-sm-7">
-                                <textarea type="text" class="form-control" name="penyusunan_s3" id="penyusunan_s3"></textarea>
+                                <textarea type="text" class="form-control" name="penyusunan_s3"
+                                    id="penyusunan_s3"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-12 col-form-label text-center" style="border-bottom: solid gray 1px;">MASALAH YANG TERJADI SHIFT 3</label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir"
+                                    class="col-sm-12 col-form-label text-center"
+                                    style="border-bottom: solid gray 1px;">MASALAH YANG TERJADI SHIFT 3</label></h4>
                         </div>
                         <div class=" form-group row">
                             <div class="col-sm-12">
-                                <textarea required type="text" class="form-control" name="masalah_s3" id="masalah_s3"></textarea>
+                                <textarea required type="text" class="form-control" name="masalah_s3"
+                                    id="masalah_s3"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <h4 style="font-style: italic;"><label for="Hadir" class="col-sm-12 col-form-label text-center" style="border-bottom: solid gray 1px;">LAIN-LAIN DIVISI GKG | CEK MESIN</label></h4>
+                            <h4 style="font-style: italic;"><label for="Hadir"
+                                    class="col-sm-12 col-form-label text-center"
+                                    style="border-bottom: solid gray 1px;">LAIN-LAIN DIVISI GKG | CEK MESIN</label></h4>
                         </div>
                         <!-- left lain-lain -->
                         <div class="col-sm-6" style="border-right: solid gray 1px;">
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Terima Kain</label>
-                                    <input required type="text" class="form-control input-xs" name="terima_kain_s3" id="terima_kain_s3" placeholder="Terima kain">
+                                    <input required type="text" class="form-control input-xs" name="terima_kain_s3"
+                                        id="terima_kain_s3" placeholder="Terima kain">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Inspeksi</label>
-                                    <input required type="text" class="form-control input-xs" name="inspeksi_s3" id="inspeksi_s3" placeholder="Inspeksi">
+                                    <input required type="text" class="form-control input-xs" name="inspeksi_s3"
+                                        id="inspeksi_s3" placeholder="Inspeksi">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Bagi Kain</label>
-                                    <input required type="text" class="form-control input-xs" name="bagi_kain_s3" id="bagi_kain_s3" placeholder="Bagi kain">
+                                    <input required type="text" class="form-control input-xs" name="bagi_kain_s3"
+                                        id="bagi_kain_s3" placeholder="Bagi kain">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Buka Kain</label>
-                                    <input required type="text" class="form-control input-xs" name="bukakains3" id="bukakains3" placeholder="Buka kain">
+                                    <input required type="text" class="form-control input-xs" name="bukakains3"
+                                        id="bukakains3" placeholder="Buka kain">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Leader</label>
-                                    <input required type="text" class="form-control input-xs" name="leader_s3" id="leader_s3" placeholder="Leader">
+                                    <input required type="text" class="form-control input-xs" name="leader_s3"
+                                        id="leader_s3" placeholder="Leader">
                                 </div>
                             </div>
                         </div>
@@ -495,28 +589,33 @@
                         <div class="col-sm-6">
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_bk_s3" id="mc_bk_s3" placeholder="MC Buka ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_bk_s3"
+                                        id="mc_bk_s3" placeholder="MC Buka ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_blk_s3" id="mc_blk_s3" placeholder="MC Balik ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_blk_s3"
+                                        id="mc_blk_s3" placeholder="MC Balik ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_blh_s3" id="mc_blh_s3" placeholder="MC Belah ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_blh_s3"
+                                        id="mc_blh_s3" placeholder="MC Belah ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <input required type="text" class="form-control input-sm" name="mc_jhtpgr_s3" id="mc_jhtpgr_s3" placeholder="Jahit Pinggir ...">
+                                    <input required type="text" class="form-control input-sm" name="mc_jhtpgr_s3"
+                                        id="mc_jhtpgr_s3" placeholder="Jahit Pinggir ...">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <label for="">Masalah Kehadiran</label>
-                                    <textarea type="text" class="form-control" name="masalah_hadir_s3" id="masalah_hadir_s3"></textarea>
+                                    <textarea type="text" class="form-control" name="masalah_hadir_s3"
+                                        id="masalah_hadir_s3"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -535,13 +634,13 @@
     function disableScroll() {
         scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-            window.onscroll = function() {
+            window.onscroll = function () {
                 window.scrollTo(scrollLeft, scrollTop);
             };
     }
 
     function enableScroll() {
-        window.onscroll = function() {};
+        window.onscroll = function () { };
     }
 
     function SpinnerShow() {
@@ -556,28 +655,28 @@
 </script>
 <!-- work here -->
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('.datepicker').datepicker({
             autoclose: true,
             format: 'yyyy-mm-dd',
             todayHighlight: true,
         })
 
-        $('#group_s3').on('focus', function() {
+        $('#group_s3').on('focus', function () {
             if ($(this).val() == '-') {
                 $(this).val('');
             } else {
                 console.log('javascript:void(3)')
             }
         })
-        $('#group_s2').on('focus', function() {
+        $('#group_s2').on('focus', function () {
             if ($(this).val() == '-') {
                 $(this).val('');
             } else {
                 console.log('javascript:void(2)')
             }
         })
-        $('#group_s1').on('focus', function() {
+        $('#group_s1').on('focus', function () {
             if ($(this).val() == '-') {
                 $(this).val('');
             } else {
@@ -585,9 +684,9 @@
             }
         })
 
-        $('#generate').click(function() {
+        $('#generate').click(function () {
             let tgl_laporan = $('#tgl_laporan').val();
-			let fulls = $('#fulls').val();
+            let fulls = $('#fulls').val();
             if (tgl_laporan == "") {
                 Swal.fire(
                     'Pilih tanggal !',
@@ -601,13 +700,16 @@
                     url: "pages/ajax/data_server_MasukKainGreige.php",
                     data: {
                         tgl_laporan: tgl_laporan,
-						fulls: fulls,
+                        fulls: fulls,
                         s1: $('#group_s1').val(),
                         s2: $('#group_s2').val(),
                         s3: $('#group_s3').val()
                     },
-                    success: function(response) {
-                        if (($('#tgl_laporan').val() == "") || (response.value_masuk == "0.00" && response.value_bagi == "0.00" && response.buka_kain_s1 == "0.00" && response.buka_kain_s2 == "0.00" && response.buka_kain_s3 == "0.00")) {
+                    success: function (response) {
+                        if (($('#tgl_laporan').val() == "") || (response.value_masuk ==
+                            "0.00" && response.value_bagi == "0.00" && response
+                                .buka_kain_s1 == "0.00" && response.buka_kain_s2 == "0.00" &&
+                            response.buka_kain_s3 == "0.00")) {
                             SpinnerHide(), Swal.fire(
                                 'Data Kosong !',
                                 '<b>Data Buka Bagi dan Masuk Kain masih 0 sebaiknya anda memilih tanggal lain !</b>',
@@ -620,7 +722,7 @@
                             $('#buka_kain_s1').val(response.buka_kain_s1);
                             $('#buka_kain_s2').val(response.buka_kain_s2);
                             $('#buka_kain_s3').val(response.buka_kain_s3);
-							$('#belahkains1').val(response.belahkains1);
+                            $('#belahkains1').val(response.belahkains1);
                             $('#belahkains2').val(response.belahkains2);
                             $('#belahkains3').val(response.belahkains3);
                             $("#generate").prop("disabled", true);
@@ -628,15 +730,16 @@
                             Cek_if_data_was_exist(tgl_laporan)
                         }
                     },
-                    error: function() {
+                    error: function () {
                         alert("Error");
                     }
                 });
             }
         });
 
-        $("#hold").click(function() {
-            if (($('#tgl_laporan').val() == "") || ($('#masuk_kain_s1').val() == "0.00" && $('#pembagian_kain_s1').val() == "0.00" && $('#buka_kain_s1').val() == "0.00")) {
+        $("#hold").click(function () {
+            if (($('#tgl_laporan').val() == "") || ($('#masuk_kain_s1').val() == "0.00" && $(
+                '#pembagian_kain_s1').val() == "0.00" && $('#buka_kain_s1').val() == "0.00")) {
                 Swal.fire(
                     'Data Kosong !',
                     '<b>Data Buka Bagi dan Masuk Kain masih 0 sebaiknya anda memilih tanggal lain !</b>',
@@ -650,7 +753,7 @@
                         url: "pages/ajax/Ds_hold_laporan_shift.php",
                         data: {
                             tgl_laporan: $('#tgl_laporan').val(),
-							fulls: $('#fulls').val(),
+                            fulls: $('#fulls').val(),
                             masuk_kain_s1: $('#masuk_kain_s1').val(),
                             masuk_kain_s2: $('#masuk_kain_s2').val(),
                             masuk_kain_s3: $('#masuk_kain_s3').val(),
@@ -660,7 +763,7 @@
                             buka_kain_s1: $('#buka_kain_s1').val(),
                             buka_kain_s2: $('#buka_kain_s2').val(),
                             buka_kain_s3: $('#buka_kain_s3').val(),
-							belahkains1: $('#belahkains1').val(),
+                            belahkains1: $('#belahkains1').val(),
                             belahkains2: $('#belahkains2').val(),
                             belahkains3: $('#belahkains3').val(),
                             // MANUAL
@@ -749,7 +852,7 @@
                             // status
                             status: "NOT COMPLETED",
                         },
-                        success: function(response) {
+                        success: function (response) {
                             SpinnerHide(), Swal.fire(
                                 'Berhasil',
                                 '<b>' + response.data + '</b>',
@@ -757,7 +860,7 @@
                             )
                             Cek_if_data_was_exist($('#tgl_laporan').val())
                         },
-                        error: function() {
+                        error: function () {
                             SpinnerHide(), alert("Error");
                         }
                     });
@@ -790,7 +893,7 @@
                 data: {
                     tgl_laporan: tgl_laporan
                 },
-                success: function(response) {
+                success: function (response) {
                     var Data = response.data;
                     if (response.session == 'LIB_SUCCSS') {
                         if (Data.group_s1 == "" || Data.group_s2 == "" || Data.group_s3 == "") {
@@ -799,8 +902,8 @@
                         } else {
                             SpinnerHide(), $("#print").show();
                         }
-                            // MANUAL
-                            $("#masuk_kain_manual").val(Data.masuk_kain_manual),
+                        // MANUAL
+                        $("#masuk_kain_manual").val(Data.masuk_kain_manual),
                             $("#bagi_kain_manual").val(Data.bagi_kain_manual),
                             // ABSENSI
                             $("#absensi_s1").val(Data.absensi_s1),
@@ -836,9 +939,9 @@
                             $('#pembagian_kain_s1').val(Data.pembagian_kain_s1),
                             $('#pembagian_kain_s2').val(Data.pembagian_kain_s2),
                             // buka kain 
-                            // $('#buka_kain_s1').val(Data.buka_kain_s1),
-                            // $('#buka_kain_s2').val(Data.buka_kain_s2),
-                            // $('#buka_kain_s3').val(Data.buka_kain_s3),
+                            $('#buka_kain_s1').val(Data.buka_kain_s1),
+                            $('#buka_kain_s2').val(Data.buka_kain_s2),
+                            $('#buka_kain_s3').val(Data.buka_kain_s3),
                             // izin
                             $("#izin_s1").val(Data.izin_s1),
                             $("#izin_s2").val(Data.izin_s2),
@@ -893,68 +996,73 @@
                             $("#masalah_hadir_s3").val(Data.masalah_hadir_s3), SpinnerHide()
 
                     } else {
-                        SpinnerHide(), toastr.success('Data baru, Harap melengkapi data shift 1, 2 & 3 untuk memunculkan button print');
+                        SpinnerHide(), toastr.success(
+                            'Data baru, Harap melengkapi data shift 1, 2 & 3 untuk memunculkan button print'
+                        );
                     }
                 },
-                error: function() {
+                error: function () {
                     SpinnerHide(), alert("Error");
                 }
             });
         }
 
-        $('#print').click(function() {
+        $('#print').click(function () {
             window.open('pages/cetak/laporan_shift.php?date_laporan=' + $('#tgl_laporan').val());
         })
 
     })
 </script>
 <script>
-    $(document).on('focus', '.input-xs', function() {
-        $(this).keypress(function(event) {
-            if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+    $(document).on('focus', '.input-xs', function () {
+        $(this).keypress(function (event) {
+            if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event
+                .which > 57)) {
                 event.preventDefault();
             }
         });
     })
-    $(document).on('focus', '.angka', function() {
-        $(this).keypress(function(event) {
-            if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+    $(document).on('focus', '.angka', function () {
+        $(this).keypress(function (event) {
+            if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event
+                .which > 57)) {
                 event.preventDefault();
             }
         });
     })
 </script>
 <script>
-function roundToTwo(num) {
-    return +(Math.round(num + "e+2")  + "e-2");
-}
+    function roundToTwo(num) {
+        return +(Math.round(num + "e+2") + "e-2");
+    }
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         function SUM_absensi_s1() {
             let terima_kain_s1 = $("#terima_kain_s1").val() || 0;
             let inspeksi_s1 = $("#inspeksi_s1").val() || 0;
             let bagi_kain_s1 = $("#bagi_kain_s1").val() || 0;
             let bukakains1 = $("#bukakains1").val() || 0;
             let leader_s1 = $("#leader_s1").val() || 0;
-            let value = parseFloat(terima_kain_s1) + parseFloat(inspeksi_s1) + parseFloat(bagi_kain_s1) + parseFloat(bukakains1) + parseFloat(leader_s1);
+            let value = parseFloat(terima_kain_s1) + parseFloat(inspeksi_s1) + parseFloat(bagi_kain_s1) +
+                parseFloat(bukakains1) + parseFloat(leader_s1);
             $('#absensi_s1').val(value)
             SUM_hadir_s1()
         }
 
-        $('#terima_kain_s1').on('focusout', function() {
+        $('#terima_kain_s1').on('focusout', function () {
             SUM_absensi_s1();
         })
-        $('#inspeksi_s1').on('focusout', function() {
+        $('#inspeksi_s1').on('focusout', function () {
             SUM_absensi_s1();
         })
-        $('#bagi_kain_s1').on('focusout', function() {
+        $('#bagi_kain_s1').on('focusout', function () {
             SUM_absensi_s1();
         })
-        $('#bukakains1').on('focusout', function() {
+        $('#bukakains1').on('focusout', function () {
             SUM_absensi_s1();
         })
-        $('#leader_s1').on('focusout', function() {
+        $('#leader_s1').on('focusout', function () {
             SUM_absensi_s1();
         })
 
@@ -964,24 +1072,25 @@ function roundToTwo(num) {
             let bagi_kain_s2 = $("#bagi_kain_s2").val() || 0;
             let bukakains2 = $("#bukakains2").val() || 0;
             let leader_s2 = $("#leader_s2").val() || 0;
-            let value = parseFloat(terima_kain_s2) + parseFloat(inspeksi_s2) + parseFloat(bagi_kain_s2) + parseFloat(bukakains2) + parseFloat(leader_s2);
+            let value = parseFloat(terima_kain_s2) + parseFloat(inspeksi_s2) + parseFloat(bagi_kain_s2) +
+                parseFloat(bukakains2) + parseFloat(leader_s2);
             $('#absensi_s2').val(value)
             SUM_hadir_s2()
         }
 
-        $('#terima_kain_s2').on('focusout', function() {
+        $('#terima_kain_s2').on('focusout', function () {
             SUM_absensi_s2();
         })
-        $('#inspeksi_s2').on('focusout', function() {
+        $('#inspeksi_s2').on('focusout', function () {
             SUM_absensi_s2();
         })
-        $('#bagi_kain_s2').on('focusout', function() {
+        $('#bagi_kain_s2').on('focusout', function () {
             SUM_absensi_s2();
         })
-        $('#bukakains2').on('focusout', function() {
+        $('#bukakains2').on('focusout', function () {
             SUM_absensi_s2();
         })
-        $('#leader_s2').on('focusout', function() {
+        $('#leader_s2').on('focusout', function () {
             SUM_absensi_s2();
         })
 
@@ -991,24 +1100,25 @@ function roundToTwo(num) {
             let bagi_kain_s3 = $("#bagi_kain_s3").val() || 0;
             let bukakains3 = $("#bukakains3").val() || 0;
             let leader_s3 = $("#leader_s3").val() || 0;
-            let value = parseFloat(terima_kain_s3) + parseFloat(inspeksi_s3) + parseFloat(bagi_kain_s3) + parseFloat(bukakains3) + parseFloat(leader_s3);
+            let value = parseFloat(terima_kain_s3) + parseFloat(inspeksi_s3) + parseFloat(bagi_kain_s3) +
+                parseFloat(bukakains3) + parseFloat(leader_s3);
             $('#absensi_s3').val(value)
             SUM_hadir_s3()
         }
 
-        $('#terima_kain_s3').on('focusout', function() {
+        $('#terima_kain_s3').on('focusout', function () {
             SUM_absensi_s3();
         })
-        $('#inspeksi_s3').on('focusout', function() {
+        $('#inspeksi_s3').on('focusout', function () {
             SUM_absensi_s3();
         })
-        $('#bagi_kain_s3').on('focusout', function() {
+        $('#bagi_kain_s3').on('focusout', function () {
             SUM_absensi_s3();
         })
-        $('#bukakains3').on('focusout', function() {
+        $('#bukakains3').on('focusout', function () {
             SUM_absensi_s3();
         })
-        $('#leader_s3').on('focusout', function() {
+        $('#leader_s3').on('focusout', function () {
             SUM_absensi_s3();
         })
         // //////////////////////////////////////////////////////////// END absensi
@@ -1021,23 +1131,24 @@ function roundToTwo(num) {
             let cuti_s1 = $('#cuti_s1').val() || 0;
             let libur_s1 = $('#libur_s1').val() || 0;
             let izin_s1 = $('#izin_s1').val() || 0;
-            value = parseFloat(absensi) - (parseFloat(sakit_s1) + parseFloat(mangkir_s1) + parseFloat(cuti_s1) + parseFloat(libur_s1) + parseFloat(izin_s1));
+            value = parseFloat(absensi) - (parseFloat(sakit_s1) + parseFloat(mangkir_s1) + parseFloat(cuti_s1) +
+                parseFloat(libur_s1) + parseFloat(izin_s1));
             $('#hadir_s1').val(value)
         }
 
-        $('#sakit_s1').on('focusout', function() {
+        $('#sakit_s1').on('focusout', function () {
             SUM_hadir_s1();
         })
-        $('#mangkir_s1').on('focusout', function() {
+        $('#mangkir_s1').on('focusout', function () {
             SUM_hadir_s1();
         })
-        $('#cuti_s1').on('focusout', function() {
+        $('#cuti_s1').on('focusout', function () {
             SUM_hadir_s1();
         })
-        $('#libur_s1').on('focusout', function() {
+        $('#libur_s1').on('focusout', function () {
             SUM_hadir_s1();
         })
-        $('#izin_s1').on('focusout', function() {
+        $('#izin_s1').on('focusout', function () {
             SUM_hadir_s1();
         })
 
@@ -1048,23 +1159,24 @@ function roundToTwo(num) {
             let cuti_s2 = $('#cuti_s2').val() || 0;
             let libur_s2 = $('#libur_s2').val() || 0;
             let izin_s2 = $('#izin_s2').val() || 0;
-            value = parseFloat(absensi) - (parseFloat(sakit_s2) + parseFloat(mangkir_s2) + parseFloat(cuti_s2) + parseFloat(libur_s2) + parseFloat(izin_s2));
+            value = parseFloat(absensi) - (parseFloat(sakit_s2) + parseFloat(mangkir_s2) + parseFloat(cuti_s2) +
+                parseFloat(libur_s2) + parseFloat(izin_s2));
             $('#hadir_s2').val(value)
         }
 
-        $('#sakit_s2').on('focusout', function() {
+        $('#sakit_s2').on('focusout', function () {
             SUM_hadir_s2();
         })
-        $('#mangkir_s2').on('focusout', function() {
+        $('#mangkir_s2').on('focusout', function () {
             SUM_hadir_s2();
         })
-        $('#cuti_s2').on('focusout', function() {
+        $('#cuti_s2').on('focusout', function () {
             SUM_hadir_s2();
         })
-        $('#libur_s2').on('focusout', function() {
+        $('#libur_s2').on('focusout', function () {
             SUM_hadir_s2();
         })
-        $('#izin_s2').on('focusout', function() {
+        $('#izin_s2').on('focusout', function () {
             SUM_hadir_s2();
         })
 
@@ -1075,44 +1187,65 @@ function roundToTwo(num) {
             let cuti_s3 = $('#cuti_s3').val() || 0;
             let libur_s3 = $('#libur_s3').val() || 0;
             let izin_s3 = $('#izin_s3').val() || 0;
-            value = parseFloat(absensi) - (parseFloat(sakit_s3) + parseFloat(mangkir_s3) + parseFloat(cuti_s3) + parseFloat(libur_s3) + parseFloat(izin_s3));
+            value = parseFloat(absensi) - (parseFloat(sakit_s3) + parseFloat(mangkir_s3) + parseFloat(cuti_s3) +
+                parseFloat(libur_s3) + parseFloat(izin_s3));
             $('#hadir_s3').val(value)
         }
 
-        $('#sakit_s3').on('focusout', function() {
+        $('#sakit_s3').on('focusout', function () {
             SUM_hadir_s3();
         })
-        $('#mangkir_s3').on('focusout', function() {
+        $('#mangkir_s3').on('focusout', function () {
             SUM_hadir_s3();
         })
-        $('#cuti_s3').on('focusout', function() {
+        $('#cuti_s3').on('focusout', function () {
             SUM_hadir_s3();
         })
-        $('#libur_s3').on('focusout', function() {
+        $('#libur_s3').on('focusout', function () {
             SUM_hadir_s3();
         })
-        $('#izin_s3').on('focusout', function() {
+        $('#izin_s3').on('focusout', function () {
             SUM_hadir_s3();
         })
 
-        function SUM_masuk_kainS2(){
-            let masuk_kain_s1 = $('#masuk_kain_s1').val() || 0;
-            let masuk_kain_s3 = $('#masuk_kain_s3').val() || 0;
-            value = roundToTwo(parseFloat(masuk_kain_s3) - parseFloat(masuk_kain_s1)).toFixed(2);
-            $('#masuk_kain_s2').val(value)
-        }
-        $('#masuk_kain_s1').on('focusout', function() {
-            SUM_masuk_kainS2();
-        })
+        //function SUM_masuk_kainS2() {
+        //	let masuk_kain_s1 = $('#masuk_kain_s1').val() || 0;
+        //	let masuk_kain_s3 = $('#masuk_kain_s3').val() || 0;
+        //	value = roundToTwo(parseFloat(masuk_kain_s3) - parseFloat(masuk_kain_s1)).toFixed(2);
+        //	$('#masuk_kain_s2').val(value)
+        //}
+        //$('#masuk_kain_s1').on('focusout', function() {
+        //	SUM_masuk_kainS2();
+        //})
 
-        function SUM_pembagian_kainS2(){
-            let pembagian_kain_s1 = $('#pembagian_kain_s1').val() || 0;
-            let pembagian_kain_s3 = $('#pembagian_kain_s3').val() || 0;
-            value = roundToTwo(parseFloat(pembagian_kain_s3) - parseFloat(pembagian_kain_s1)).toFixed(2);
-            $('#pembagian_kain_s2').val(value)
-        }
-        $('#pembagian_kain_s1').on('focusout', function() {
-            SUM_pembagian_kainS2();
-        })
+        //function SUM_pembagian_kainS2() {
+        //	let pembagian_kain_s1 = $('#pembagian_kain_s1').val() || 0;
+        //	let pembagian_kain_s3 = $('#pembagian_kain_s3').val() || 0;
+        //	value = roundToTwo(parseFloat(pembagian_kain_s3) - parseFloat(pembagian_kain_s1)).toFixed(2);
+        //	$('#pembagian_kain_s2').val(value)
+        //}
+        //$('#pembagian_kain_s1').on('focusout', function() {
+        //	SUM_pembagian_kainS2();
+        //})
+
+        //function SUM_belahkains3() {
+        //	let belahkains1 = $('#belahkains1').val() || 0;
+        //	let belahkains2 = $('#belahkains2').val() || 0;
+        //	value = roundToTwo(parseFloat(belahkains1) + parseFloat(belahkains2)).toFixed(2);
+        //	$('#belahkains3').val(value)
+        //}
+        //$('#belahkains3').on('focusout', function() {
+        //	SUM_belahkains3();
+        //})
+
+        //function SUM_buka_kain_s3() {
+        //    let buka_kain_s1 = $('#buka_kain_s1').val() || 0;
+        //    let buka_kain_s2 = $('#buka_kain_s2').val() || 0;
+        //    value = roundToTwo(parseFloat(buka_kain_s1) + parseFloat(buka_kain_s2)).toFixed(2);
+        //    $('#buka_kain_s3').val(value)
+        //}
+        //$('#buka_kain_s3').on('focusout', function () {
+        //    SUM_buka_kain_s3();
+        //})
     })
 </script>
