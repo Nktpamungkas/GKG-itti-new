@@ -15,8 +15,17 @@ $totB3 = 0;
 $totBk1 = 0;
 $totBk2 = 0;
 $totBk3 = 0;
+$totW36 = 0;
+$totBEL1 = 0;
 $totalMasukKain = 0;
-
+$BKN1 = 0;
+$BAT2 = 0;
+$BAT3 = 0;
+$WAIT36 = 0;
+$JHP1 = 0;
+$total1 = 0;
+$total2 = 0;
+$total3 = 0;
 
 // Cekform telah disubmit
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -198,7 +207,7 @@ LEFT OUTER JOIN (
 ) v ON v.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE 
 AND v.OPERATIONCODE = x.OPERATIONCODE
 WHERE
-    x.OPERATIONCODE  IN ('BEL1','BKN1') AND --Operation ini ditambahin karena di laporan shift hanya perlu operation ini dan metode JOIN hanya membuat DATA bertambah sehingga terlopping & DATA lebih bnyak
+    x.OPERATIONCODE  IN ('BEL1','BKN1','BAT2','BAT3','WAIT36') AND --Operation ini ditambahin karena di laporan shift hanya perlu operation ini dan metode JOIN hanya membuat DATA bertambah sehingga terlopping & DATA lebih bnyak
     x.PROGRESSTEMPLATECODE = 'S01' --Kalau pengen sesuai kondisi harus tambahin FILTER yang di atas 
     AND TIMESTAMP(x.PROGRESSSTARTPROCESSDATE, x.PROGRESSSTARTPROCESSTIME) BETWEEN
          '$start_shift1' AND '$end_shift1'
@@ -220,6 +229,11 @@ GROUP BY
         //print_r($results);
         $totB1 = $results['BEL1'] ?? 0;
         $totBk1 = $results['BKN1'] ?? 0;
+        $BAT2 = $results['BAT2'] ?? 0;
+        $BAT3 = $results['BAT3'] ?? 0;
+        $WAIT36 = $results['WAIT36'] ?? 0;
+        $JHP1 = $results['JHP1'] ?? 0;
+        $total1 = $totBk1 + $BAT2 + $BAT3 + $WAIT36 + $JHP1;
     } else {
         error_log("Error executing sql_s1: " . db2_stmt_errormsg());
     }
@@ -325,7 +339,7 @@ LEFT OUTER JOIN (
 ) v ON v.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE 
 AND v.OPERATIONCODE = x.OPERATIONCODE
 WHERE
-    x.OPERATIONCODE  IN ('BEL1','BKN1') AND --Operation ini ditambahin karena di laporan shift hanya perlu operation ini dan metode JOIN hanya membuat DATA bertambah sehingga terlopping & DATA lebih bnyak
+    x.OPERATIONCODE  IN ('BEL1','BKN1','BAT2','BAT3','WAIT36') AND --Operation ini ditambahin karena di laporan shift hanya perlu operation ini dan metode JOIN hanya membuat DATA bertambah sehingga terlopping & DATA lebih bnyak
     x.PROGRESSTEMPLATECODE = 'S01' --Kalau pengen sesuai kondisi harus tambahin FILTER yang di atas 
     AND TIMESTAMP(x.PROGRESSSTARTPROCESSDATE, x.PROGRESSSTARTPROCESSTIME) BETWEEN
          '$start_shift2' AND '$end_shift2'
@@ -339,8 +353,7 @@ GROUP BY
 
         // Ambil semua hasil dari query
         while ($row = db2_fetch_assoc($stmt2)) {
-            //echo "Operation Code: " . htmlspecialchars($row['OPERATIONCODE']) . "<br>";
-            //echo "Total Qty Bagi Kain: " . htmlspecialchars($row['TOTAL_QTY_BAGI_KAIN']) . "<br>";
+
             $operation_code = $row['OPERATIONCODE'];
             $total_qty_bagi_kain = $row['TOTAL_QTY_BAGI_KAIN'] ?? 0;
 
@@ -350,6 +363,11 @@ GROUP BY
         //print_r($results);
         $totB2 = $results['BEL1'] ?? 0;
         $totBk2 = $results['BKN1'] ?? 0;
+        $BAT2 = $results['BAT2'] ?? 0;
+        $BAT3 = $results['BAT3'] ?? 0;
+        $WAIT36 = $results['WAIT36'] ?? 0;
+        $JHP1 = $results['JHP1'] ?? 0;
+        $total2 = $totBk2 + $BAT2 + $BAT3 + $WAIT36 + $JHP1;
     } else {
         error_log("Error executing sql_s2: " . db2_stmt_errormsg());
     }
@@ -455,7 +473,7 @@ LEFT OUTER JOIN (
 ) v ON v.PRODUCTIONORDERCODE = x.PRODUCTIONORDERCODE 
 AND v.OPERATIONCODE = x.OPERATIONCODE
 WHERE
-    x.OPERATIONCODE  IN ('BEL1','BKN1') AND --Operation ini ditambahin karena di laporan shift hanya perlu operation ini dan metode JOIN hanya membuat DATA bertambah sehingga terlopping & DATA lebih bnyak
+    x.OPERATIONCODE  IN ('BEL1','BKN1','BAT2','BAT3','WAIT36') AND --Operation ini ditambahin karena di laporan shift hanya perlu operation ini dan metode JOIN hanya membuat DATA bertambah sehingga terlopping & DATA lebih bnyak
     x.PROGRESSTEMPLATECODE = 'S01' --Kalau pengen sesuai kondisi harus tambahin FILTER yang di atas 
     AND TIMESTAMP(x.PROGRESSSTARTPROCESSDATE, x.PROGRESSSTARTPROCESSTIME) BETWEEN
          '$start_shift3' AND '$end_shift3'
@@ -479,6 +497,12 @@ GROUP BY
         //print_r($results);
         $totB3 = $results['BEL1'] ?? 0;
         $totBk3 = $results['BKN1'] ?? 0;
+        $BAT2 = $results['BAT2'] ?? 0;
+        $BAT3 = $results['BAT3'] ?? 0;
+        $WAIT36 = $results['WAIT36'] ?? 0;
+        $JHP1 = $results['JHP1'] ?? 0;
+
+        $total3 = $totBk3 + $BAT2 + $BAT3 + $WAIT36 + $JHP1;
 
 
     } else {
@@ -495,12 +519,21 @@ GROUP BY
     error_log("Total Buka Kain Shift 1: " . htmlspecialchars($totBk1));
     error_log("Total Buka Kain Shift 2: " . htmlspecialchars($totBk2));
     error_log("Total Buka Kain Shift 3: " . htmlspecialchars($totBk3));
+    error_log("Total Buka Kain Shift 3: " . htmlspecialchars($BAT2));
+    error_log("Total Buka Kain Shift 3: " . htmlspecialchars($BAT3));
+    error_log("Total Buka Kain Shift 3: " . htmlspecialchars($WAIT36));
+    error_log("Total Buka Kain Shift 3: " . htmlspecialchars($JHP1));
+    error_log("Total Buka Kain Shift 3: " . htmlspecialchars($total1));
+    error_log("Total Buka Kain Shift 3: " . htmlspecialchars($total2));
+    error_log("Total Buka Kain Shift 3: " . htmlspecialchars($total3));
     // Log hasil penjumlahan
     error_log("Total Masuk Kain: " . $totalMasukKain);
     // Menjumlahkan hasil dari kedua query
     $totalMasukKain = $rowdb2['QTY_MASUK'] + $rowdb['QTY_MASUK'];
     $totalBelahKain = $totB1 + $totB2 + $totB3;
-    $totalBukaKain = $totBk1 + $totBk2 + $totBk3;
+    //$totalBukaKain = $totBk1 + $totBk2 + $totBk3;
+    //$totalBukaKain = $totBk1 + $totBk2 + $totBk3;
+
 
 
 }
@@ -509,9 +542,9 @@ $response = array(
     // db2
     'value_masuk' => number_format($totalMasukKain, '2', '.', ''),
     'value_bagi' => number_format($rowKKG['QTY_KELUAR'], '2', '.', ''),
-    'buka_kain_s1' => number_format($totBk1, '2', '.', ''),
-    'buka_kain_s2' => number_format($totBk2, '2', '.', ''),
-    'buka_kain_s3' => number_format($totBk3, '2', '.', ''),
+    'buka_kain_s1' => number_format($total1, '2', '.', ''),
+    'buka_kain_s2' => number_format($total2, '2', '.', ''),
+    'buka_kain_s3' => number_format($total3, '2', '.', ''),
     'belahkains1' => number_format($totB1, '2', '.', ''),
     'belahkains2' => number_format($totB2, '2', '.', ''),
     'belahkains3' => number_format($totB3, '2', '.', ''),
