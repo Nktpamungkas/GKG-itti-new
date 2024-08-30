@@ -19,6 +19,12 @@ $buka_kain_s3 = str_replace(',', '', $_POST['buka_kain_s3']);
 $belahkains1 = str_replace(',', '', $_POST['belahkains1']);
 $belahkains2 = str_replace(',', '', $_POST['belahkains2']);
 $belahkains3 = str_replace(',', '', $_POST['belahkains3']);
+$penyusunan_s1  = addslashes($_POST['penyusunan_s1']);
+$penyusunan_s2  = addslashes($_POST['penyusunan_s2']);
+$penyusunan_s3  = addslashes($_POST['penyusunan_s3']);
+$masalah_s1 = addslashes($_POST['masalah_s1']);
+$masalah_s2 = addslashes($_POST['masalah_s2']);
+$masalah_s3 = addslashes($_POST['masalah_s3']);
 
 if (empty($get)) {
     $sql = ("INSERT INTO tbl_laporanharian SET
@@ -59,12 +65,12 @@ if (empty($get)) {
 			`belah_kain_s1` = '$belahkains1',
             `belah_kain_s2` = '$belahkains2',
             `belah_kain_s3` = '$belahkains3',
-            `penyusunan_s1` = '$_POST[penyusunan_s1]',
-            `penyusunan_s2` = '$_POST[penyusunan_s2]',
-            `penyusunan_s3` = '$_POST[penyusunan_s3]',
-            `masalah_s1` = '$_POST[masalah_s1]',
-            `masalah_s2` = '$_POST[masalah_s2]',
-            `masalah_s3` = '$_POST[masalah_s3]',
+            `penyusunan_s1` = '$penyusunan_s1',
+            `penyusunan_s2` = '$penyusunan_s2',
+            `penyusunan_s3` = '$penyusunan_s3',
+            `masalah_s1` = '$masalah_s1',
+            `masalah_s2` = '$masalah_s2',
+            `masalah_s3` = '$masalah_s3',
             `terimakains1` = '$_POST[terima_kain_s1]',
             `terimakains2` = '$_POST[terima_kain_s2]',
             `terimakains3` = '$_POST[terima_kain_s3]',
