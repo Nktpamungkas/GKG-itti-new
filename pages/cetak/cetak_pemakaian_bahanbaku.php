@@ -162,6 +162,7 @@ include "../../koneksi.php";
                 <td align="center" colspan="2" align="center">Quantity Buka Kain</td>
                 <td align="center" colspan="2" align="center">Quantity Timbang</td>
 
+                <td align="center" rowspan="2" align="center">Cek Selisih</td>
                 <td align="center" rowspan="2" align="center">Operation</td>
 
                 <td align="center" colspan="2" align="center">Jam</td>
@@ -575,7 +576,7 @@ include "../../koneksi.php";
                                                     GROUPSTEPNUMBER ASC LIMIT 1";
                         $stmtkg11 = db2_exec($conn1, $sqlkg, array('cursor' => DB2_SCROLLABLE));
                         $rowkg = db2_fetch_assoc($stmtkg11);
-                        echo round($rowkg['QTY_BAGI_KAIN'], 2); // BAGIKAIN RESERVATION
+                        echo $qtyproses = round($rowkg['QTY_BAGI_KAIN'], 2); // BAGIKAIN RESERVATION
                         $totalQtyBagiKain += $rowkg['QTY_BAGI_KAIN'];
                         ?>
                     </td>
@@ -652,8 +653,9 @@ include "../../koneksi.php";
                     ?>
 
                     <td align="center" valign="top" colspan="2">
-                        <?php echo !empty($beratkain['beratkain']) ? $beratkain['beratkain'] : '-'; ?>
+                        <?php echo !empty($beratkain['beratkain']) ? $beratkain = $beratkain['beratkain'] : $beratkain = 0; ?>
                     </td>
+                    <td align="left" valign="top"><?= round($qtyproses - $beratkain, 2); ?></td>
                     <td align="left" valign="top"><?= $rowOut['OPERATIONCODE']; ?></td>
                     <td align="left" valign="top"><?= $rowOut['MULAI']; ?></td>
                     <td align="left" valign="top"><?= $rowOut['SELESAI']; ?></td>
