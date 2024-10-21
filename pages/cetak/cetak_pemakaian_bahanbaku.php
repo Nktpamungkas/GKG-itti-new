@@ -632,7 +632,7 @@ include "../../koneksi.php";
                     </td>
                     <?php
                     // QUERY DIBAWAH INI MENGIKUTI QUERY POSISI KK DI LAPORAN
-                    $sqlOut = "SELECT * FROM ITXVIEW_POSISI_KARTU_KERJA WHERE PRODUCTIONORDERCODE  = '$rowdb21[PRODUCTIONORDERCODE]' AND OPERATIONCODE = '$rowdb21[OPERATIONCODE]'";
+                    $sqlOut = "SELECT * FROM ITXVIEW_POSISI_KARTU_KERJA WHERE PRODUCTIONORDERCODE  = '$rowdb21[PRODUCTIONORDERCODE]' AND OPERATIONCODE = '$rowdb21[OPERATIONCODE]' AND SUBSTR(MULAI, 1, 10) = '$rowdb21[PROGRESSSTARTPROCESSDATE]'";
                     $stmtOut = db2_exec($conn1, $sqlOut);
                     $rowOut = db2_fetch_assoc($stmtOut);
                     ?>
